@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yevgeni Work Portal</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #121212; color: #e0e0e0; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: auto; }
+        header { text-align: center; padding: 20px; border-bottom: 2px solid #333; margin-bottom: 30px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
+        .card { background: #1e1e1e; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 1px solid #333; display: flex; flex-direction: column; justify-content: space-between; }
+        h2 { color: #00a2ed; font-size: 1.4em; border-bottom: 1px solid #444; padding-bottom: 10px; margin-top: 0; }
+        h3 { color: #ff9d00; font-size: 1.1em; margin-bottom: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
+        th, td { border: 1px solid #444; padding: 8px; text-align: right; }
+        th { background: #2d2d2d; color: #00a2ed; }
+        code { background: #000; color: #00ff00; padding: 2px 6px; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 0.95em; }
+        .btn { display: inline-block; background: #0078d4; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; margin-top: 15px; text-align: center; font-weight: bold; }
+        .btn:hover { background: #005a9e; }
+        input { background: #2a2a2a; color: white; border: 1px solid #444; padding: 6px; border-radius: 4px; width: 100%; box-sizing: border-box; margin-bottom: 10px; }
+        .calc-group { margin-top: 10px; background: #252525; padding: 10px; border-radius: 6px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>yevgeni.info - פורטל הנדסת בדיקות</h1>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <div>
+                    <h2>בדיקות אודיו (Audio QA)</h2>
+                    <p><b>SNR:</b> <code>20 * log10(Vs / Vn)</code></p>
+                    <p><b>THD:</b> יחס הרמוניות לגל יסודי (%)</p>
+                    <p><b>V_RMS:</b> <code>0.707 * V_peak</code></p>
+                    
+                    <div class="calc-group">
+                        <h3>מחשבון SNR מהיר</h3>
+                        <input type="number" id="sigVol" placeholder="מתח סיגנל (V_signal)">
+                        <input type="number" id="noiVol" placeholder="מתח רעש (V_noise)">
+                        <button onclick="calculateSNR()" style="background:#ff9d00; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-weight:bold;">חשב dB</button>
+                        <p id="snrResult" style="margin-top:8px; font-weight:bold; color:#00ff00;"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h2>Python Snippets</h2>
+                    <p>ריכוז פקודות מהירות וקישור לדוח ה-HTML הקיים.</p>
+                    <ul>
+                        <li><code>list.append(x)</code> - הוספה לרשימה</li>
+                        <li><code>pip install pytest</code> - הרצת בדיקות</li>
+                        <li><code>import serial</code> - תקשורת טורית לחומרה</li>
+                    </ul>
+                </div>
+                <a href="my_tech_dna.html" class="btn">פתח דוח פייתון (HTML)</a>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h2>Linux Cheat Sheet</h2>
+                    <p>פקודות חומרה, ניהול מערכת וניתוח לוגים בזמן אמת.</p>
+                    <table>
+                        <tr><th>פקודה</th><th>שימוש</th></tr>
+                        <tr><td><code>dmesg -w</code></td><td>צפייה בחיבורי USB/FW בזמן אמת</td></tr>
+                        <tr><td><code>lsusb -t</code></td><td>מיפוי עץ התקני USB במערכת</td></tr>
+                        <tr><td><code>journalctl -f</code></td><td>לוגי מערכת (systemd) בזמן אמת</td></tr>
+                    </table>
+                </div>
+                <a href="Linux Command Nexus 2026.html" class="btn">פתח את Linux Command Nexus ←</a>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h2>Windows & PowerShell</h2>
+                    <p>אוטומציה, ניהול מערכות Enterprise IT ובדיקות סביבת Windows 11:</p>
+                    <ul>
+                        <li>אימות דרייברים חתומים: <br><code>Get-PnpDevice -Status OK</code></li>
+                        <li>בדיקת תהליכים רצים: <br><code>Get-Process | Where-Object Name -like "*test*"</code></li>
+                        <li>בדיקת תקשורת ורשת: <br><code>Test-Connection yevgeni.work</code></li>
+                    </ul>
+                </div>
+                <a href="PowerShell for Enterprise IT Administration.html" class="btn">פתח מחקר PowerShell מתקדם ←</a>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h2>תהליך גיבוי (Backup Workflow)</h2>
+                    <h3>1. ארכיון מהיר (TAR)</h3>
+                    <code>tar -cvzf backup.tar.gz /path/to/logs</code>
+                    <h3>2. אימג' של כונן (DD) - ברמת ה-Bit</h3>
+                    <code>sudo dd if=/dev/sdb of=drive_image.img status=progress</code>
+                    <p style="font-size: 0.85em; color: #ff4444; margin-top: 5px;">* זהירות: ודא ש-if הוא כונן המקור ו-of הוא היעד!</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h2>ספרייה דיגיטלית ומשאבים</h2>
+                    <p>ספרים ומדריכים חינמיים להורדה וקריאה ישירה:</p>
+                    <ul style="line-height: 1.6;">
+                        <li><a href="https://www.py4e.com/book" target="_blank" style="color: #00a2ed; text-decoration: none;">📖 Python for Everybody (PDF)</a></li>
+                        <li><a href="https://greenteapress.com/wp/think-python-2e/" target="_blank" style="color: #00a2ed; text-decoration: none;">📖 Think Python 2e</a></li>
+                        <li><a href="https://linuxcommand.org/tlcl.php" target="_blank" style="color: #00a2ed; text-decoration: none;">📖 The Linux Command Line</a></li>
+                    </ul>
+                </div>
+                <div style="font-size:0.8em; color:#888; text-align:center; margin-top:10px;">עודכן: מאי 2026</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateSNR() {
+            const signal = parseFloat(document.getElementById('sigVol').value);
+            const noise = parseFloat(document.getElementById('noiVol').value);
+            const resultElement = document.getElementById('snrResult');
+            
+            if (isNaN(signal) || isNaN(noise) || noise <= 0 || signal <= 0) {
+                resultElement.style.color = '#ff4444';
+                resultElement.innerText = "נא להזין ערכים תקינים הגדולים מ-0";
+                return;
+            }
+            
+            const snr = 20 * Math.log10(signal / noise);
+            resultElement.style.color = '#00ff00';
+            resultElement.innerText = `SNR: ${snr.toFixed(2)} dB`;
+        }
+    </script>
+</body>
+</html>

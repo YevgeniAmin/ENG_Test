@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering PowerShell for Windows 11 Enterprise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .step-active {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+        }
+        .pillar-active {
+            ring: 2px;
+            ring-color: #2563eb;
+            background-color: #f8fafc;
+        }
+        .code-block {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: #1e293b;
+            color: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            overflow-x: auto;
+            border-left: 4px solid #3b82f6;
+        }
+        .cmd-label {
+            color: #94a3b8;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+
+    <div class="max-w-5xl mx-auto px-4 py-12">
+        
+        <header class="mb-16 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">Mastering PowerShell</h1>
+            <h2 class="text-xl md:text-2xl text-blue-600 font-medium mb-6">For Windows 11 Enterprise & Pro</h2>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                Advanced IT administration relies heavily on executing PowerShell within enterprise environments. This dashboard explores how leveraging scripts automates critical tasks and drives scalable deployments.
+            </p>
+        </header>
+
+        <section id="ecosystem" class="mb-20">
+            <div class="mb-8 border-b border-slate-200 pb-4">
+                <h3 class="text-2xl font-bold text-slate-800 mb-2">1. The Execution Ecosystem</h3>
+                <p class="text-slate-600">This section illustrates the foundational environments required for advanced IT administration in Windows 11. It highlights how native command-line interfaces serve as the launchpad for powerful PowerShell automation scripts.</p>
+            </div>
+            
+            <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-100 flex flex-col md:flex-row items-center justify-center gap-8">
+                <div class="text-center p-6 border-2 border-slate-200 rounded-lg w-full md:w-1/3 hover:border-blue-400 transition-colors">
+                    <div class="text-4xl mb-2">&#128187;</div>
+                    <h4 class="font-bold text-lg">Windows 11</h4>
+                    <p class="text-sm text-slate-500">Enterprise / Pro</p>
+                </div>
+                
+                <div class="text-2xl text-slate-400 hidden md:block">&#10142;</div>
+                
+                <div class="flex flex-col gap-4 w-full md:w-1/3">
+                    <div class="text-center p-4 border-2 border-slate-200 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors cursor-default">
+                        <h4 class="font-bold">Windows Terminal</h4>
+                        <p class="text-xs text-slate-500">Modern Execution</p>
+                    </div>
+                    <div class="text-center p-4 border-2 border-slate-200 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors cursor-default">
+                        <h4 class="font-bold">cmd</h4>
+                        <p class="text-xs text-slate-500">Legacy Invocation</p>
+                    </div>
+                </div>
+
+                <div class="text-2xl text-slate-400 hidden md:block">&#10142;</div>
+
+                <div class="text-center p-6 border-2 border-blue-500 bg-blue-50 rounded-lg w-full md:w-1/3 shadow-inner">
+                    <div class="text-4xl mb-2 text-blue-600">&#9881;</div>
+                    <h4 class="font-bold text-lg text-blue-800">PowerShell Scripts</h4>
+                    <p class="text-sm text-blue-600 font-medium">The Automation Engine</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="pillars" class="mb-20">
+            <div class="mb-8 border-b border-slate-200 pb-4">
+                <h3 class="text-2xl font-bold text-slate-800 mb-2">2. Core Automation Pillars & Commands</h3>
+                <p class="text-slate-600">Explore the primary domains where PowerShell scripting drives efficiency. Select a pillar to view the associated logic and core administrative commands.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <button data-pillar="imaging" class="pillar-btn p-6 bg-white rounded-xl shadow-sm border border-slate-200 text-left hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <span class="text-2xl mb-3 block">&#128190;</span>
+                    <h4 class="font-bold text-lg mb-1">Imaging</h4>
+                    <p class="text-sm text-slate-500">OS deployment automation</p>
+                </button>
+                <button data-pillar="integration" class="pillar-btn p-6 bg-white rounded-xl shadow-sm border border-slate-200 text-left hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <span class="text-2xl mb-3 block">&#128279;</span>
+                    <h4 class="font-bold text-lg mb-1">System Integrations</h4>
+                    <p class="text-sm text-slate-500">Connecting disparate systems</p>
+                </button>
+                <button data-pillar="config" class="pillar-btn p-6 bg-white rounded-xl shadow-sm border border-slate-200 text-left hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <span class="text-2xl mb-3 block">&#128203;</span>
+                    <h4 class="font-bold text-lg mb-1">Enterprise Configs</h4>
+                    <p class="text-sm text-slate-500">Standardizing environments</p>
+                </button>
+            </div>
+
+            <div id="pillar-content" class="bg-blue-50 p-8 rounded-xl border border-blue-100 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 id="pillar-title" class="text-xl font-bold text-blue-900 mb-3">Select a pillar</h4>
+                        <p id="pillar-desc" class="text-slate-700 leading-relaxed mb-6"></p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-lg border border-blue-200">
+                                <span class="font-bold text-sm text-blue-800">Key Benefit:</span>
+                                <p id="pillar-benefit" class="text-sm text-slate-600 italic"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="cmd-label text-slate-500">Essential Commands</span>
+                        <div id="pillar-code" class="code-block">
+                            <!-- Code will be injected here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="command-lab" class="mb-20">
+            <div class="mb-8 border-b border-slate-200 pb-4">
+                <h3 class="text-2xl font-bold text-slate-800 mb-2">3. Enterprise Deployment Lab</h3>
+                <p class="text-slate-600">Standardizing software and hardware management using modern command-line tools for scalable environments.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-slate-900 rounded-xl p-6 text-white">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="bg-blue-600 p-2 rounded-lg">📦</div>
+                        <h4 class="font-bold">Winget (Package Management)</h4>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-xs text-slate-400 mb-1">Install enterprise software silently:</p>
+                            <code class="text-blue-300 block bg-slate-800 p-2 rounded">winget install --id Microsoft.VisualStudioCode --silent --accept-source-agreements</code>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400 mb-1">Export device software configuration:</p>
+                            <code class="text-blue-300 block bg-slate-800 p-2 rounded">winget export -o C:\temp\packages.json</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 rounded-xl p-6 text-white">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="bg-teal-600 p-2 rounded-lg">🛡️</div>
+                        <h4 class="font-bold">Intune/GPO Compatibility</h4>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-xs text-slate-400 mb-1">Check execution policy for remote scripts:</p>
+                            <code class="text-teal-300 block bg-slate-800 p-2 rounded">Get-ExecutionPolicy -List</code>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400 mb-1">Set policy for scalable deployment:</p>
+                            <code class="text-teal-300 block bg-slate-800 p-2 rounded">Set-ExecutionPolicy RemoteSigned -Force</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tooling" class="mb-20">
+            <div class="mb-8 border-b border-slate-200 pb-4">
+                <h3 class="text-2xl font-bold text-slate-800 mb-2">3. Enterprise Deployment Toolset</h3>
+                <p class="text-slate-600">To achieve scalable deployments, PowerShell is rarely executed in isolation. This visualization represents a typical conceptual breakdown of how PowerShell scripts are delivered and managed using enterprise-grade tools.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-100">
+                <div class="chart-container">
+                    <canvas id="deploymentChart"></canvas>
+                </div>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div class="p-4">
+                        <h5 class="font-bold text-slate-800">Microsoft Intune</h5>
+                        <p class="text-sm text-slate-500">Modern cloud-based MDM script deployment.</p>
+                    </div>
+                    <div class="p-4 border-t md:border-t-0 md:border-l border-slate-200">
+                        <h5 class="font-bold text-slate-800">Group Policy (GPO)</h5>
+                        <p class="text-sm text-slate-500">Traditional on-premises startup/logon scripting.</p>
+                    </div>
+                    <div class="p-4 border-t md:border-t-0 md:border-l border-slate-200">
+                        <h5 class="font-bold text-slate-800">winget</h5>
+                        <p class="text-sm text-slate-500">Scripted package management & app provisioning.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="scalability">
+            <div class="mb-8 border-b border-slate-200 pb-4">
+                <h3 class="text-2xl font-bold text-slate-800 mb-2">4. Achieving Scalable Deployments</h3>
+                <p class="text-slate-600">The ultimate goal of mastering these tools is scalability. Interact with the stages below to see how raw scripts transform into enterprise-wide automated solutions.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+                <button data-step="1" class="step-btn w-full md:w-1/3 p-4 border-2 border-slate-200 rounded-lg text-center font-bold text-slate-600 transition-all hover:bg-slate-50 focus:outline-none">
+                    Stage 1: Script Creation
+                </button>
+                <div class="text-slate-400 hidden md:block">&#10142;</div>
+                <button data-step="2" class="step-btn w-full md:w-1/3 p-4 border-2 border-slate-200 rounded-lg text-center font-bold text-slate-600 transition-all hover:bg-slate-50 focus:outline-none">
+                    Stage 2: Tool Integration
+                </button>
+                <div class="text-slate-400 hidden md:block">&#10142;</div>
+                <button data-step="3" class="step-btn w-full md:w-1/3 p-4 border-2 border-slate-200 rounded-lg text-center font-bold text-slate-600 transition-all hover:bg-slate-50 focus:outline-none">
+                    Stage 3: Scalable Deployment
+                </button>
+            </div>
+
+            <div id="step-content" class="bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center">
+                <p class="text-slate-500 italic">Select a stage above to view details.</p>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const pillarData = {
+                imaging: {
+                    title: "Automating Imaging",
+                    desc: "Leveraging PowerShell during the initial provisioning phase (via Task Sequences) to customize and harden the base Windows 11 Enterprise image before it reaches the end user.",
+                    benefit: "Reduces manual OS preparation time by 80% through automated driver injection and bloatware removal.",
+                    code: "# 1. Export drivers from current system\nExport-WindowsDriver -Online -Destination \"C:\\Drivers\"\n\n# 2. Mount a WIM image for editing\nMount-WindowsImage -ImagePath \"C:\\OS\\install.wim\" -Index 1 -Path \"C:\\Mount\"\n\n# 3. Add packages/drivers to offline image\nAdd-WindowsPackage -Path \"C:\\Mount\" -PackagePath \"C:\\Updates\\\"\n\n# 4. Unmount and Save changes\nDismount-WindowsImage -Path \"C:\\Mount\" -Save"
+                },
+                integration: {
+                    title: "System Integrations",
+                    desc: "Administrators use PowerShell to orchestrate data flow between HR systems and identity providers (Active Directory/Azure AD), automating the user lifecycle.",
+                    benefit: "Facilitates 'Zero-Touch' provisioning, ensuring employees have immediate access to resources upon their first login.",
+                    code: "# Connect to Microsoft Graph (Modern Integration)\nConnect-MgGraph -Scopes \"User.ReadWrite.All\"\n\n# Create a user from HR CSV data\nImport-Csv \"C:\\HR\\NewHires.csv\" | ForEach-Object {\n    New-MgUser -DisplayName $_.Name -UserPrincipalName $_.Email\n}\n\n# Verify AD Sync Status\nGet-ADSyncScheduler"
+                },
+                config: {
+                    title: "Enterprise Configurations",
+                    desc: "Mitigates configuration drift and maintains strict governance by ensuring all enterprise endpoints adhere to defined security baselines.",
+                    benefit: "Prevents configuration drift, ensuring all enterprise devices maintain security standards.",
+                    code: "# Set Registry Key for Security Compliance\nSet-ItemProperty -Path \"HKLM:\\SOFTWARE\\Policies\\Microsoft\" -Name \"DisableUSB\" -Value 1\n\n# Configure Enterprise Wi-Fi Profile\nAdd-WiFiProfile -Path \"C:\\Configs\\EnterpriseWiFi.xml\"\n\n# Get system inventory for reporting\nGet-CimInstance -ClassName Win32_OperatingSystem | Select-Object Caption, Version, OSArchitecture"
+                }
+            };
+
+            const pillarBtns = document.querySelectorAll('.pillar-btn');
+            const pillarContent = document.getElementById('pillar-content');
+            const pillarTitle = document.getElementById('pillar-title');
+            const pillarDesc = document.getElementById('pillar-desc');
+            const pillarBenefit = document.getElementById('pillar-benefit');
+            const pillarCode = document.getElementById('pillar-code');
+
+            pillarBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const target = e.currentTarget.getAttribute('data-pillar');
+                    
+                    pillarBtns.forEach(b => {
+                        b.classList.remove('ring-2', 'ring-blue-500', 'bg-slate-50');
+                        b.classList.add('bg-white');
+                    });
+                    
+                    e.currentTarget.classList.remove('bg-white');
+                    e.currentTarget.classList.add('ring-2', 'ring-blue-500', 'bg-slate-50');
+
+                    pillarTitle.textContent = pillarData[target].title;
+                    pillarDesc.textContent = pillarData[target].desc;
+                    pillarBenefit.textContent = pillarData[target].benefit;
+                    pillarCode.innerHTML = `<pre class="whitespace-pre-wrap"><code>${pillarData[target].code}</code></pre>`;
+                    
+                    pillarContent.classList.remove('hidden');
+                    pillarContent.classList.add('block', 'animate-fade-in'); 
+                });
+            });
+
+
+            const ctx = document.getElementById('deploymentChart').getContext('2d');
+            const deploymentChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Microsoft Intune (Cloud MDM)', 'Group Policy (On-Prem)', 'winget (Package Mgmt)', 'Other / Direct Execution'],
+                    datasets: [{
+                        data: [45, 30, 15, 10], 
+                        backgroundColor: [
+                            '#2563eb', 
+                            '#14b8a6', 
+                            '#64748b', 
+                            '#cbd5e1'  
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    family: "'Inter', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.parsed + '% Conceptual Usage';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+
+
+            const stepData = {
+                "1": "<h4 class='text-xl font-bold text-slate-800 mb-2'>Local Execution via Terminal/cmd</h4><p class='text-slate-600'>Administrators develop and test raw PowerShell logic locally. This involves mastering cmdlets to manipulate Windows 11 Enterprise configurations on a single machine before scaling.</p>",
+                "2": "<h4 class='text-xl font-bold text-slate-800 mb-2'>Wrapping in Enterprise Tools</h4><p class='text-slate-600'>The raw scripts are packaged. They might be assigned as logon scripts via <strong>Group Policy (GPO)</strong>, uploaded as proactive remediations in <strong>Microsoft Intune</strong>, or set to trigger <strong>winget</strong> installations.</p>",
+                "3": "<h4 class='text-xl font-bold text-blue-600 mb-2'>Zero-Touch Scalability</h4><p class='text-slate-600'>The final outcome. A new device connects to the network, and through Intune or GPO, the PowerShell scripts execute automatically, achieving a fully configured enterprise state without manual IT intervention.</p>"
+            };
+
+            const stepBtns = document.querySelectorAll('.step-btn');
+            const stepContent = document.getElementById('step-content');
+
+            stepBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const step = e.currentTarget.getAttribute('data-step');
+                    
+                    stepBtns.forEach(b => {
+                        b.classList.remove('step-active', 'text-blue-700');
+                        b.classList.add('text-slate-600');
+                    });
+                    
+                    e.currentTarget.classList.add('step-active', 'text-blue-700');
+                    e.currentTarget.classList.remove('text-slate-600');
+
+                    stepContent.innerHTML = stepData[step];
+                });
+            });
+            
+            if(stepBtns.length > 0) {
+                stepBtns[0].click();
+            }
+        });
+    </script>
+</body>
+</html>
