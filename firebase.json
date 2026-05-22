@@ -1,10 +1,35 @@
 {
+  "functions": {
+    "source": "functions"
+  },
   "hosting": {
     "public": "public",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "cleanUrls": true,
+    "rewrites": [
+      {
+        "source": "/ai-fairy",
+        "destination": "/ai-fairy.html"
+      },
+      {
+        "source": "/api/secret-nexus-proxy",
+        "function": "secretNexusProxy"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      }
     ]
   }
 }

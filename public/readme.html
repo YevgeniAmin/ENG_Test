@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Portal & Engineering Lab</title>
+    <style>
+        :root {
+            --bg-base: #0a0a0f;
+            --glass-bg: rgba(16, 18, 27, 0.7);
+            --glass-border: rgba(0, 243, 255, 0.15);
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ea;
+            --neon-green: #39ff14;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-base);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 243, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(255, 0, 234, 0.05) 0%, transparent 50%);
+            color: var(--text-main);
+            line-height: 1.8;
+            padding: 40px 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .glass-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 40px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 
+                        inset 0 0 20px rgba(0, 243, 255, 0.02);
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--neon-blue);
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            border-bottom: 2px solid rgba(255, 0, 234, 0.5);
+            padding-bottom: 15px;
+            margin-top: 0;
+            text-shadow: 0 0 15px rgba(255, 0, 234, 0.4);
+            color: var(--text-main);
+        }
+
+        p { margin-bottom: 1.2em; }
+
+        ul, ol {
+            padding-right: 25px;
+            margin-bottom: 1.5em;
+        }
+
+        li { margin-bottom: 8px; }
+        li::marker { color: var(--neon-pink); font-weight: bold; }
+
+        strong, b {
+            color: white;
+            text-shadow: 0 0 8px rgba(255,255,255,0.4);
+        }
+
+        em, i { color: var(--text-muted); }
+
+        code {
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--neon-pink);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            border: 1px solid rgba(255, 0, 234, 0.2);
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #050505;
+            border: 1px solid #333;
+            border-left: 3px solid var(--neon-blue);
+            padding: 15px;
+            border-radius: 8px;
+            direction: ltr; /* קוד תמיד משמאל לימין */
+            text-align: left;
+            overflow-x: auto;
+            margin: 20px 0;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+        }
+
+        pre code {
+            background: transparent;
+            border: none;
+            color: var(--neon-green);
+            text-shadow: 0 0 5px rgba(57, 255, 20, 0.3);
+            padding: 0;
+        }
+
+        /* עיצוב המעטפת של הטבלה */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 25px 0;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 
+                        0 0 0 1px rgba(0, 243, 255, 0.1); /* מסגרת זוהרת עדינה */
+        }
+
+        /* עיצוב התאים עם אנימציית מעבר חלקה */
+        th, td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px 18px;
+            text-align: right;
+            transition: all 0.3s ease;
+        }
+
+        /* הדגשה וזוהר לכותרות העמודות */
+        th {
+            background-color: rgba(0, 243, 255, 0.12);
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.95em;
+            border-bottom: 2px solid var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
+        }
+
+    /* אפקט זברה: צבע רקע עדין לשורות זוגיות לקריאות טובה יותר */
+    tbody tr:nth-child(even) {
+        background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    /* אפקט Hover מרכזי לשורות - נדלק כשעוברים עם העכבר */
+    tbody tr:hover {
+        background-color: rgba(0, 243, 255, 0.08);
+        box-shadow: inset 4px 0 0 var(--neon-blue); /* פס צדדי שנדלק */
+    }
+
+    /* אפקט Hover נקודתי לתא בודד (אופציונלי - מוסיף תחושת מטריקס) */
+    tbody td:hover {
+        color: #fff;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+        background-color: rgba(255, 0, 234, 0.05); /* נגיעה קלה של ורוד-ניאון */
+    }
+    </style>
+</head>
+<body>
+    <div class="glass-container">
+        <h1>AI Portal &amp; Engineering Lab 🚀</h1>
+<p>פורטל הנדסי מתקדם המשלב כלי בדיקות תוכנה (QA), ניהול שרתי לינוקס מקומיים, ואינטגרציה עמוקה עם מונחי בינה מלאכותית (Google Gemini). הפרויקט משמש כמעבדת מחקר (R&amp;D) וכסביבת עבודה יומיומית מאובטחת.</p>
+<h2>🏗️ ארכיטקטורת המערכת (System Architecture)</h2>
+<p>המערכת בנויה בתצורה היברידית (Hybrid Architecture) המחברת בין ענן ציבורי לשכבת תשתית מקומית חזקה, תוך שמירה על בידוד נתונים ואבטחת מידע קשיחה.</p>
+<pre><code>[משתמש קצה] ──&gt; [Cloudflare WAF/DNS] ──&gt; [Firebase Hosting (Frontend)]
+                                                 │
+                                                 ▼
+[Google AI Studio] &lt;── [Secret Manager] &lt;── [Secret Nexus Proxy (Cloud Run)]
+                                                 │
+                                                 ▼
+                                        [Local Proxmox Server (srv-1)]
+                                                 │
+                                                 └──&gt; NVIDIA RTX 5060 Ti (Ollama)
+</code></pre>
+<h3>1. זרימת הנתונים והרשת (Network Flow)</h3>
+<ul>
+<li><strong>Cloudflare (DNS &amp; Security):</strong> ניהול רשומות ה-DNS של הדומיין <code>yevgeni.info</code>, סינון תעבורה באמצעות WAF (Web Application Firewall), והפניות דואר אלקטרוני מאובטחות.</li>
+<li><strong>Firebase Hosting:</strong> מארח את קבצי ה-Frontend ומגיש אותם במהירות גבוהה (CDN גלובלי).</li>
+<li><strong>Secret Nexus Proxy:</strong> שכבת Backend/Proxy ייעודית הרצה על גבי Firebase Cloud Functions / Cloud Run. השכבה מאבטחת את התקשורת מול שרתי Google, מנהלת הגדרות CORS, ומגינה על מפתחות הגישה.</li>
+</ul>
+<h3>2. תשתית חומרה מקומית (Local Proxmox Server)</h3>
+<p>שרת המעבדה המקומי (<code>srv-1</code>) מיועד להרצת סוכני AI, מודלים מקומיים ואוטומציות הנדסיות:<br />
+* <strong>Hypervisor:</strong> Proxmox VE<br />
+* <strong>Hardware:</strong> Intel i5-12400 | 32GB RAM DDR4 (3200MT/s)<br />
+* <strong>Storage:</strong> Samsung 1TB SSD (OS &amp; Fast VMs) + 2TB Enterprise SSD<br />
+* <strong>GPU Passthrough:</strong> כרטיס מסך <strong>NVIDIA GeForce RTX 5060 Ti</strong> מנותב ישירות (PCIe Passthrough) למכונות וירטואליות ייעודיות לטובת עיבוד AI לוקאלי (Ollama/Llama3).</p>
+<hr />
+<h2>🛠️ טכנולוגיות וכלים (Tech Stack)</h2>
+<ul>
+<li><strong>Frontend:</strong> Vanilla Web (HTML5, CSS3, JS) בעיצוב <em>Dark Glassmorphism</em> ואפקטי <em>Cyberpunk Neon</em>.</li>
+<li><strong>Math Rendering:</strong> <code>MathJax</code> לרינדור נוסחאות מתמטיות והנדסיות מורכבות ($SNR$, $V_{RMS}$) בזמן אמת בצד הלקוח.</li>
+<li><strong>Data Visualization:</strong> <code>Chart.js</code> להצגת גרפים דינמיים ומטריצות מורכבות של לוגים ופקודות מערכת.</li>
+<li><strong>Backend &amp; Security:</strong> Node.js/Python, Google Cloud Secret Manager להגנה על סודות, ומנגנוני Exponential Backoff להתמודדות עם שגיאות רשת.</li>
+<li><strong>CI/CD &amp; Version Control:</strong> Git ו-Firebase CLI לסנכרון והפצה מהירה (<code>firebase deploy</code>).</li>
+</ul>
+<hr />
+<h2>🧩 מודולים מרכזיים בפורטל (Active Modules)</h2>
+<ol>
+<li><strong>Secret Nexus Proxy (Production Ready):</strong> שכבת אבטחה המונעת לחלוטין חשיפה של מפתחות API צד-לקוח (Hardcoded API keys prevention). קוראת את הסודות ישירות מתוך ה-Secret Manager ומנהלת שיחות מוגנות מול מודלי השפה.</li>
+<li><strong>Dashboard הנדסי:</strong> מרכז בקרה ראשי המציג סימולטור משאבי Proxmox בזמן אמת ומערכת תיעוד אוטומטית (Auto-Date Logger).</li>
+<li><strong>מעבדת אודיו (Audio QA Lab):</strong> כלי עזר הנדסיים לחישוב המרות מתח ל-dBV/dBu ובדיקות אות-לרעש ($SNR$ / $THD$).</li>
+<li><strong>Linux Nexus:</strong> ממשק אינטראקטיבי לחקר פקודות לינוקס, ניהול מערכות קבצים וניטור ביצועי שרתים מקומיים.</li>
+<li><strong>הפיה הדיגיטלית (AI Fairy):</strong> בוט אינטראקטיבי המשלב יצירת טקסט, חיפוש מקורות ברשת (Search Grounding), מחולל תמונות (Imagen 4), וטקסט-לדיבור (TTS).</li>
+</ol>
+<hr />
+<h2>🧪 מעבדת מחקר ובדיקות (QA &amp; Engineering R&amp;D)</h2>
+<p>כחלק ממחזור הפיתוח (SDLC), הפרויקט עבר תהליכי בדיקות תוכנה וניתוח הנדסי קפדניים:<br />
+* <strong>Reverse Engineering לממשק משתמש:</strong> ניתוח עמוק של ה-DOM ורכיבי ה-Frontend כדי לאמת רינדור יעיל של ספריות צד-לקוח (MathJax, Chart.js) ולוודא אטימות מוחלטת לדליפת סודות ברמת הדפדפן.<br />
+* <strong>Linux Nexus QA:</strong> בניית מטריצת תאימות (Compatibility Matrix) לכלל המודולים בפורטל, שילוב מערכת לוגים אוטומטית לתיעוד פעולות, ווידוא ניתוב רשת תקין דרך ה-Proxy.<br />
+* <strong>בדיקות עומס ויציבות חומרה:</strong> הרצת בדיקות מאמץ לניתוב החומרה (IOMMU / PCIe Passthrough) לכרטיס ה-RTX 5060 Ti, להבטחת יציבות עבודה (P0 State) במהלך הרצת מודלי AI מקומיים.<br />
+* <strong>Security Validation:</strong> וידוא מעשי כי מפתחות ה-API אינם מקודדים בקוד המקור (Hardcoded) תוך שימוש קפדני בקובצי <code>.env</code> והגדרות חסימה ב-<code>.gitignore</code>.</p>
+<hr />
+<h2>🚀 צעדים הבאים (Roadmap)</h2>
+<ul>
+<li>[ ] <strong>Automated VDD &amp; Project Registry:</strong> פיתוח כלי אוטומטי להפקת מסמכי תיאור גרסה (Version Description Documents) עבור חבילות סיסטם (Windows 11 LTSC), תוכנות עיליות (Python, C#) ורכיבי חומרה/מיקרו-בקרים (Atmel, CPLD) כולל חתימות SHA-256 אוטומטיות.</li>
+<li>[ ] <strong>AI Translation Edge:</strong> אינטגרציה של מנגנון תרגום חכם מבוסס AI דרך ה-Proxy להמרת התיעוד לאנגלית הנדסית מקצועית (R&amp;D level), כולל שימוש ב-Cache ב-Firebase לחסכון במשאבים.</li>
+<li>[ ] <strong>Local AI Log Analyzer:</strong> חיבור מודלים מקומיים הרצים על גבי Ollama לניתוח קובצי לוג עצומים (עד 50MB) ישירות על שרת ה-Proxmox המאובטח, לטובת זיהוי מהיר של תקלות חומרה ותוכנה.</li>
+</ul>
+<hr />
+<p><em>נבנה כסביבת מחקר והנדסה, 2026.</em></p>
+    </div>
+</body>
+</html>

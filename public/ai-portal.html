@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ai-portal.yevgeni.info</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Marked.js for rendering Gemini's Markdown responses -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <style>
+        /* אנימציות לטבעות המשאבים */
+        .ring-transition { transition: stroke-dashoffset 1s ease-out; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        
+        /* עיצוב בלוקים של קוד (תוקן מבעיית הסוגריים של פייתון) */
+        pre {
+            position: relative; 
+            background: #050505;
+            border: 1px solid #333;
+            border-left: 3px solid #00f3ff; /* neon-blue */
+            padding: 20px 15px 15px 15px;
+            border-radius: 8px;
+            direction: ltr; 
+            text-align: left;
+            overflow-x: auto;
+            margin: 15px 0;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+        }
+
+        pre code {
+            color: #39ff14; /* neon-green */
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85em;
+        }
+
+        /* עיצוב כפתור ההעתקה */
+        .copy-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            color: #00f3ff;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.7em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .copy-btn:hover {
+            background: rgba(0, 243, 255, 0.3);
+            box-shadow: 0 0 8px rgba(0, 243, 255, 0.5);
+            color: #fff;
+        }
+
+        /* עיצוב בסיסי לטקסט המיוצר מ-Markdown */
+        .markdown-body p { margin-bottom: 10px; }
+        .markdown-body strong { color: #fff; }
+        .markdown-body ul { list-style-type: disc; padding-left: 20px; margin-bottom: 10px; }
+        .markdown-body code:not(pre code) {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: #ff00ea; /* neon-pink */
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased">
+
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="https://yevgeni.info" class="flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-blue-400 bg-slate-800/60 px-3 py-1.5 rounded-full border border-slate-700/50 transition-all">
+                    <span>&larr; Back to Main Hub</span>
+                </a>
+                <div class="hidden md:flex items-center gap-2">
+                    <span class="text-md font-bold bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent">
+                        ai-portal.yevgeni.info
+                    </span>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-semibold border bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
+                    <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" id="global-status-dot"></span>
+                    <span class="hidden sm:inline-block" id="global-status-text">Nexus Proxy Active</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-1 space-y-6">
+                <div class="bg-slate-900 rounded-2xl p-6 border border-slate-800 flex flex-col items-center min-h-[420px]">
+                    <div class="w-full mb-4">
+                        <h2 class="text-md font-bold text-slate-100">Home Server Telemetry</h2>
+                        <p class="text-[11px] text-slate-400">Proxmox Cluster & RTX 5060 Ti</p>
+                    </div>
+
+                    <div class="relative flex items-center justify-center my-6">
+                        <svg class="w-56 h-56 transform -rotate-90">
+                            <circle cx="112" cy="112" r="90" fill="transparent" stroke="#1e293b" stroke-width="8" />
+                            <circle cx="112" cy="112" r="74" fill="transparent" stroke="#1e293b" stroke-width="8" />
+                            <circle cx="112" cy="112" r="58" fill="transparent" stroke="#1e293b" stroke-width="8" />
+
+                            <circle id="ring-cpu" cx="112" cy="112" r="90" fill="transparent" stroke="#3b82f6" stroke-width="8" stroke-dasharray="565.48" stroke-dashoffset="565.48" stroke-linecap="round" class="ring-transition" />
+                            <circle id="ring-ram" cx="112" cy="112" r="74" fill="transparent" stroke="#10b981" stroke-width="8" stroke-dasharray="464.95" stroke-dashoffset="464.95" stroke-linecap="round" class="ring-transition" />
+                            <circle id="ring-gpu" cx="112" cy="112" r="58" fill="transparent" stroke="#8b5cf6" stroke-width="8" stroke-dasharray="364.42" stroke-dashoffset="364.42" stroke-linecap="round" class="ring-transition" />
+                        </svg>
+                        <div class="absolute text-center">
+                            <span id="text-cpu-main" class="text-3xl font-extrabold text-slate-100">0%</span>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-wider">CPU Load</p>
+                        </div>
+                    </div>
+
+                    <div class="w-full grid grid-cols-3 gap-2 text-center text-xs mt-auto border-t border-slate-800/60 pt-4">
+                        <div>
+                            <div class="text-blue-500 font-bold" id="text-cpu">0%</div>
+                            <div class="text-[10px] text-slate-400">CPU</div>
+                        </div>
+                        <div>
+                            <div class="text-emerald-500 font-bold" id="text-ram">0%</div>
+                            <div class="text-[10px] text-slate-400">RAM</div>
+                        </div>
+                        <div>
+                            <div class="text-purple-500 font-bold" id="text-gpu">0%</div>
+                            <div class="text-[10px] text-slate-400">GPU</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 space-y-6">
+                
+                <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
+                    <div class="bg-slate-850 px-5 py-3.5 border-b border-slate-800 flex justify-between items-center">
+                        <span class="text-xs font-mono font-bold text-slate-200">> Agent Log Stream</span>
+                        <!-- כפתור הפעלה/כיבוי של הסוכן, מעוצב כמו תגית סטטוס -->
+                        <button id="toggle-agent-btn" onclick="toggleAgent()" class="flex items-center gap-2 cursor-pointer outline-none focus:outline-none">
+                            <span id="agent-power-status" class="text-[10px] bg-slate-950 text-slate-300 px-2 py-0.5 rounded font-mono border border-slate-700 hover:border-slate-500 transition-colors">
+                                AGENT: ONLINE (PWR)
+                            </span>
+                            <span id="agent-state" class="text-[10px] bg-slate-950 text-slate-300 px-2 py-0.5 rounded font-mono">IDLE</span>
+                        </button>
+                    </div>
+                    <div id="terminal-logs" class="p-4 bg-slate-950 font-mono text-xs space-y-2 h-40 overflow-y-auto scrollbar-hide text-slate-300">
+                        <div><span class="text-slate-500">[System]</span> Terminal initialized. Waiting for commands...</div>
+                    </div>
+                    <div class="p-4 bg-slate-900 border-t border-slate-800/80 flex gap-2">
+                        <button id="btn-log-analyzer" onclick="simulateTask('Log Analyzer')" class="bg-slate-800 hover:bg-slate-750 text-slate-200 text-xs px-3 py-1.5 rounded-lg border border-slate-700 transition-colors">▶ Run Log Analyzer</button>
+                        <button id="btn-health-check" onclick="simulateTask('Health Check')" class="bg-slate-800 hover:bg-slate-750 text-slate-200 text-xs px-3 py-1.5 rounded-lg border border-slate-700 transition-colors">▶ System Health</button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 rounded-2xl p-6 border border-slate-800 space-y-4">
+                    <h3 class="text-sm font-bold text-slate-200">Cognitive AI Playground (Gemini 2.5 Flash)</h3>
+                    
+                    <div class="space-y-3">
+                        <div class="flex gap-2">
+                            <input id="ai-input" type="text" placeholder="Ask the agent... (e.g. Write a PowerShell script to monitor Proxmox)" class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-500" onkeydown="if(event.key === 'Enter') sendQuery()">
+                            <button id="ai-btn" onclick="sendQuery()" class="bg-blue-600 hover:bg-blue-500 text-slate-100 text-sm font-bold px-6 py-2.5 rounded-xl transition-colors disabled:opacity-50">Send</button>
+                        </div>
+                        <div id="ai-response-box" class="hidden bg-slate-950 p-4 rounded-xl border border-slate-800 mt-4 max-h-[500px] overflow-y-auto scrollbar-hide">
+                            <div class="text-xs text-emerald-500 font-semibold mb-2">Agent Response:</div>
+                            <!-- הוספנו markdown-body כדי שהעיצוב ב-CSS יחול עליו -->
+                            <div id="ai-response-text" class="text-sm text-slate-300 font-sans markdown-body"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- 0. משתני מערכת ומצב הסוכן ---
+        let agentIsOnline = true;
+
+        // --- 1. הדמיית מדדי חומרה ---
+        let cpu = 15, ram = 42, gpu = 8;
+        
+        function updateMetrics() {
+            // אם הסוכן כבוי, נעצור את התנודות כדי להמחיש זאת
+            if (!agentIsOnline) return;
+
+            cpu = Math.max(5, Math.min(95, cpu + Math.floor(Math.random() * 11) - 5));
+            ram = Math.max(35, Math.min(85, ram + Math.floor(Math.random() * 5) - 2));
+            gpu = Math.max(0, Math.min(100, gpu + Math.floor(Math.random() * 7) - 3));
+
+            document.getElementById('text-cpu-main').innerText = cpu + '%';
+            document.getElementById('text-cpu').innerText = cpu + '%';
+            document.getElementById('text-ram').innerText = ram + '%';
+            document.getElementById('text-gpu').innerText = gpu + '%';
+
+            document.getElementById('ring-cpu').style.strokeDashoffset = 565.48 * (1 - cpu / 100);
+            document.getElementById('ring-ram').style.strokeDashoffset = 464.95 * (1 - ram / 100);
+            document.getElementById('ring-gpu').style.strokeDashoffset = 364.42 * (1 - gpu / 100);
+        }
+        
+        setInterval(updateMetrics, 2500);
+        updateMetrics();
+
+        // --- 2. פונקציית כיבוי/הדלקה לסוכן ---
+        function toggleAgent() {
+            agentIsOnline = !agentIsOnline;
+            const pwrStatusEl = document.getElementById('agent-power-status');
+            const stateEl = document.getElementById('agent-state');
+            const globalDot = document.getElementById('global-status-dot');
+            const globalText = document.getElementById('global-status-text');
+            const inputEl = document.getElementById('ai-input');
+            const btnEl = document.getElementById('ai-btn');
+
+            if (agentIsOnline) {
+                // חזרה למצב פעיל
+                pwrStatusEl.innerText = 'AGENT: ONLINE (PWR)';
+                pwrStatusEl.className = 'text-[10px] bg-slate-950 text-slate-300 px-2 py-0.5 rounded font-mono border border-slate-700 hover:border-slate-500 transition-colors';
+                stateEl.innerText = 'IDLE';
+                stateEl.className = 'text-[10px] bg-slate-950 text-slate-300 px-2 py-0.5 rounded font-mono';
+                
+                globalDot.className = 'h-2 w-2 rounded-full bg-emerald-500 animate-pulse';
+                globalText.innerText = 'Nexus Proxy Active';
+                
+                inputEl.disabled = false;
+                btnEl.disabled = false;
+                inputEl.placeholder = 'Ask the agent... (e.g. Write a PowerShell script to monitor Proxmox)';
+                
+                addLog(`<span class="text-emerald-400">Agent system powered ON. Connection restored.</span>`);
+            } else {
+                // מעבר למצב כבוי
+                pwrStatusEl.innerText = 'AGENT: OFFLINE (PWR)';
+                pwrStatusEl.className = 'text-[10px] bg-rose-950/50 text-rose-300 px-2 py-0.5 rounded font-mono border border-rose-800/50 hover:border-rose-500 transition-colors';
+                stateEl.innerText = 'OFF';
+                stateEl.className = 'text-[10px] bg-rose-950/50 text-rose-300 px-2 py-0.5 rounded font-mono';
+                
+                globalDot.className = 'h-2 w-2 rounded-full bg-rose-500'; // ללא פולסים
+                globalText.innerText = 'Nexus Proxy Offline';
+
+                inputEl.disabled = true;
+                btnEl.disabled = true;
+                inputEl.placeholder = 'Agent is currently offline...';
+
+                // איפוס המדדים למצב 'דומם'
+                cpu = 0; ram = 5; gpu = 0;
+                document.getElementById('text-cpu-main').innerText = '0%';
+                document.getElementById('text-cpu').innerText = '0%';
+                document.getElementById('text-ram').innerText = '5%';
+                document.getElementById('text-gpu').innerText = '0%';
+                document.getElementById('ring-cpu').style.strokeDashoffset = 565.48;
+                document.getElementById('ring-ram').style.strokeDashoffset = 464.95 * (1 - 0.05);
+                document.getElementById('ring-gpu').style.strokeDashoffset = 364.42;
+
+                addLog(`<span class="text-rose-400">Agent system powered OFF. Connection terminated.</span>`);
+            }
+        }
+
+        // --- 3. לוגים של הטרמינל ---
+        const terminal = document.getElementById('terminal-logs');
+        function addLog(message) {
+            const time = new Date().toLocaleTimeString().split(' ')[0];
+            const div = document.createElement('div');
+            div.innerHTML = `<span class="text-slate-500">[${time}]</span> ${message}`;
+            if(terminal) {
+                terminal.appendChild(div);
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+        }
+
+        function simulateTask(taskName) {
+            if (!agentIsOnline) {
+                addLog(`<span class="text-rose-400">Error: Cannot run task '${taskName}'. Agent is offline.</span>`);
+                return;
+            }
+
+            document.getElementById('agent-state').innerText = 'RUNNING';
+            document.getElementById('agent-state').className = 'text-[10px] bg-blue-900 text-blue-300 px-2 py-0.5 rounded font-mono';
+            addLog(`Initiating task: <span class="text-blue-400">${taskName}</span>...`);
+            
+            setTimeout(() => { if(agentIsOnline) addLog('Accessing local file system... OK') }, 1000);
+            setTimeout(() => { if(agentIsOnline) addLog('Analyzing data streams...') }, 2000);
+            setTimeout(() => {
+                if(agentIsOnline) {
+                    addLog(`<span class="text-emerald-400">Task completed successfully.</span>`);
+                    document.getElementById('agent-state').innerText = 'IDLE';
+                    document.getElementById('agent-state').className = 'text-[10px] bg-slate-950 text-slate-300 px-2 py-0.5 rounded font-mono';
+                }
+            }, 3500);
+        }
+
+        // --- 4. חיבור מעודכן לענן והזרקת כפתורי העתקה ---
+        
+        // הכתובת של ה-Cloud Function שיצרנו היום
+        const NEXUS_API_URL = "https://secretnexusproxy-sqjr53py2a-uc.a.run.app";
+
+        async function sendQuery() {
+            if (!agentIsOnline) {
+                addLog(`<span class="text-rose-400">Error: Cannot send query. Agent is offline.</span>`);
+                return;
+            }
+
+            const inputEl = document.getElementById('ai-input');
+            const btnEl = document.getElementById('ai-btn');
+            const boxEl = document.getElementById('ai-response-box');
+            const textEl = document.getElementById('ai-response-text');
+            
+            const prompt = inputEl.value.trim();
+            if(!prompt) return;
+
+            // מצב טעינה
+            inputEl.value = '';
+            btnEl.innerText = 'Routing...';
+            btnEl.disabled = true;
+            boxEl.classList.remove('hidden');
+            textEl.innerHTML = '<span class="animate-pulse">Agent is processing via Cloud Run...</span>';
+            addLog(`Query sent to Secure Gateway: "${prompt.substring(0, 20)}..."`);
+
+            try {
+                // הבקשה המעודכנת שנשלחת ל-Cloud Run
+                const response = await fetch(NEXUS_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: prompt }) // שינינו ל-query כדי שיתאים לשרת!
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if(data.error) {
+                    textEl.innerHTML = `<span class="text-rose-400">API Error: Gateway rejected connection.</span>`;
+                    addLog(`<span class="text-rose-400">Connection rejected by Gateway.</span>`);
+                } else {
+                    // שליפת התשובה הנכונה (reply במקום המבנה המסובך הישן)
+                    const ans = data.reply;
+                    
+                    // המרה של ה-Markdown ל-HTML יפה
+                    textEl.innerHTML = marked.parse(ans);
+                    
+                    // הפעלת פונקציית הוספת כפתורי ההעתקה לבלוקי הקוד
+                    injectCopyButtons(textEl);
+                    
+                    addLog(`<span class="text-emerald-400">Response received securely from Nexus Gateway.</span>`);
+                }
+            } catch (err) {
+                console.error("Fetch error:", err);
+                textEl.innerText = 'Network Error. Could not reach the Nexus Proxy Gateway.';
+                addLog(`<span class="text-rose-400">Network Error. Check console (F12).</span>`);
+            }
+
+            btnEl.innerText = 'Send';
+            btnEl.disabled = false;
+        }
+
+        // פונקציה שעוברת על כל ה-pre (בלוקי קוד) ומוסיפה להם כפתור העתקה
+        function injectCopyButtons(container) {
+            const preTags = container.querySelectorAll('pre');
+            
+            preTags.forEach(pre => {
+                const btn = document.createElement('button');
+                btn.className = 'copy-btn';
+                btn.textContent = 'Copy';
+                
+                btn.addEventListener('click', async () => {
+                    const code = pre.querySelector('code');
+                    if (code) {
+                        try {
+                            await navigator.clipboard.writeText(code.innerText);
+                            btn.textContent = 'Copied!';
+                            btn.style.color = '#39ff14'; // ירוק ניאון
+                            btn.style.borderColor = '#39ff14';
+                            
+                            setTimeout(() => {
+                                btn.textContent = 'Copy';
+                                btn.style.color = '';
+                                btn.style.borderColor = '';
+                            }, 2000);
+                        } catch (err) {
+                            console.error('Failed to copy', err);
+                            btn.textContent = 'Failed';
+                        }
+                    }
+                });
+                
+                pre.appendChild(btn);
+            });
+        }
+    </script>
+    
+</body>
+</html>
