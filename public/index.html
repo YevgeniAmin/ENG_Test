@@ -98,10 +98,10 @@
         .pulse-dot {
             width: 8px;
             height: 8px;
-            background-color: var(--neon-green);
+            background-color: #39ff14;
             border-radius: 50%;
             margin-left: 10px;
-            box-shadow: 0 0 10px var(--neon-green);
+            box-shadow: 0 0 10px #39ff14;
             animation: pulse 2s infinite;
         }
 
@@ -116,12 +116,12 @@
             position: relative;
             padding: 12px 28px;
             background: transparent;
-            color: var(--neon-blue);
+            color: #00f3ff;
             text-decoration: none;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 2px;
-            border: 1px solid var(--neon-blue);
+            border: 1px solid #00f3ff;
             border-radius: 4px;
             overflow: hidden;
             transition: all 0.3s ease;
@@ -129,9 +129,9 @@
         }
 
         .nexus-btn:hover {
-            background: var(--neon-blue);
-            color: var(--bg-base);
-            box-shadow: 0 0 30px var(--neon-blue);
+            background: #00f3ff;
+            color: #0f172a;
+            box-shadow: 0 0 30px #00f3ff;
             text-shadow: none;
         }
 
@@ -166,11 +166,10 @@
 <body class="min-h-screen p-4 md:p-8 flex flex-col gap-6 selection:bg-sky-500/30">
 
     <!-- Header Section -->
-    <header class="flex flex-col md:flex-row justify-between items-center glass-panel rounded-2xl p-6 gap-4 relative overflow-hidden">
-        <!-- Background accent -->
+    <header class="flex flex-col lg:flex-row justify-between items-center glass-panel rounded-2xl p-6 gap-6 relative overflow-hidden">
         <div class="absolute top-0 right-0 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl -z-10 translate-x-1/2 -translate-y-1/2"></div>
         
-        <div class="flex items-center gap-4 z-10">
+        <div class="flex items-center gap-4 z-10 w-full lg:w-auto justify-center lg:justify-start">
             <div class="p-3 bg-slate-800/80 rounded-xl border border-sky-500/50 shadow-[0_0_15px_rgba(56,189,248,0.2)] relative group">
                 <i data-lucide="cpu" class="text-sky-400 w-8 h-8 group-hover:scale-110 transition-transform duration-300"></i>
             </div>
@@ -179,17 +178,62 @@
                 <p class="text-slate-400 text-sm mt-1">Proxmox srv-1 | Local Agents & Automation Pipeline</p>
             </div>
         </div>
-        
-        <!-- Auto-Date Module (Live Clock) -->
-        <div class="flex flex-col items-end bg-slate-900/80 px-6 py-3 rounded-xl border border-slate-700/80 shadow-inner z-10">
-            <div class="text-xs text-slate-400 mb-1 flex items-center gap-2 font-medium">
-                <i data-lucide="clock" class="w-3 h-3 text-sky-400"></i> זמן מערכת (Auto-Date)
+
+        <div dir="ltr" class="bg-black/40 border border-gray-700/80 rounded-2xl p-3 w-full lg:max-w-sm backdrop-blur-md shadow-lg z-10">
+            <div class="flex items-center justify-between mb-2 border-b border-gray-700/50 pb-2 px-1">
+                <span class="text-sm font-semibold tracking-wider text-cyan-400 flex items-center gap-2">
+                    <span class="text-lg">🤖</span> AI Edge Translator
+                </span>
+                <span class="text-[10px] text-gray-500 uppercase tracking-widest">Select Lang</span>
             </div>
-            <div id="liveClock" class="text-xl font-mono text-emerald-400 font-bold tracking-wider">
-                --:--:--
+            <div class="flex overflow-x-auto snap-x snap-mandatory space-x-2 pb-1 hide-scrollbar cursor-pointer">
+                <button onclick="translatePortal('he')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">עברית</button>
+                <button onclick="translatePortal('ar')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">العربية</button>
+                <button onclick="translatePortal('en')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">English</button>
+                <button onclick="translatePortal('fr')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">Français</button>
+                <button onclick="translatePortal('it')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">Italiano</button>
+                <button onclick="translatePortal('uk')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">Українська</button>
+                <button onclick="translatePortal('ru')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">Русский</button>
+                <button onclick="translatePortal('hi')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">हिन्दी</button>
             </div>
-            <div id="liveDate" class="text-sm font-mono text-slate-500">
-                --/--/----
+            
+        </div>
+
+        <div class="flex flex-col bg-slate-900/80 px-5 py-3 rounded-xl border border-slate-700/80 shadow-inner z-10 w-full lg:w-64">
+            
+            <div class="flex justify-between items-center border-b border-slate-700/50 pb-2 mb-2">
+                <div>
+                    <div class="text-[10px] text-slate-400 uppercase tracking-widest flex items-center gap-1.5 mb-0.5">
+                        <i data-lucide="map-pin" class="w-3 h-3 text-emerald-400"></i> זמן מקומי
+                    </div>
+                    <div id="liveClock" class="text-lg font-mono text-emerald-400 font-bold tracking-wider leading-none">--:--:--</div>
+                </div>
+                <div id="liveDate" class="text-xs font-mono text-slate-500 text-right mt-4">--/--/----</div>
+            </div>
+
+            <div class="flex justify-between items-end">
+                <div class="w-full">
+                    <select id="tzSelect" class="w-full bg-transparent text-[10px] text-sky-400 uppercase tracking-widest font-semibold cursor-pointer focus:outline-none appearance-none hover:text-sky-300 transition-colors mb-0.5">
+                        
+                        <option value="Asia/Jerusalem">🇮🇱 Jerusalem (IST)</option>
+                        <option value="Asia/Dubai">🇦🇪 Dubai (GST)</option>
+                        <option value="Europe/London">🇬🇧 London (GMT)</option>
+                        <option value="Europe/Paris">🇫🇷 Paris (CET)</option>
+                        <option value="Europe/Rome">🇮🇹 Rome (CET)</option>
+                        <option value="Europe/Kyiv">🇺🇦 Kyiv (EET)</option>
+                        <option value="Europe/Moscow">🇷🇺 Moscow (MSK)</option>
+                        
+                        <option value="America/New_York">🇺🇸 New York (EST)</option>
+                        <option value="America/Los_Angeles">🇺🇸 Los Angeles (PST)</option>
+
+                        <option value="Asia/Kolkata">🇮🇳 Bengaluru / Tech Hub (IST)</option>
+                        <option value="Asia/Bangkok">🇹🇭 Bangkok (ICT)</option>
+                        <option value="Asia/Tokyo">🇯🇵 Tokyo (JST)</option>
+                        
+                    </select>
+                    <div id="globalClock" class="text-lg font-mono text-sky-400 font-bold tracking-wider leading-none mt-1">--:--:--</div>
+                </div>
+                <i data-lucide="globe" class="w-5 h-5 text-slate-600 opacity-50 mb-1"></i>
             </div>
         </div>
     </header>
@@ -350,26 +394,51 @@
         </div>
     </main>
 
+    <div class="footer-actions">
+        <div class="update-status">
+            <span class="pulse-dot"></span>
+            <span class="status-text">גרסה: 2.0.4 | עודכן לאחרונה: <span id="last-update-date">--/--/----</span></span>
+        </div>
+        <a href="https://yevgeni.info/project_readme" class="nexus-btn">
+           AI Portal & Engineering Lab
+            <span class="btn-glitch"></span>
+        </a>
+    </div>
+
+    <!-- MAIN SCRIPT (Dashboard Logic + Translation Logic) -->
     <script>
-        // Initialize Lucide Icons
+        // --- Initialize Lucide Icons ---
         lucide.createIcons();
 
-        // State variables
+        // --- State variables ---
         let isSystemInitialized = false;
         let isPipelineRunning = false;
 
         // --- Auto-Date Module (Live Clock) ---
+        // --- Dual Auto-Date Module (Local & World Clock) ---
         function updateClock() {
             const now = new Date();
             const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
             const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
             
+            // 1. שעון מקומי (נלקח אוטומטית ממערכת ההפעלה/דפדפן)
             document.getElementById('liveClock').textContent = now.toLocaleTimeString('en-GB', timeOptions);
             document.getElementById('liveDate').textContent = now.toLocaleDateString('en-GB', dateOptions);
+
+            // 2. שעון גלובלי (מחושב לפי בחירת המשתמש בתפריט)
+            const tzSelect = document.getElementById('tzSelect');
+            if(tzSelect) {
+                const selectedTz = tzSelect.value;
+                // הזרקת אזור הזמן המבוקש לאופציות של גוגל/דפדפן
+                const globalTimeOptions = { ...timeOptions, timeZone: selectedTz };
+                document.getElementById('globalClock').textContent = now.toLocaleTimeString('en-GB', globalTimeOptions);
+            }
         }
+        
+        // הרצה כל שנייה
         setInterval(updateClock, 1000);
         updateClock();
-
+        
         // --- Simulated Proxmox Telemetry ---
         function simulateProxmoxMetrics() {
             if(isPipelineRunning) return; // Managed by the pipeline when running
@@ -394,7 +463,6 @@
         function logActivity(message, type = 'info') {
             const logContainer = document.getElementById('activityLog');
             
-            // Clear initialization message on first real log securely
             if (!isSystemInitialized) {
                 logContainer.innerHTML = '';
                 isSystemInitialized = true;
@@ -404,14 +472,10 @@
             const timeString = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             
             let colorClass = 'text-slate-300';
-            let iconColor = 'text-slate-500';
-            let iconName = 'info';
+            if (type === 'success') { colorClass = 'text-emerald-400'; }
+            if (type === 'warning') { colorClass = 'text-amber-400'; }
+            if (type === 'error') { colorClass = 'text-rose-400'; }
 
-            if (type === 'success') { colorClass = 'text-emerald-400'; iconColor = 'text-emerald-500'; iconName='check-circle-2'; }
-            if (type === 'warning') { colorClass = 'text-amber-400'; iconColor = 'text-amber-500'; iconName='alert-triangle'; }
-            if (type === 'error') { colorClass = 'text-rose-400'; iconColor = 'text-rose-500'; iconName='x-circle'; }
-
-            // Create elements securely to prevent XSS
             const logEntry = document.createElement('div');
             logEntry.className = `flex items-start gap-2 border-b border-slate-800/50 pb-2.5 pt-1 ${colorClass} animate-[fadeIn_0.3s_ease-out]`;
             
@@ -431,7 +495,7 @@
 
         function clearLogs() {
             document.getElementById('activityLog').innerHTML = '';
-            isSystemInitialized = true; // Prevent default message from returning
+            isSystemInitialized = true; 
             logActivity('Log cleared manually by user.', 'info');
         }
 
@@ -441,18 +505,15 @@
         function typeLine(text, colorClass = 'text-slate-300', delay) {
             return new Promise(resolve => {
                 setTimeout(() => {
-                    // Remove blinking cursor from previous line if it exists
                     const oldCursor = document.querySelector('.cursor-blink');
                     if (oldCursor) oldCursor.remove();
 
                     const line = document.createElement('div');
                     line.className = `${colorClass} mb-1.5 leading-relaxed`;
                     
-                    // Add text securely
                     const textNode = document.createTextNode(text);
                     line.appendChild(textNode);
                     
-                    // Add new cursor
                     const cursor = document.createElement('span');
                     cursor.className = 'cursor-blink';
                     line.appendChild(cursor);
@@ -466,15 +527,12 @@
 
         function clearTerminal() {
             terminal.innerHTML = '';
-            
             const line = document.createElement('div');
             line.className = 'text-slate-500';
             line.textContent = 'root@srv-1:~# ready for execution...';
-            
             const cursor = document.createElement('span');
             cursor.className = 'cursor-blink';
             line.appendChild(cursor);
-            
             terminal.appendChild(line);
         }
 
@@ -484,7 +542,6 @@
             const btn = document.getElementById('runBtn');
             
             if (!docUrl) {
-                // Auditor Fix: Removed browser alert() for better UX. Using custom log.
                 logActivity('שגיאה: חסר קישור למסמך אפיון ב-Google Docs.', 'error');
                 docUrlInput.focus();
                 docUrlInput.classList.add('ring-2', 'ring-rose-500');
@@ -497,12 +554,11 @@
             btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> מעבד...';
             btn.classList.replace('bg-sky-600', 'bg-slate-600');
             btn.classList.add('cursor-not-allowed');
-            lucide.createIcons(); // Re-init icon for loader
+            lucide.createIcons();
             
             logActivity('Initiated Image Build Pipeline', 'info');
             clearTerminal();
             
-            // Spike the Proxmox Metrics for realism
             document.getElementById('cpuBar').style.width = `88%`;
             document.getElementById('cpuText').textContent = `88%`;
             document.getElementById('gpuBar').classList.replace('bg-sky-400', 'bg-rose-400');
@@ -510,7 +566,6 @@
             document.getElementById('gpuText').textContent = `Computing`;
             
             try {
-                // Simulation Sequence
                 await typeLine(`root@srv-1:~# ./run_agent_pipeline.sh --source="${docUrl.substring(0,35)}..."`, 'text-white', 400);
                 await typeLine(`[INFO] Authenticating with Secret Nexus Proxy... OK`, 'text-sky-300', 800);
                 
@@ -544,48 +599,31 @@
                 logActivity('Pipeline failed during execution.', 'error');
                 await typeLine(`[ERROR] Pipeline aborted unexpectedly.`, 'text-rose-500 font-bold', 100);
             } finally {
-                // Restore state
                 isPipelineRunning = false;
                 btn.disabled = false;
                 btn.innerHTML = '<i data-lucide="play" class="w-4 h-4"></i> הפעל Pipeline';
                 btn.classList.replace('bg-slate-600', 'bg-sky-600');
                 btn.classList.remove('cursor-not-allowed');
                 lucide.createIcons();
-                
-                // Let the next interval handle resetting the Proxmox dashboard naturally
             }
         }
         
         // Initial setup
         window.addEventListener('DOMContentLoaded', () => {
             logActivity('System Initialized. Awaiting events...', 'info');
-        });
 
-    </script>
-    <div class="footer-actions">
-    <div class="update-status">
-        <span class="pulse-dot"></span>
-        <span class="status-text">גרסה: 2.0.4 | עודכן לאחרונה: <span id="last-update-date">--/--/----</span></span>
-    </div>
-    <a href="https://yevgeni.info/readme" class="nexus-btn">
-       AI Portal & Engineering Lab
-        <span class="btn-glitch"></span>
-    </a>
-</div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // משיכת תאריך עדכון אחרון של המסמך
+            // Set last modified date
             const lastMod = new Date(document.lastModified);
             const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-            
-            // אם התאריך נראה תקין (לא 1970), נציג אותו
             if (lastMod.getFullYear() > 2000) {
                 document.getElementById('last-update-date').textContent = lastMod.toLocaleDateString('he-IL', options);
             } else {
-                // ברירת מחדל אם אין מידע - תאריך נוכחי
                 document.getElementById('last-update-date').textContent = new Date().toLocaleDateString('he-IL', options);
             }
         });
     </script>
+    
+    <!-- חיבור קובץ ה-JS החיצוני של התרגום -->
+    <script src="translator.js" defer></script>
 </body>
 </html>

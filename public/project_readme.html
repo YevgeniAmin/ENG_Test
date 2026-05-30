@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Portal & Engineering Lab — v2.0</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons Library for layout components rendering -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-base: #0a0a0f;
+            --glass-bg: rgba(16, 18, 27, 0.7);
+            --glass-border: rgba(0, 243, 255, 0.15);
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff0000;
+            --neon-green: #39ff14;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-base);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 243, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(255, 0, 234, 0.05) 0%, transparent 50%);
+            color: var(--text-main);
+            line-height: 1.8;
+            /* ריווח קטן יותר במובייל, גדול במחשב */
+            padding: 20px 10px; 
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        @media (min-width: 768px) {
+             body { padding: 40px 20px; }
+        }
+
+        .glass-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            /* פחות padding במובייל */
+            padding: 20px; 
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 
+                        inset 0 0 20px rgba(0, 243, 255, 0.02);
+        }
+        
+        @media (min-width: 768px) {
+             .glass-container { padding: 40px 50px; }
+        }
+
+        /* 🆕 עיצוב בלוקים של תוכן (Cards) 🆕 */
+        .content-block {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(0, 243, 255, 0.1);
+            border-radius: 12px;
+            /* פחות padding במובייל */
+            padding: 16px; 
+            transition: all 0.3s ease;
+            height: 100%; /* ממלא את הגובה בגריד */
+        }
+        
+        @media (min-width: 768px) {
+             .content-block { padding: 24px; }
+        }
+
+        .content-block:hover {
+            background: rgba(0, 243, 255, 0.03);
+            border-color: rgba(0, 243, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5), inset 0 0 20px rgba(0, 243, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--neon-blue);
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 2em; /* קצת יותר קטן במובייל */
+            border-bottom: 2px solid rgba(255, 0, 234, 0.5);
+            padding-bottom: 15px;
+            margin-top: 0;
+            text-shadow: 0 0 15px rgba(255, 0, 234, 0.4);
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+
+        @media (min-width: 768px) {
+             h1 { font-size: 2.5em; }
+        }
+
+        /* איפוס שוליים עליונים לכותרת בתוך בלוק */
+        .content-block h2 {
+            margin-top: 0;
+            border-bottom: 1px dashed rgba(0, 243, 255, 0.2);
+            padding-bottom: 10px;
+        }
+
+        p { margin-bottom: 1.2em; font-size: 0.95em; }
+
+        @media (min-width: 768px) {
+             p { font-size: 1em; }
+        }
+
+        ul, ol {
+            padding-right: 20px;
+            margin-bottom: 1.5em;
+        }
+
+        li { margin-bottom: 8px; font-size: 0.95em; }
+        li::marker { color: var(--neon-pink); font-weight: bold; }
+
+        @media (min-width: 768px) {
+             li { font-size: 1em; }
+        }
+
+        strong, b {
+            color: white;
+            text-shadow: 0 0 8px rgba(255,255,255,0.4);
+        }
+
+        em, i { color: var(--text-muted); }
+
+        code {
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--neon-pink);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            border: 1px solid rgba(255, 0, 234, 0.2);
+            font-size: 0.85em;
+            word-break: break-word; /* שבירת מילים בקוד ארוך במובייל */
+        }
+
+        pre {
+            background: #050505;
+            border: 1px solid #333;
+            border-left: 3px solid var(--neon-blue);
+            padding: 12px;
+            border-radius: 8px;
+            direction: ltr; /* קוד תמיד משמאל לימין */
+            text-align: left;
+            overflow-x: auto;
+            margin: 15px 0;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+            font-size: 0.85em;
+        }
+
+        pre code {
+            background: transparent;
+            border: none;
+            color: var(--neon-green);
+            text-shadow: 0 0 5px rgba(57, 255, 20, 0.3);
+            padding: 0;
+        }
+
+        /* סגנון עבור קישורים משפטיים */
+        .legal-link {
+            color: var(--neon-blue);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--neon-blue);
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 8px;
+        }
+        .legal-link:hover {
+            color: #fff;
+            text-shadow: 0 0 8px var(--neon-blue);
+            border-bottom: 1px solid #fff;
+        }
+
+        /* גריד אנשי קשר ותמיכה */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* טור אחד במובייל */
+            gap: 15px;
+            margin-top: 20px;
+        }
+        @media (min-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr 1fr; /* שני טורים במחשב */
+                gap: 20px;
+            }
+        }
+        
+        .contact-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 243, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            transition: border-color 0.3s ease;
+        }
+        .contact-card:hover {
+            border-color: var(--neon-blue);
+        }
+        .contact-card h4 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        /* חלון סטטוס ועדכון תחתון (מנותק) */
+        .status-window {
+            max-width: 1000px;
+            margin: 20px auto 0 auto;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 0, 0, 0.25);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column; /* טור אחד במובייל */
+            gap: 10px;
+            align-items: center;
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.8em;
+        }
+        @media (min-width: 600px) {
+            .status-window {
+                flex-direction: row; /* שורה אחת במסכים רחבים */
+                justify-content: space-between;
+                padding: 15px 25px;
+                font-size: 0.85em;
+            }
+        }
+
+        .status-label {
+            color: var(--neon-pink);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--neon-pink);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--neon-pink);
+        }
+        .status-time {
+            color: var(--neon-green);
+            text-shadow: 0 0 5px rgba(57, 255, 20, 0.3);
+            display: block; /* שבירת שורה במובייל */
+            margin-top: 4px;
+        }
+        
+        @media (min-width: 600px) {
+            .status-time { display: inline; margin-top: 0; }
+        }
+
+        /* העלמת פס גלילה לגלגלת השפות */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="flex flex-col gap-4 selection:bg-sky-500/30">
+
+    <!-- GLOBAL HEADER (Translator & Dual Clock) -->
+    <!-- שינוי מבנה מ-flex-row ל-flex-col במובייל -->
+    <header class="flex flex-col lg:flex-row justify-between items-center bg-slate-800/40 backdrop-blur-xl border border-sky-500/20 rounded-2xl p-4 md:p-6 gap-4 relative overflow-hidden max-w-[1200px] mx-auto w-full shadow-lg">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl -z-10 translate-x-1/2 -translate-y-1/2"></div>
+        
+        <!-- 1. Left: Logo & Title -->
+        <div class="flex flex-col sm:flex-row items-center gap-3 z-10 w-full lg:w-auto text-center sm:text-right">
+            <div class="p-2.5 bg-slate-800/80 rounded-xl border border-sky-500/50 shadow-[0_0_15px_rgba(56,189,248,0.2)]">
+                <i data-lucide="book-open" class="text-sky-400 w-6 h-6 md:w-8 md:h-8"></i>
+            </div>
+            <div>
+                <h1 class="text-lg md:text-2xl font-bold text-white tracking-wide m-0 border-none pb-0" style="text-shadow:none;">Engineering <span class="text-sky-400 text-shadow-[0_0_12px_rgba(56,189,248,0.6)]">Docs</span></h1>
+                <p class="text-slate-400 text-[10px] md:text-xs mt-0.5 m-0">Project Architecture & R&D Notes</p>
+            </div>
+        </div>
+
+        <!-- 2. Middle: AI Edge Translator (Smartwatch UI) -->
+        <div dir="ltr" class="bg-black/40 border border-gray-700/80 rounded-xl p-2 w-full lg:max-w-sm backdrop-blur-md shadow-lg z-10">
+            <div class="flex items-center justify-between mb-1.5 border-b border-gray-700/50 pb-1 px-1">
+                <span class="text-xs font-semibold tracking-wider text-cyan-400 flex items-center gap-1.5">
+                    <span class="text-sm">🤖</span> Translator
+                </span>
+                <span class="text-[9px] text-gray-500 uppercase tracking-widest">Select Lang</span>
+            </div>
+            <div class="flex overflow-x-auto snap-x snap-mandatory space-x-1.5 pb-1 hide-scrollbar cursor-pointer">
+                <button onclick="translatePortal('he')" class="snap-center shrink-0 px-3 py-1 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-[11px] font-medium transition-all">עברית</button>
+                <button onclick="translatePortal('ar')" class="snap-center shrink-0 px-3 py-1 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-[11px] font-medium transition-all">العربية</button>
+                <button onclick="translatePortal('en')" class="snap-center shrink-0 px-3 py-1 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-[11px] font-medium transition-all">English</button>
+                <button onclick="translatePortal('fr')" class="snap-center shrink-0 px-3 py-1 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-[11px] font-medium transition-all">Français</button>
+                <button onclick="translatePortal('it')" class="snap-center shrink-0 px-3 py-1 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-[11px] font-medium transition-all">Italiano</button>
+                <button onclick="translatePortal('uk')" class="snap-center shrink-0 px-3 py-1 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-[11px] font-medium transition-all">Українська</button>
+                <button onclick="translatePortal('ru')" class="snap-center shrink-0 px-3 py-1 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-[11px] font-medium transition-all">Русский</button>
+                <button onclick="translatePortal('hi')" class="snap-center shrink-0 px-3 py-1 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-[11px] font-medium transition-all">हिन्दी</button>
+            </div>
+        </div>
+
+        <!-- 3. Right: Dual World Clock Module -->
+        <div class="flex flex-col bg-slate-900/80 px-4 py-2.5 rounded-xl border border-slate-700/80 shadow-inner z-10 w-full lg:w-56">
+            <div class="flex justify-between items-center border-b border-slate-700/50 pb-1.5 mb-1.5">
+                <div>
+                    <div class="text-[9px] text-slate-400 uppercase tracking-widest flex items-center gap-1 mb-0.5">
+                        <i data-lucide="map-pin" class="w-2.5 h-2.5 text-emerald-400"></i> Local Time
+                    </div>
+                    <div id="liveClock" class="text-sm font-mono text-emerald-400 font-bold tracking-wider leading-none">--:--:--</div>
+                </div>
+                <div id="liveDate" class="text-[10px] font-mono text-slate-500 text-right mt-3">--/--/----</div>
+            </div>
+            <div class="flex justify-between items-end">
+                <div class="w-full">
+                    <select id="tzSelect" class="w-full bg-transparent text-[9px] text-sky-400 uppercase tracking-widest font-semibold cursor-pointer focus:outline-none appearance-none hover:text-sky-300 transition-colors mb-0.5">
+                        <option value="Asia/Jerusalem">🇮🇱 Jerusalem (IST)</option>
+                        <option value="Asia/Dubai">🇦🇪 Dubai (GST)</option>
+                        <option value="Europe/London">🇬🇧 London (GMT)</option>
+                        <option value="Europe/Paris">🇫🇷 Paris (CET)</option>
+                        <option value="Europe/Rome">🇮🇹 Rome (CET)</option>
+                        <option value="Europe/Kyiv">🇺🇦 Kyiv (EET)</option>
+                        <option value="Europe/Moscow">🇷🇺 Moscow (MSK)</option>
+                        <option value="America/New_York">🇺🇸 New York (EST)</option>
+                        <option value="America/Los_Angeles">🇺🇸 Los Angeles (PST)</option>
+                        <option value="Asia/Kolkata">🇮🇳 Bengaluru (IST)</option>
+                        <option value="Asia/Bangkok">🇹🇭 Bangkok (ICT)</option>
+                        <option value="Asia/Tokyo">🇯🇵 Tokyo (JST)</option>
+                    </select>
+                    <div id="globalClock" class="text-sm font-mono text-sky-400 font-bold tracking-wider leading-none mt-0.5">--:--:--</div>
+                </div>
+                <i data-lucide="globe" class="w-4 h-4 text-slate-600 opacity-50 mb-0.5"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="glass-container w-full">
+        <!-- קישור חזרה ללוח הבקרה -->
+        <a href="index.html" class="inline-flex items-center gap-2 text-sky-400 hover:text-white font-mono text-xs md:text-sm mb-4 md:mb-6 transition-colors border-b border-dashed border-sky-400 hover:border-white pb-1 w-max" style="text-decoration:none;">
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i> חזרה ללוח הבקרה הראשי
+        </a>
+
+        <!-- כותרת ראשית והקדמה (מחוץ לבלוקים) -->
+        <h1>AI Portal &amp; Engineering Lab 🚀</h1>
+        <p class="text-base md:text-lg text-slate-300">פורטל  מתקדם המשלב כלי בדיקות תוכנה\חומרה , ניהול שרתי לינוקס מקומיים, ואינטגרציה עמוקה עם מודלי בינה מלאכותית (AI Models). הפרויקט משמש כמעבדת מחקר (R&amp;D) וכסביבת עבודה יומיומית מאובטחת.</p>
+        
+        <!-- בלוק 1: ארכיטקטורה (רוחב מלא) -->
+        <div class="content-block mt-6 md:mt-8">
+            <h2>🏗️ ארכיטקטורת המערכת (System Architecture)</h2>
+            <p>המערכת בנויה בתצורה היברידית (Hybrid Architecture) המחברת בין ענן ציבורי לשכבת תשתית מקומית חזקה, תוך שמירה על בידוד נתונים ואבטחת מידע קשיחה.</p>
+<pre><code>[משתמש קצה] ──&gt; [Cloudflare WAF/DNS] ──&gt; [Firebase Hosting]
+                                             │
+                                             ▼
+[Google AI Studio] &lt;── [Secret Manager] &lt;── [Secret Nexus Proxy]
+                                             │
+                                             ▼
+                                    [Local Proxmox Server]
+                                             │
+                                             └──&gt; RTX 5060 Ti
+</code></pre>
+            
+            <h3 class="text-base md:text-lg font-bold text-emerald-400 mt-5 mb-2">1. זרימת הנתונים והרשת (Network Flow)</h3>
+            <ul>
+                <li><strong>Cloudflare (DNS &amp; Security):</strong> ניהול רשומות, סינון תעבורה (WAF).</li>
+                <li><strong>Firebase Hosting:</strong> אירוח והגשה מהירה (CDN).</li>
+                <li><strong>Secret Nexus Proxy:</strong> תיווך מאובטח מול שרתי גוגל והגנה על מפתחות.</li>
+            </ul>
+            
+            <h3 class="text-base md:text-lg font-bold text-emerald-400 mt-5 mb-2">2. תשתית חומרה מקומית (Local Proxmox Server)</h3>
+            <p>שרת המעבדה המקומי מיועד להרצת מודלים מקומיים ואוטומציות.</p>
+            <ul class="mb-0">
+                <li><strong>Hypervisor:</strong> Proxmox VE.</li>
+                <li><strong>Hardware:</strong> Intel i5-12400 | 32GB RAM DDR4.</li>
+                <li><strong>GPU Passthrough:</strong> <strong>NVIDIA GeForce RTX 5060 Ti</strong>.</li>
+            </ul>
+        </div>
+        
+        <!-- גריד רספונסיבי - 1 טור במובייל, 2 טורים במחשב -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 my-4 md:my-6">
+            
+            <!-- בלוק 2: טכנולוגיות וכלים -->
+            <div class="content-block m-0">
+                <h2>🛠️ טכנולוגיות וכלים (Tech Stack)</h2>
+                <ul class="mb-0">
+                    <li><strong>Frontend:</strong> Vanilla Web בעיצוב <em>Dark Glassmorphism</em>.</li>
+                    <li><strong>Math Rendering:</strong> <code>MathJax</code> לרינדור נוסחאות.</li>
+                    <li><strong>Data Visualization:</strong> <code>Chart.js</code> לגרפים דינמיים.</li>
+                    <li><strong>Backend:</strong> Node.js, Google Secret Manager.</li>
+                    <li><strong>CI/CD:</strong> Git, Firebase CLI.</li>
+                </ul>
+            </div>
+
+            <!-- בלוק 3: מודולים מרכזיים -->
+            <div class="content-block m-0">
+                <h2>🧩 מודולים פעילים (Active Modules)</h2>
+                <ol class="mb-0">
+                    <li><strong>Secret Nexus Proxy:</strong> אבטחת API Key.</li>
+                    <li><strong>Dashboard:</strong> סימולטור משאבי Proxmox.</li>
+                    <li><strong>מעבדת אודיו:</strong> בדיקות הנדסיות (SNR).</li>
+                    <li><strong>Linux Nexus:</strong> ניהול פקודות וניטור.</li>
+                    <li><strong>הפיה הדיגיטלית (AI Fairy):</strong> בוט חכם.</li>
+                </ol>
+            </div>
+            
+        </div>
+        
+        <!-- בלוק 4: (רוחב מלא) -->
+        <div class="content-block my-4 md:my-6">
+            <h2>🧪 מעבדת מחקר ובדיקות (QA &amp; R&amp;D)</h2>
+            <p>הפרויקט עבר תהליכי בדיקות תוכנה וניתוח הנדסי קפדניים:</p>
+            <ul>
+                <li><strong>Reverse Engineering לממשק:</strong> וידוא אטימות מוחלטת לדליפת סודות.</li>
+                <li><strong>Linux Nexus QA:</strong> מטריצת תאימות וניתוב רשת תקין.</li>
+                <li><strong>בדיקות עומס:</strong> הרצת בדיקות מאמץ לניתוב החומרה לכרטיס ה-RTX.</li>
+            </ul>
+            
+            <h3 class="text-base md:text-lg font-bold text-sky-400 mt-5 mb-2">🚀 סימולטור אבחון "Pro Max 3.2"</h3>
+            <p>רכיב הדגל להמחשת ה-ROI של הפורטל.</p>
+            <ul class="mb-0">
+                <li><strong>גרפים חיים (Chart.js):</strong> מאמצים סביבתיים בזמן אמת.</li>
+                <li><strong>ממשק ניהול מותאם:</strong> התאמת גובה גרפים אוטומטית במובייל.</li>
+            </ul>
+        </div>
+        
+        <!-- גריד רספונסיבי - 1 טור במובייל, 2 טורים במחשב -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 my-4 md:my-6">
+            
+            <!-- בלוק 5: הצעדים הבאים -->
+            <div class="content-block m-0">
+                <h2>🚀 צעדים הבאים (Roadmap)</h2>
+                <ul class="mb-0 list-none p-0">
+                    <li class="flex items-start gap-2 mb-2"><i data-lucide="square" class="w-3.5 h-3.5 mt-1 text-slate-500 shrink-0"></i> <span class="text-sm"><strong>Automated VDD:</strong> כלי אוטומטי להפקת מסמכי תיאור גרסה.</span></li>
+                    <li class="flex items-start gap-2 mb-2"><i data-lucide="square" class="w-3.5 h-3.5 mt-1 text-slate-500 shrink-0"></i> <span class="text-sm"><strong>AI Translation Edge:</strong> תרגום חכם דרך ה-Proxy.</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="square" class="w-3.5 h-3.5 mt-1 text-slate-500 shrink-0"></i> <span class="text-sm"><strong>Local Log Analyzer:</strong> מודלי Llama לניתוח קובצי לוג.</span></li>
+                </ul>
+            </div>
+
+            <!-- בלוק 6: תמיכה ומשפטית -->
+            <div class="content-block m-0 flex flex-col justify-between">
+                <div>
+                    <h2>⚖️ תנאים משפטיים</h2>
+                    <p class="text-xs md:text-sm">לעיון בהסדרי הרישוי והגבלות האחריות בקרו בנספח המשפטי:</p>
+                    <a href="legal_terms.html" class="legal-link text-sm font-bold">📄 מסמך תנאים משפטיים</a>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- כרטיסיות יצירת קשר -->
+        <div class="contact-grid">
+            
+            <div class="contact-card">
+                <h4 class="text-sky-400">🐛 דיווח על באגים</h4>
+                <p class="text-xs md:text-sm">לדיווח על תקלות טכניות באתר או בעיות אבטחה:</p>
+                <a href="mailto:admin@yevgeni.info" class="legal-link text-sm"><code>admin@yevgeni.info</code></a>
+
+                
+            </div>
+
+            <!-- קישור חזרה ללוח הבקרה -->
+                <a href="index.html" class="inline-flex items-center gap-2 text-sky-400 hover:text-white font-mono text-xs md:text-sm mb-4 md:mb-6 transition-colors border-b border-dashed border-sky-400 hover:border-white pb-1 w-max" style="text-decoration:none;">
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i> חזרה ללוח הבקרה הראשי
+                </a>
+
+
+            
+        </div>
+    </div>
+
+    
+
+    <!-- חלון סטטוס ועדכון תחתון -->
+    <div class="status-window w-full">
+        <div class="status-label">
+            <span class="status-dot"></span>
+            <span>מופץ ומעודכן</span>
+        </div>
+        <div class="text-center md:text-right">
+            <span class="text-slate-400 block md:inline mb-1 md:mb-0">עדכון אחרון: </span>
+            <span class="status-time">30 במאי, 2026 | 16:57 UTC</span>
+        </div>
+    </div>
+
+    
+
+    <!-- MAIN SCRIPT (Dashboard Logic + Translation Logic) -->
+    <script>
+        lucide.createIcons();
+
+        // --- Dual Auto-Date Module (Local & World Clock) ---
+        function updateClock() {
+            const now = new Date();
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            
+            document.getElementById('liveClock').textContent = now.toLocaleTimeString('en-GB', timeOptions);
+            document.getElementById('liveDate').textContent = now.toLocaleDateString('en-GB', dateOptions);
+
+            const tzSelect = document.getElementById('tzSelect');
+            if(tzSelect) {
+                const selectedTz = tzSelect.value;
+                const globalTimeOptions = { ...timeOptions, timeZone: selectedTz };
+                document.getElementById('globalClock').textContent = now.toLocaleTimeString('en-GB', globalTimeOptions);
+            }
+        }
+        
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+    
+    <!-- חיבור קובץ ה-JS החיצוני של התרגום -->
+    <script src="translator.js" defer></script>
+</body>
+</html>

@@ -4,7 +4,7 @@ import os
 def convert_markdown_to_html():
     # הנתיב לקובץ ה-README המקורי שלך. 
     # אם הקובץ נמצא באותה תיקייה של הסקריפט, פשוט שים 'README.md'
-    md_file_path = 'public/ai-research/README.md' 
+    md_file_path = 'public/01_ai_research_docs/01.1_AI_Context_&_Specs/README.md' 
     output_html_path = 'public/readme.html'
     
     # נוודא שהקובץ קיים, ואם לא נייצר קובץ דוגמה כדי שהסקריפט לא יקרוס
@@ -40,7 +40,7 @@ def convert_markdown_to_html():
             --text-main: #e2e8f0;
             --text-muted: #94a3b8;
             --neon-blue: #00f3ff;
-            --neon-pink: #ff00ea;
+            --neon-pink: #ff0000;
             --neon-green: #39ff14;
         }}
 

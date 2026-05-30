@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Max Diagnostics Simulator | ai-portal</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Cyberpunk Dark Glassmorphism Theme */
+        body {
+            background-color: #060913;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(121, 40, 202, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(0, 242, 254, 0.1) 0%, transparent 50%);
+            color: #e2e8f0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .glass-panel {
+            background: rgba(16, 22, 40, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 242, 254, 0.15);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 242, 254, 0.05);
+            border-radius: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00f2fe, #7928ca, transparent);
+            opacity: 0.7;
+        }
+
+        .neon-text-blue { color: #00f2fe; text-shadow: 0 0 10px rgba(0, 242, 254, 0.7); }
+        .neon-text-purple { color: #c084fc; text-shadow: 0 0 10px rgba(192, 132, 252, 0.7); }
+        .neon-text-orange { color: #f97316; text-shadow: 0 0 10px rgba(249, 115, 22, 0.7); }
+
+        .btn-cyberpunk {
+            background: linear-gradient(45deg, #00f2fe20, #7928ca20);
+            border: 1px solid #00f2fe;
+            color: #fff;
+            text-shadow: 0 0 5px #00f2fe;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3), inset 0 0 10px rgba(121, 40, 202, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-cyberpunk:hover {
+            background: linear-gradient(45deg, #00f2fe40, #7928ca40);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.6), inset 0 0 15px rgba(121, 40, 202, 0.5);
+            transform: translateY(-2px);
+        }
+        .btn-cyberpunk:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+            border-color: #475569;
+            color: #94a3b8;
+            text-shadow: none;
+        }
+
+        .typing-cursor::after {
+            content: '█';
+            animation: blink 1s step-start infinite;
+            color: #00f2fe;
+            margin-left: 4px;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Report Panel Animation */
+        @keyframes slideDownFade { 
+            from { opacity: 0; transform: translateY(-20px); max-height: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; border-width: 0; } 
+            to { opacity: 1; transform: translateY(0); max-height: 600px; } 
+        }
+        .animate-report-open {
+            animation: slideDownFade 0.5s ease-out forwards;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        ::-webkit-scrollbar-thumb { background: #7928ca; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f2fe; }
+
+        @keyframes pulse-red { 0%, 100% { color: #ef4444; text-shadow: 0 0 10px #ef4444; } 50% { color: #fca5a5; text-shadow: 0 0 20px #ef4444; } }
+        .alert-pulse { animation: pulse-red 1.5s infinite; }
+    </style>
+</head>
+<body class="p-4 md:p-8 flex-grow">
+
+    <!-- Header & Main Controls -->
+    <header class="flex flex-col md:flex-row justify-between items-center mb-6 glass-panel p-6 gap-4">
+        <div class="flex items-center gap-4 text-center md:text-left">
+            <i class="fa-solid fa-microchip text-4xl neon-text-blue"></i>
+            <div>
+                <h1 class="text-2xl md:text-3xl font-bold tracking-wider uppercase">Engineering Test Portal</h1>
+                <p class="text-xs md:text-sm text-gray-400">Customer Delivery Package - Pro Max Simulator</p>
+            </div>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <button id="btnStartSimulation" class="btn-cyberpunk px-6 py-3 rounded-lg font-bold uppercase tracking-widest flex items-center justify-center gap-2 text-sm w-full md:w-auto" onclick="startSimulation()">
+                <i class="fa-solid fa-play"></i> Run Live Simulator
+            </button>
+            <button id="btnGenerateReport" class="btn-cyberpunk px-6 py-3 rounded-lg font-bold uppercase tracking-widest flex items-center justify-center gap-2 text-sm w-full md:w-auto" disabled onclick="generateReport()">
+                <i class="fa-solid fa-file-pdf"></i> Generate Final Report
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Grid Layout -->
+    <main class="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
+
+        <!-- ================= LEFT COLUMN: UUT & FLOW ================= -->
+        <aside class="col-span-1 lg:col-span-3 flex flex-col gap-6">
+            
+            <!-- UUT Information -->
+            <div class="glass-panel p-5">
+                <h2 class="text-xs font-bold text-gray-400 tracking-widest mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-server neon-text-blue"></i> UUT INFORMATION
+                </h2>
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between border-b border-white/5 pb-1"><span class="text-gray-400">Unit:</span> <span class="font-mono text-white">CPU Controller</span></div>
+                    <div class="flex justify-between border-b border-white/5 pb-1"><span class="text-gray-400">Part Number:</span> <span class="font-mono text-white">PN-12345</span></div>
+                    <div class="flex justify-between border-b border-white/5 pb-1"><span class="text-gray-400">Serial Num:</span> <span class="font-mono text-white">SN-456789</span></div>
+                    <div class="flex justify-between border-b border-white/5 pb-1"><span class="text-gray-400">Revision:</span> <span class="font-mono text-white">Rev B1</span></div>
+                    <div class="flex justify-between pt-1"><span class="text-gray-400">Customer:</span> <span class="font-mono neon-text-purple font-bold">ABC Systems</span></div>
+                </div>
+            </div>
+
+            <!-- ATP Test Flow Checklist -->
+            <div class="glass-panel p-5 flex-grow">
+                <h2 class="text-xs font-bold text-gray-400 tracking-widest mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check neon-text-blue"></i> ATP & ESS TEST FLOW
+                </h2>
+                <ul id="testFlowList" class="space-y-3 text-sm font-mono text-gray-300">
+                    <li id="step1" class="flex items-center gap-3"><i class="fa-regular fa-circle text-gray-600"></i> 1. Visual Inspection</li>
+                    <li id="step2" class="flex items-center gap-3"><i class="fa-regular fa-circle text-gray-600"></i> 2. ATP 🤖 AI Assistant</li>
+                    <li id="step3" class="flex items-center gap-3"><i class="fa-regular fa-circle text-gray-600"></i> 3. Start Temp Cycling</li>
+                    <li id="step4" class="flex items-center gap-3"><i class="fa-regular fa-circle text-gray-600"></i> 4. +60°C 🔥 Stabilization</li>
+                    <li id="step5" class="flex items-center gap-3"><i class="fa-regular fa-circle text-gray-600"></i> 5. RTP 1</li>
+                    <li id="step6" class="flex items-center gap-3"><i class="fa-regular fa-circle text-gray-600"></i> 6. RTP Retest 🤖 AI</li>
+                    <li id="step7" class="flex items-center gap-3"><i class="fa-regular fa-circle text-gray-600"></i> 7.  −32°C ❄️ Stabilization </li> 
+                    <li id="step8" class="flex items-center gap-3"><i class="fa-regular fa-circle text-gray-600"></i> 8. RTP  </li> 
+                    <li id="step9" class="flex items-center gap-3"><i class="fa-regular fa-circle text-gray-600"></i> 9. +60°C 🔥 Stabilization</li>
+                    <li id="step10" class="flex items-center gap-3"><i class="fa-regular fa-circle text-gray-600"></i> 10. +25°C - Controlled return - Cycle 1,2,3..</li> 
+                    <li id="step11" class="flex items-center gap-3"><i class="fa-regular fa-circle text-gray-600"></i> 11. RTP 8</li>
+                    <li id="step12" class="flex items-center gap-3"><i class="fa-regular fa-circle text-gray-600"></i> 12. ATP 🤖 AI Assistant</li>
+                    <li id="step13" class="flex items-center gap-3"><i class="fa-regular fa-circle text-gray-600"></i> 13. Visual Inspection</li>
+                    <li id="step14" class="flex items-center gap-3"><i class="fa-regular fa-circle text-gray-600"></i> 14. Finish Simulation</li>
+                </ul>
+            </div>
+
+        </aside>
+
+        <!-- ================= CENTER COLUMN: GRAPHS & REPORTS ================= -->
+        <section class="col-span-1 lg:col-span-6 flex flex-col gap-6">
+            
+            <!-- 🌟 REPORT PREVIEW PANEL 🌟 -->
+            <div id="reportPreviewPanel" class="glass-panel p-5 hidden animate-report-open relative border-emerald-500/30">
+                <button onclick="closeReport()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+                <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-3">
+                    <h2 id="reportPreviewTitle" class="text-sm font-bold text-white tracking-widest flex items-center gap-2">
+                        <!-- Dynamic Title -->
+                    </h2>
+                    <span class="text-[10px] uppercase bg-emerald-900/30 text-emerald-400 px-2 py-1 rounded border border-emerald-500/50">Verified Document</span>
+                </div>
+                <div id="reportPreviewContent" class="text-sm text-gray-300 font-mono space-y-4">
+                    <!-- Content injected via JS -->
+                </div>
+            </div>
+
+            <!-- Temperature Cycling Chart -->
+            <div class="glass-panel p-5 h-64 md:h-72 flex flex-col">
+                <div class="flex justify-between items-center mb-2">
+                    <h2 class="text-xs font-bold text-gray-400 tracking-widest flex items-center gap-2">
+                        <i class="fa-solid fa-temperature-three-quarters neon-text-orange"></i> TEMPERATURE CYCLING
+                    </h2>
+                    <span id="tempStatus" class="text-xs font-mono px-2 py-1 bg-gray-800 rounded border border-gray-600 text-gray-400">IDLE</span>
+                </div>
+                <div class="flex-grow relative w-full h-full">
+                    <canvas id="tempChart"></canvas>
+                </div>
+                <div class="flex flex-wrap justify-between text-[10px] text-gray-500 font-mono mt-2">
+                    <span>Range: -32°C ↔ +60°C</span>
+                    <span>Ramp: 5°C/min</span>
+                    <span>Cycles: <span id="cycleCounter">0/10</span></span>
+                </div>
+            </div>
+
+            <!-- Enhanced Vibration Analysis Chart -->
+            <div class="glass-panel p-5 h-72 md:h-80 flex flex-col">
+                <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-2 gap-2">
+                    <h2 class="text-xs font-bold text-gray-400 tracking-widest flex items-center gap-2">
+                        <i class="fa-solid fa-wave-square neon-text-blue"></i> DYNAMIC VIBRATION (PSD)
+                    </h2>
+                    <div class="flex items-center gap-3">
+                        <span id="vibTimestamp" class="text-[10px] text-gray-500 font-mono">--:--:--</span>
+                        <span id="vibStatus" class="text-[10px] sm:text-xs font-mono px-2 py-1 bg-gray-800 rounded border border-gray-600 text-gray-400 transition-colors duration-300">IDLE</span>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-end mb-2 px-1">
+                    <span class="text-[10px] text-gray-500 font-mono">Target RMS: 6.00g</span>
+                    <div class="text-right">
+                        <span class="text-[10px] text-gray-400 font-mono block">Measured RMS</span>
+                        <span id="vibMeasured" class="text-xl md:text-2xl font-mono text-cyan-400 font-bold tracking-wider drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">0.00 g</span>
+                    </div>
+                </div>
+
+                <div class="flex-grow relative w-full h-full mt-2">
+                    <canvas id="vibChart"></canvas>
+                </div>
+                <div class="flex justify-between text-[10px] text-gray-500 font-mono mt-2">
+                    <span>Axis: Z</span>
+                    <span>Profile: ESS Std</span>
+                    <span>Freq: 20Hz - 2000Hz</span>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= RIGHT COLUMN: AI & SUMMARY ================= -->
+        <aside class="col-span-1 lg:col-span-3 flex flex-col gap-6">
+            
+            <!-- AI Test Assistant -->
+            <div class="glass-panel p-5 flex flex-col items-center text-center">
+                <h2 class="text-xs font-bold text-gray-400 tracking-widest mb-4 w-full text-left flex items-center gap-2">
+                    <i class="fa-solid fa-robot neon-text-purple"></i> AI TEST ASSISTANT
+                </h2>
+                
+                <div class="relative w-20 h-20 md:w-24 md:h-24 mb-4">
+                    <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_0_15px_rgba(121,40,202,0.8)]">
+                        <defs>
+                            <radialGradient id="ai-glow" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#7928ca" stop-opacity="0.8" />
+                                <stop offset="100%" stop-color="#00f2fe" stop-opacity="0" />
+                            </radialGradient>
+                        </defs>
+                        <circle cx="50" cy="50" r="45" fill="url(#ai-glow)" class="animate-pulse" />
+                        <circle cx="50" cy="50" r="38" fill="none" stroke="#00f2fe" stroke-width="1.5" stroke-dasharray="15 10" class="animate-[spin_12s_linear_infinite]" />
+                        <circle cx="50" cy="50" r="32" fill="none" stroke="#c084fc" stroke-width="2" stroke-dasharray="30 15" class="animate-[spin_8s_linear_infinite_reverse]" />
+                        <path d="M50 25 L65 50 L50 75 L35 50 Z" fill="#fff" class="drop-shadow-[0_0_10px_#fff]" />
+                        <circle cx="50" cy="50" r="4" fill="#00f2fe" />
+                    </svg>
+                </div>
+
+                <div class="bg-gray-900/80 border border-purple-500/30 rounded-lg p-4 w-full text-left relative min-h-[100px]">
+                    <div class="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-gray-900/80 border-t border-l border-purple-500/30 rotate-45"></div>
+                    <p id="aiSpeechBubble" class="text-xs md:text-sm text-cyan-100 font-mono leading-relaxed">
+                        System ready. Awaiting command to initiate Full Power Mode and ESS workflow.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Final Report Summary / Output -->
+            <div class="glass-panel p-5 flex-grow flex flex-col justify-between">
+                <div>
+                    <h2 class="text-xs font-bold text-gray-400 tracking-widest mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-folder-open neon-text-blue"></i> CUSTOMER PACKAGE
+                    </h2>
+                    <p class="text-[10px] text-gray-500 mb-3 leading-tight">Click files to open preview viewer when ready.</p>
+                    <ul class="space-y-1 text-xs font-mono text-gray-400" id="reportFilesList">
+                        <li id="file-atp" class="flex items-center gap-2 opacity-50 p-1.5"><i class="fa-solid fa-file-pdf text-red-400"></i> ATP_Report.pdf <span class="ml-auto text-[10px]">Pending</span></li>
+                        <li id="file-ess" class="flex items-center gap-2 opacity-50 p-1.5"><i class="fa-solid fa-file-pdf text-red-400"></i> ESS_Report.pdf <span class="ml-auto text-[10px]">Pending</span></li>
+                        <li id="file-rtp" class="flex items-center gap-2 opacity-50 p-1.5"><i class="fa-solid fa-file-lines text-gray-300"></i> RTP_Log.txt <span class="ml-auto text-[10px]">Pending</span></li>
+                        <li id="file-fracas" class="flex items-center gap-2 opacity-50 p-1.5"><i class="fa-solid fa-file-excel text-green-400"></i> FRACAS_Log.xlsx <span class="ml-auto text-[10px]">Pending</span></li>
+                    </ul>
+                </div>
+                
+                <div class="mt-6 border-t border-white/10 pt-4">
+                    <div class="flex justify-between items-center text-xs text-gray-500 font-mono mb-1">
+                        <span>Signatures:</span>
+                        <span id="signatureStatus" class="text-yellow-500">Missing</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        <div class="border border-white/5 rounded p-2 text-center opacity-30 transition-all duration-500" id="sigOp">
+                            <div class="font-[cursive] text-sm md:text-lg text-white">Yevgeni</div>
+                            <div class="text-[8px] md:text-[9px] uppercase tracking-wider text-gray-500">Operator</div>
+                        </div>
+                        <div class="border border-white/5 rounded p-2 text-center opacity-30 transition-all duration-500" id="sigQA">
+                            <div class="font-[cursive] text-sm md:text-lg text-white">R. Cohen</div>
+                            <div class="text-[8px] md:text-[9px] uppercase tracking-wider text-gray-500">QA Engineer</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+    </main>
+
+    <!-- Footer: Version & Date -->
+    <footer class="mt-8 text-center text-xs text-gray-500 font-mono flex flex-col md:flex-row justify-between items-center glass-panel p-4">
+        <div class="mb-2 md:mb-0"><i class="fa-solid fa-shield-halved text-gray-600 mr-2"></i>&copy; 2026 AI-Portal Systems</div>
+        <div class="flex gap-4">
+            <span>Version: <strong class="text-gray-300">2.0-PRO</strong></span>
+            <span class="hidden md:inline">|</span>
+            <span>Last Updated: <strong class="text-gray-300">May 30, 2026</strong></span>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic (Simulation Engine & Charts) -->
+    <script>
+        let simulationRunning = false;
+        let tempChartInst = null;
+        let vibChartInst = null;
+        let simTime = 0;
+        let chartInterval = null;
+        let vibLogicInterval = null;
+        
+        const tempLabels = [];
+        const tempData = [];
+        
+        // Setup Vibration Frequencies (X-axis) - non-linear representation
+        const vibLabels = Array.from({length: 60}, (_, i) => {
+            if (i < 15) return 20 + i * 4; // 20 to ~80
+            if (i < 40) return 80 + (i-15) * 10; // 80 to ~330
+            return 350 + (i-40) * 80; // 350 to ~2000
+        });
+        let vibData = Array(60).fill(0);
+
+        function initCharts() {
+            Chart.defaults.color = 'rgba(255, 255, 255, 0.5)';
+            Chart.defaults.font.family = "'SF Mono', 'Consolas', monospace";
+            
+            // Temperature Chart
+            const tempCtx = document.getElementById('tempChart').getContext('2d');
+            let tempGradient = tempCtx.createLinearGradient(0, 0, 0, 200);
+            tempGradient.addColorStop(0, 'rgba(249, 115, 22, 0.8)'); 
+            tempGradient.addColorStop(1, 'rgba(121, 40, 202, 0.2)'); 
+
+            tempChartInst = new Chart(tempCtx, {
+                type: 'line',
+                data: {
+                    labels: tempLabels,
+                    datasets: [{
+                        data: tempData,
+                        borderColor: '#f97316',
+                        backgroundColor: tempGradient,
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { display: false },
+                        y: { min: -40, max: 70, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
+
+            // Dynamic Vibration Chart (PSD)
+            const vibCtx = document.getElementById('vibChart').getContext('2d');
+            let vibGradient = vibCtx.createLinearGradient(0, 0, 0, 200);
+            vibGradient.addColorStop(0, '#00f2fe');
+            vibGradient.addColorStop(1, '#7928ca');
+
+            vibChartInst = new Chart(vibCtx, {
+                type: 'bar',
+                data: {
+                    labels: vibLabels.map(v => Math.round(v) + 'Hz'),
+                    datasets: [{
+                        data: vibData,
+                        backgroundColor: vibGradient,
+                        borderRadius: 2,
+                        barPercentage: 0.9,
+                        categoryPercentage: 1.0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false, // Turn off animation for realtime speed
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { 
+                            grid: { display: false }, 
+                            ticks: { maxTicksLimit: 6, font: { size: 9 } } 
+                        },
+                        y: { 
+                            min: 0, 
+                            max: 0.035, // Typical PSD limits
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { font: { size: 9 } }
+                        }
+                    }
+                }
+            });
+        }
+        
+        const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+        async function aiSpeak(text) {
+            const bubble = document.getElementById('aiSpeechBubble');
+            bubble.classList.add('typing-cursor');
+            bubble.innerHTML = '';
+            for (let i = 0; i < text.length; i++) {
+                bubble.innerHTML += text.charAt(i);
+                await sleep(25); // slightly faster typing
+            }
+            bubble.classList.remove('typing-cursor');
+        }
+
+        function updateFlowStep(stepId, status) {
+            const el = document.getElementById(stepId);
+            if (status === 'pass') {
+                el.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 drop-shadow-[0_0_5px_#10b981]"></i> ${el.innerText.trim()}`;
+                el.classList.add('text-emerald-400');
+            } else if (status === 'fail') {
+                el.innerHTML = `<i class="fa-solid fa-circle-xmark text-red-500 alert-pulse"></i> ${el.innerText.trim()}`;
+                el.classList.add('text-red-400', 'font-bold');
+            } else if (status === 'active') {
+                el.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-cyan-400"></i> ${el.innerText.trim()}`;
+                el.classList.add('text-cyan-300');
+            }
+        }
+
+        // --- NEW VIBRATION LOGIC BASED ON USER REQUIREMENT ---
+        function generateRMS() {
+            const target = 6.0;
+            const noise = (Math.random() * 0.30 - 0.15); // ±0.15g
+            return target + noise;
+        }
+
+        // Generates the PSD array mapping to the specific breakpoints
+        function generatePSDProfile() {
+            return vibLabels.map(f => {
+                let basePsd = 0.001; // Floor
+                
+                // Real ESS Breakpoints mapping
+                if (f >= 20 && f < 80) {
+                    basePsd = 0.0025 + (0.012 - 0.0025) * ((f - 20) / (80 - 20));
+                } else if (f >= 80 && f < 350) {
+                    basePsd = 0.012 + (0.022 - 0.012) * ((f - 80) / (350 - 80));
+                } else if (f >= 350 && f <= 1000) {
+                    basePsd = 0.022;
+                } else if (f > 1000) {
+                    basePsd = 0.022 - (0.022 - 0.005) * ((f - 1000) / 1000); // Roll off
+                }
+                
+                // Add noise
+                const noise = (Math.random() * 0.004 - 0.002);
+                return Math.max(basePsd + noise, 0.0005);
+            });
+        }
+
+        // Runs every 1200ms to update text displays (RMS & Status)
+        function simulateVibrationTextUpdates() {
+            // Update RMS
+            const rms = generateRMS();
+            document.getElementById('vibMeasured').textContent = rms.toFixed(2) + ' g';
+
+            // Update Status Colors
+            const diff = Math.abs(rms - 6.0);
+            const statusEl = document.getElementById('vibStatus');
+            
+            // Clear previous classes
+            statusEl.className = 'text-[10px] sm:text-xs font-mono px-2 py-1 bg-gray-800 rounded border transition-colors duration-300';
+
+            if (diff < 0.15) {
+                statusEl.textContent = 'Within Limits';
+                statusEl.classList.add('border-emerald-500', 'text-emerald-400', 'shadow-[0_0_10px_rgba(16,185,129,0.3)]');
+            } else if (diff < 0.40) {
+                statusEl.textContent = 'Near Limit';
+                statusEl.classList.add('border-yellow-500', 'text-yellow-400');
+            } else {
+                statusEl.textContent = 'Out of Limits';
+                statusEl.classList.add('border-red-500', 'text-red-400', 'animate-pulse');
+            }
+
+            // Timestamp
+            document.getElementById('vibTimestamp').textContent = new Date().toLocaleTimeString('en-US', { hour12: false });
+        }
+        // -----------------------------------------------------
+
+        function updateLiveGraphs() {
+            simTime += 0.1;
+            
+            // 1. Update Temperature
+            const currentTemp = 14 + Math.sin(simTime) * 46; // Sine wave between ~ -32 to 60
+            if (tempData.length > 50) {
+                tempData.shift();
+                tempLabels.shift();
+            }
+            tempData.push(currentTemp);
+            tempLabels.push(simTime.toFixed(1));
+            tempChartInst.update();
+
+            // 2. Update Vibration (PSD Chart)
+            vibChartInst.data.datasets[0].data = generatePSDProfile();
+            vibChartInst.update();
+
+            // Cycles counter update
+            const cycleElement = document.getElementById('cycleCounter');
+            const currentCycle = Math.floor(simTime / (Math.PI * 2)) + 1; 
+            if(currentCycle <= 10) {
+                cycleElement.innerText = `${currentCycle}/10`;
+            }
+        }
+
+        function openReport(type) {
+            const panel = document.getElementById('reportPreviewPanel');
+            const title = document.getElementById('reportPreviewTitle');
+            const content = document.getElementById('reportPreviewContent');
+
+            panel.classList.remove('hidden');
+            
+            if (type === 'ATP') {
+                title.innerHTML = '<i class="fa-solid fa-file-pdf text-red-400"></i> ATP_Report.pdf';
+                content.innerHTML = `
+                    <div class="bg-gray-900/50 p-3 rounded border border-white/10 mb-3">
+                        <p><strong>Document Type:</strong> Acceptance Test Plan (ATP)</p>
+                        <p><strong>UUT:</strong> CPU Controller | <strong>PN:</strong> PN-12345</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left min-w-[300px]">
+                            <tr class="text-gray-500 border-b border-white/10"><th class="pb-2">Test Section</th><th class="pb-2">Result</th><th class="pb-2">Remarks</th></tr>
+                            <tr class="border-b border-white/5"><td class="py-2">5.2 Visual Insp.</td><td class="text-emerald-400">PASS</td><td>Verified</td></tr>
+                            <tr class="border-b border-white/5"><td class="py-2">5.3 System Init</td><td class="text-emerald-400">PASS</td><td>Boot successful</td></tr>
+                            <tr class="border-b border-white/5"><td class="py-2 font-bold text-white">5.6 Serial Tests</td><td class="text-yellow-400 font-bold">PASS (RTP)</td><td>Cleared via Retest</td></tr>
+                        </table>
+                    </div>
+                `;
+            } else if (type === 'ESS') {
+                title.innerHTML = '<i class="fa-solid fa-file-pdf text-red-400"></i> ESS_Report.pdf';
+                content.innerHTML = `
+                    <div class="bg-gray-900/50 p-3 rounded border border-white/10 mb-3">
+                        <p><strong>Document Type:</strong> Environmental Stress Screening</p>
+                        <p><strong>Standard:</strong> MIL-STD-810H / ISO-9001</p>
+                    </div>
+                    <ul class="space-y-2">
+                        <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> <strong>Temp Cycling:</strong> 10 Cycles completed (-32°C ↔ +60°C)</li>
+                        <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> <strong>Ramp Rate:</strong> Verified 5°C/min limits</li>
+                        <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> <strong>Vibration (PSD):</strong> Z-Axis, target RMS 6.00g maintained.</li>
+                    </ul>
+                `;
+            } else if (type === 'FRACAS') {
+                title.innerHTML = '<i class="fa-solid fa-file-excel text-green-400"></i> FRACAS_Log.xlsx';
+                content.innerHTML = `
+                    <div class="border-l-4 border-yellow-500 pl-3 py-1 mb-3 bg-yellow-500/10">
+                        <p class="text-yellow-400 font-bold">Issue #1005 Logged & Resolved</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                        <div><span class="text-gray-500">Failure Mode:</span><br>Serial port Tx/Rx timeout.</div>
+                        <div><span class="text-gray-500">Root Cause:</span><br>Buffer overflow on port COM3.</div>
+                    </div>
+                `;
+            } else if (type === 'RTP') {
+                title.innerHTML = '<i class="fa-solid fa-file-lines text-gray-300"></i> RTP_Log.txt';
+                content.innerHTML = `
+                    <div class="bg-black p-3 rounded border border-gray-700 font-mono text-[10px] text-green-500 h-32 overflow-y-auto">
+                        > [SYS] Executing Reduced Test Plan (RTP)...<br>
+                        > [RTP] Flushing COM3 buffer... OK<br>
+                        > [RTP] Sending loopback payload 0xAA 0x55...<br>
+                        > [RTP] Payload received: 0xAA 0x55. Latency 2ms.<br>
+                        > [RTP] Communication stable.
+                    </div>
+                `;
+            }
+            
+            panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function closeReport() {
+            document.getElementById('reportPreviewPanel').classList.add('hidden');
+        }
+
+        async function startSimulation() {
+            if (simulationRunning) return;
+            simulationRunning = true;
+            document.getElementById('btnStartSimulation').disabled = true;
+            document.getElementById('btnStartSimulation').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Running...';
+
+            await aiSpeak("Initiating Test Sequence...");
+            
+            updateFlowStep('step1', 'active'); await sleep(800); updateFlowStep('step1', 'pass');
+            updateFlowStep('step2', 'active'); await sleep(1000); updateFlowStep('step2', 'pass');
+            updateFlowStep('step3', 'active'); await sleep(200); updateFlowStep('step3', 'pass');
+
+            document.getElementById('tempStatus').innerText = "RUNNING";
+            document.getElementById('tempStatus').classList.replace('text-gray-400', 'text-orange-400');
+            document.getElementById('tempStatus').classList.replace('border-gray-600', 'border-orange-500');
+
+            await aiSpeak("ESS Live Monitoring active. Target parameters: 10 cycles (-32c to +60c), Z-Axis Vibration 6.00 g RMS.");
+            
+            // Start chart loops
+            chartInterval = setInterval(updateLiveGraphs, 100);
+            // Start vibration text/RMS specific logic loop
+            vibLogicInterval = setInterval(simulateVibrationTextUpdates, 1200);
+            simulateVibrationTextUpdates(); // immediate trigger
+            
+            await sleep(8000);
+            await aiSpeak("Cycle 10 reached. All parameters stable within defined MIL-STD limits.");
+            await sleep(3000); 
+
+
+            updateFlowStep('step4', 'active'); await sleep(1000); updateFlowStep('step4', 'pass');
+            updateFlowStep('step5', 'active');
+            await sleep(1500);
+            updateFlowStep('step5', 'fail');
+            document.getElementById('step4').innerHTML += " <span class='text-xs bg-red-900/50 text-red-200 px-1 rounded ml-2 border border-red-500'>ANOMALY</span>";
+            
+            await aiSpeak("ALERT: Anomaly detected in Serial Tests (Tx/Rx timeout). Flagging for FRACAS and initiating automated RTP Retest Protocol...");
+            await sleep(3000);
+
+            updateFlowStep('step6', 'active');
+            await sleep(2000);
+            updateFlowStep('step6', 'pass');
+            document.getElementById('step6').classList.remove('alert-pulse');
+            
+            await aiSpeak("RTP Retest completed successfully. Hardware anomaly resolved via port reset. Proceeding to Environmental Stress Screening (ESS).");
+            await sleep(2000);
+
+            updateFlowStep('step7', 'active'); await sleep(1000); updateFlowStep('step7', 'pass');
+            updateFlowStep('step8', 'active'); await sleep(400); updateFlowStep('step8', 'pass');
+            updateFlowStep('step9', 'active'); await sleep(800); updateFlowStep('step9', 'pass');
+            updateFlowStep('step10', 'active'); await sleep(1000); updateFlowStep('step10', 'pass');
+            updateFlowStep('step11', 'active'); await sleep(400); updateFlowStep('step11', 'pass');
+            updateFlowStep('step12', 'active'); await sleep(600); updateFlowStep('step12', 'pass');
+            updateFlowStep('step13', 'active'); await sleep(1200); updateFlowStep('step13', 'pass');
+            updateFlowStep('step14', 'pass');
+
+            
+            
+            
+            // End simulation
+            clearInterval(chartInterval);
+            clearInterval(vibLogicInterval);
+            
+            // Flatten charts at the end
+            vibChartInst.data.datasets[0].data = Array(60).fill(0);
+            vibChartInst.update();
+
+            updateFlowStep('step6', 'pass');
+            updateFlowStep('step7', 'pass');
+            
+            document.getElementById('tempStatus').innerText = "COMPLETED";
+            
+            const vibStatEnd = document.getElementById('vibStatus');
+            vibStatEnd.textContent = "COMPLETED";
+            vibStatEnd.className = "text-[10px] sm:text-xs font-mono px-2 py-1 bg-gray-800 rounded border border-gray-600 text-gray-400";
+            document.getElementById('vibMeasured').textContent = "0.00 g";
+            document.getElementById('vibMeasured').classList.replace('text-cyan-400', 'text-gray-500');
+
+            document.getElementById('cycleCounter').innerText = "10/10";
+            
+            await aiSpeak("All tests concluded successfully. ATP and ESS criteria met. Digital signatures applied. Customer Package ready for review.");
+            
+            document.getElementById('sigOp').classList.remove('opacity-30');
+            document.getElementById('sigOp').classList.add('border-emerald-500/50', 'bg-emerald-900/20');
+            document.getElementById('sigQA').classList.remove('opacity-30');
+            document.getElementById('sigQA').classList.add('border-emerald-500/50', 'bg-emerald-900/20');
+            document.getElementById('signatureStatus').innerText = "Verified ✅";
+            document.getElementById('signatureStatus').classList.replace('text-yellow-500', 'text-emerald-400');
+
+            const files = [
+                {id: 'file-atp', type: 'ATP', icon: 'fa-file-pdf text-red-400', name: 'ATP_Report.pdf'},
+                {id: 'file-ess', type: 'ESS', icon: 'fa-file-pdf text-red-400', name: 'ESS_Report.pdf'},
+                {id: 'file-rtp', type: 'RTP', icon: 'fa-file-lines text-gray-300', name: 'RTP_Log.txt'},
+                {id: 'file-fracas', type: 'FRACAS', icon: 'fa-file-excel text-green-400', name: 'FRACAS_Log.xlsx'}
+            ];
+
+            files.forEach(f => {
+                const el = document.getElementById(f.id);
+                el.className = "flex items-center gap-2 opacity-100 cursor-pointer hover:bg-white/10 p-1.5 -mx-1.5 rounded transition-all group";
+                el.onclick = () => openReport(f.type);
+                el.innerHTML = `<i class="fa-solid ${f.icon} group-hover:scale-110 transition-transform"></i> ${f.name} <span class="ml-auto text-[10px] text-emerald-400 font-bold animate-pulse"><i class="fa-solid fa-eye"></i> View</span>`;
+            });
+
+            document.getElementById('btnStartSimulation').innerHTML = '<i class="fa-solid fa-check"></i> Test Completed';
+            const btnGen = document.getElementById('btnGenerateReport');
+            btnGen.disabled = false;
+            btnGen.classList.add('animate-pulse', 'border-emerald-400', 'text-emerald-300');
+        }
+
+        function generateReport() {
+            const btn = document.getElementById('btnGenerateReport');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Zipping Files...';
+            btn.classList.remove('animate-pulse');
+            
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Package Released!';
+                btn.classList.replace('border-emerald-400', 'border-emerald-500');
+                btn.classList.replace('text-emerald-300', 'text-white');
+                btn.style.background = 'linear-gradient(45deg, rgba(16, 185, 129, 0.2), rgba(0, 242, 254, 0.2))';
+                aiSpeak("Final secure ZIP package generated and distributed to Customer portal.");
+            }, 2000);
+        }
+
+        window.onload = () => {
+            initCharts();
+        };
+    </script>
+</body>
+</html>
