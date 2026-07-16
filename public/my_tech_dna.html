@@ -3,113 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENG-PORTAL - My Tech DNA</title>
-    <meta name="description" content="Explore the technical DNA and architectural history of the ENG-PORTAL project.">
-    <meta property="og:title" content="ENG-PORTAL - Tech DNA">
-    <meta property="og:type" content="website">
-    
-    <!-- CSS Architecture -->
+
+    <title>Yevgeni Aminov — Engineering Tech DNA | ENG-Portal</title>
+    <meta name="description" content="The living engineering profile of Yevgeni Aminov: systems thinking, hardware foundations, automation, edge infrastructure, and applied AI.">
+    <meta name="author" content="Yevgeni Aminov">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yevgeni.info/my_tech_dna.html">
+
+    <meta property="og:type" content="profile">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="ENG-Portal">
+    <meta property="og:title" content="Yevgeni Aminov — Engineering Tech DNA">
+    <meta property="og:description" content="A living professional profile shaped by hardware, systems, automation, edge infrastructure, and applied AI.">
+    <meta property="og:url" content="https://yevgeni.info/my_tech_dna.html">
+    <meta property="og:image" content="https://yevgeni.info/assets/images/secret_nexus.webp">
+    <meta property="og:image:alt" content="ENG-Portal engineering systems visualization">
+    <meta property="profile:first_name" content="Yevgeni">
+    <meta property="profile:last_name" content="Aminov">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Yevgeni Aminov — Engineering Tech DNA">
+    <meta name="twitter:description" content="A living professional profile shaped by hardware, systems, automation, edge infrastructure, and applied AI.">
+    <meta name="twitter:image" content="https://yevgeni.info/assets/images/secret_nexus.webp">
+    <meta name="twitter:image:alt" content="ENG-Portal engineering systems visualization">
+
     <link rel="stylesheet" href="assets/css/global-tokens.css">
-    <link rel="stylesheet" href="assets/css/my_tech_dna.css">
     <link rel="stylesheet" href="assets/css/portal-quality.css">
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="assets/css/my_tech_dna.css">
+    <script src="https://unpkg.com/lucide@latest" defer></script>
 </head>
 <body>
-
     <a class="skip-link" href="#main-content">Skip to main content</a>
 
-    <div class="app-layout">
-        
-        <!-- Header -->
-        <header class="top-header">
-            <div class="header-titles">
-                <h1 class="page-title">My Tech DNA: The Digital Mirror</h1>
-                <p class="page-subtitle">Exploring the roots and architectural philosophy of the ENG-Portal ecosystem.</p>
+    <header class="site-header" aria-label="Tech DNA header">
+        <a class="brand" href="index.html" aria-label="ENG-Portal home">
+            <span class="brand-mark" aria-hidden="true">EA</span>
+            <span>ENG-PORTAL <small>/ TECH DNA 02</small></span>
+        </a>
+        <nav class="header-nav" aria-label="Page navigation">
+            <a href="#systems">Systems</a>
+            <a href="#mission">Mission</a>
+            <a class="nav-home" href="index.html"><i data-lucide="arrow-left" aria-hidden="true">←</i> Portal</a>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-copy">
+                <p class="eyebrow"><span class="signal-dot" aria-hidden="true"></span> Living engineering profile · 2026</p>
+                <h1 id="hero-title">Yevgeni Aminov<span>Engineer of connected systems.</span></h1>
+                <p class="hero-statement">I turn physical constraints, operational needs, and emerging technology into systems that can be tested, understood, and improved.</p>
+                <div class="hero-actions">
+                    <a class="button button-primary" href="#systems">Explore the evidence <i data-lucide="arrow-down-right" aria-hidden="true">↘</i></a>
+                    <a class="button button-secondary" href="index.html">Open ENG-Portal</a>
+                </div>
             </div>
-            <div class="header-actions">
-                <a href="index.html" class="btn btn-secondary">
-                    <i data-lucide="arrow-left"></i> Back to Hub
-                </a>
+
+            <div class="identity-map" aria-label="Engineering focus map">
+                <div class="map-orbit map-orbit-one" aria-hidden="true"></div>
+                <div class="map-orbit map-orbit-two" aria-hidden="true"></div>
+                <div class="identity-core">
+                    <span class="identity-initials">YA</span>
+                    <span>systems engineer</span>
+                </div>
+                <span class="map-node node-hardware">Hardware</span>
+                <span class="map-node node-automation">Automation</span>
+                <span class="map-node node-edge">Edge</span>
+                <span class="map-node node-ai">AI</span>
             </div>
-        </header>
 
-        <!-- Main Content -->
-        <main class="main-content" id="main-content">
-            
-            <section class="dna-intro-section">
-                 <div class="info-panel">
-                    <i data-lucide="dna" class="icon-large"></i>
-                    <div>
-                        <h3>The Genesis of ENG-Portal</h3>
-                        <p>This space serves as a "Digital Conscious Mirror," mapping the technical evolution from a simple cloud UI to a robust, bare-metal Hybrid Edge-Cloud architecture.</p>
-                    </div>
-                </div>
-            </section>
+            <dl class="hero-metrics" aria-label="Professional profile summary">
+                <div><dt>Foundation</dt><dd>Electronics &amp; validation</dd></div>
+                <div><dt>Method</dt><dd>Systems thinking</dd></div>
+                <div><dt>Direction</dt><dd>Human-centered AI</dd></div>
+            </dl>
+        </section>
 
-            <section class="timeline-grid">
-                
-                <div class="timeline-card">
-                    <div class="card-header">
-                        <div class="card-title"><i data-lucide="cloud"></i> Phase 1: Cloud-Only Era</div>
-                    </div>
-                    <div class="card-body">
-                        <p>Initial static web interface utilizing public Cloud LLMs. Heavy reliance on Tailwind and high-latency endpoints.</p>
-                    </div>
-                </div>
+        <section class="section pillars" aria-labelledby="pillars-title">
+            <div class="section-heading">
+                <p class="section-index">01 / CORE</p>
+                <div><h2 id="pillars-title">Four Tech DNA pillars</h2><p>The recurring principles behind the work—not a list of tools, but a way of engineering.</p></div>
+            </div>
+            <div class="pillar-grid">
+                <article class="pillar-card"><span class="card-number">01</span><i data-lucide="cpu" aria-hidden="true">◫</i><h3>Physical truth first</h3><p>Start with signals, tolerances, interfaces, and failure modes. Software is strongest when it respects the system beneath it.</p><ul><li>Electronics</li><li>Test engineering</li><li>Root-cause analysis</li></ul></article>
+                <article class="pillar-card"><span class="card-number">02</span><i data-lucide="workflow" aria-hidden="true">◇</i><h3>Structure the unknown</h3><p>Translate ambiguous problems into observable states, clear boundaries, and repeatable verification paths.</p><ul><li>System mapping</li><li>ATP design</li><li>Documentation</li></ul></article>
+                <article class="pillar-card"><span class="card-number">03</span><i data-lucide="square-terminal" aria-hidden="true">&gt;_</i><h3>Automate with intent</h3><p>Remove repetitive effort while keeping operators informed, in control, and able to diagnose what happens next.</p><ul><li>PowerShell</li><li>Telemetry</li><li>Safe workflows</li></ul></article>
+                <article class="pillar-card"><span class="card-number">04</span><i data-lucide="brain-circuit" aria-hidden="true">◎</i><h3>Make intelligence useful</h3><p>Apply AI where it sharpens engineering judgment: at the edge, inside workflows, and with explicit fallback paths.</p><ul><li>Local LLMs</li><li>Hybrid cloud</li><li>AI orchestration</li></ul></article>
+            </div>
+        </section>
 
-                <div class="timeline-card">
-                    <div class="card-header">
-                        <div class="card-title"><i data-lucide="server"></i> Phase 2: Local Edge Shift</div>
-                    </div>
-                    <div class="card-body">
-                        <p>Migration to a local Proxmox VE hypervisor (srv-1) with GPU passthrough (RTX 5060 Ti) for localized AI models.</p>
-                    </div>
-                </div>
+        <section class="section workflow-section" aria-labelledby="workflow-title">
+            <div class="section-heading">
+                <p class="section-index">02 / METHOD</p>
+                <div><h2 id="workflow-title">Engineering thinking workflow</h2><p>A practical loop that moves from field reality to durable learning.</p></div>
+            </div>
+            <ol class="workflow">
+                <li><span>01</span><div><h3>Observe</h3><p>Read the environment, constraints, symptoms, and human context.</p></div></li>
+                <li><span>02</span><div><h3>Model</h3><p>Define interfaces, dependencies, risks, and measurable outcomes.</p></div></li>
+                <li><span>03</span><div><h3>Prototype</h3><p>Build the smallest system that can challenge the assumptions.</p></div></li>
+                <li><span>04</span><div><h3>Verify</h3><p>Exercise normal, boundary, and failure paths with evidence.</p></div></li>
+                <li><span>05</span><div><h3>Encode</h3><p>Turn the lesson into automation, documentation, and the next iteration.</p></div></li>
+            </ol>
+        </section>
 
-                <div class="timeline-card">
-                    <div class="card-header">
-                        <div class="card-title"><i data-lucide="shield-alert"></i> Phase 3: The CORS Crisis</div>
-                    </div>
-                    <div class="card-body">
-                        <p>Encountered strict browser security blocks when the public layout attempted to fetch data from the local firewalled lab node.</p>
-                    </div>
-                </div>
+        <section class="section systems-section" id="systems" aria-labelledby="systems-title">
+            <div class="section-heading">
+                <p class="section-index">03 / EVIDENCE</p>
+                <div><h2 id="systems-title">Selected engineering systems</h2><p>ENG-Portal projects are working evidence of an evolving engineering practice.</p></div>
+            </div>
+            <div class="systems-grid">
+                <a class="system-card system-featured" href="atp_ai_simulation.html"><div class="system-meta"><span>Validation system</span><span>Active</span></div><i data-lucide="clipboard-check" aria-hidden="true">✓</i><h3>ATP / AI Simulation</h3><p>Transforms formal test procedure thinking into an AI-assisted proof of concept—connecting verification discipline with new interfaces.</p><span class="system-link">Inspect system <i data-lucide="arrow-up-right" aria-hidden="true">↗</i></span></a>
+                <a class="system-card" href="powershell-sim.html"><div class="system-meta"><span>Operations</span><span>Active</span></div><i data-lucide="terminal" aria-hidden="true">&gt;_</i><h3>PowerShell Systems Cockpit</h3><p>A command and telemetry workspace for hardware auditing, endpoint insight, and staged operational workflows.</p><span class="system-link">Inspect system <i data-lucide="arrow-up-right" aria-hidden="true">↗</i></span></a>
+                <a class="system-card" href="core_memory.html"><div class="system-meta"><span>Knowledge architecture</span><span>Developing</span></div><i data-lucide="brain-circuit" aria-hidden="true">◎</i><h3>Architecture Memory</h3><p>A living engineering knowledge system that preserves architectural context, technical decisions, system relationships, and lessons learned across the evolution of ENG-Portal.</p><span class="system-link">Inspect system <i data-lucide="arrow-up-right" aria-hidden="true">↗</i></span></a>
+                <a class="system-card" href="ess_lab.html"><div class="system-meta"><span>Reliability</span><span>Lab</span></div><i data-lucide="activity" aria-hidden="true">⌁</i><h3>ESS Lab Simulation</h3><p>An environmental stress screening interface that makes profiles, stages, and test conditions legible to operators.</p><span class="system-link">Inspect system <i data-lucide="arrow-up-right" aria-hidden="true">↗</i></span></a>
+            </div>
+        </section>
 
-                <div class="timeline-card">
-                    <div class="card-header">
-                        <div class="card-title"><i data-lucide="network"></i> Phase 4: Hybrid Router</div>
-                    </div>
-                    <div class="card-body">
-                        <p>Engineered the Secret Nexus Proxy (Node.js) to bypass CORS and intelligently route traffic between local Edge AI and Google Cloud.</p>
-                    </div>
-                </div>
-                
-                 <div class="timeline-card">
-                    <div class="card-header">
-                        <div class="card-title"><i data-lucide="code-2"></i> Phase 5: Component Architecture</div>
-                    </div>
-                    <div class="card-body">
-                        <p>Complete refactoring to Vanilla Web Standards. Zero framework lock-in, semantic HTML5, and global CSS Design Tokens (Material Design 3).</p>
-                    </div>
-                </div>
+        <section class="section evolution-section" aria-labelledby="evolution-title">
+            <div class="section-heading">
+                <p class="section-index">04 / TRAJECTORY</p>
+                <div><h2 id="evolution-title">From Hardware to AI</h2><p>The layers accumulated. The engineering foundation stayed constant.</p></div>
+            </div>
+            <ol class="evolution-track">
+                <li><span class="track-year">Foundation</span><div><h3>Electronics &amp; hardware</h3><p>Components, interfaces, measurements, and the discipline of physical evidence.</p></div></li>
+                <li><span class="track-year">Systems</span><div><h3>Verification &amp; reliability</h3><p>Repeatable procedures, environmental screening, and failure-oriented thinking.</p></div></li>
+                <li><span class="track-year">Automation</span><div><h3>Operations as software</h3><p>Scripts, telemetry, and operator tools that make complex work repeatable.</p></div></li>
+                <li><span class="track-year">Infrastructure</span><div><h3>Edge &amp; hybrid architecture</h3><p>Proxmox, local GPU inference, secure routing, and resilient cloud fallback.</p></div></li>
+                <li><span class="track-year">Now</span><div><h3>Applied engineering intelligence</h3><p>AI as a collaborator inside governed, observable, human-owned systems.</p></div></li>
+            </ol>
+        </section>
 
-            </section>
+        <section class="section mission-section" id="mission" aria-labelledby="mission-title">
+            <div class="mission-copy"><p class="section-index">05 / CURRENT VECTOR</p><h2 id="mission-title">Build intelligence that understands the system.</h2><p>My current mission is to connect deep engineering context with practical AI: local where it matters, cloud where it helps, and transparent enough to trust.</p></div>
+            <div class="learning-panel"><h3>Learning direction</h3><ul><li><span>01</span>Agentic engineering workflows</li><li><span>02</span>Edge AI orchestration</li><li><span>03</span>Reliable human–AI interfaces</li><li><span>04</span>Knowledge systems for technical teams</li></ul></div>
+        </section>
 
-        </main>
-        
-        <footer class="app-footer">
-            <span>ENG-Portal Enterprise UI © 2026. Built on Material Design 3.</span>
-            <div id="version-container" class="version-tag"></div>
-        </footer>
-    </div>
+        <section class="cta" aria-labelledby="cta-title">
+            <p class="eyebrow">Connection point / available online</p>
+            <h2 id="cta-title">Let’s compare notes on engineering systems.</h2>
+            <p>Explore the working prototypes in ENG-Portal or connect with Yevgeni on LinkedIn.</p>
+            <div class="hero-actions">
+                <a class="button button-primary" href="https://www.linkedin.com/in/yevgeni-aminov/" target="_blank" rel="noopener noreferrer">Connect on LinkedIn <i data-lucide="linkedin" aria-hidden="true">in</i><span class="visually-hidden"> (opens in a new tab)</span></a>
+                <a class="button button-secondary" href="index.html">Enter ENG-Portal <i data-lucide="arrow-right" aria-hidden="true">→</i></a>
+            </div>
+        </section>
+    </main>
 
-    <!-- Scripts -->
-    <script src="assets/js/version-sync.js"></script>
+    <footer class="site-footer"><p>© 2026 Yevgeni Aminov · ENG-Portal</p><p>Engineer first. Technology with purpose.</p></footer>
+
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            lucide.createIcons();
+        window.addEventListener("DOMContentLoaded", function () {
+            if (window.lucide && typeof window.lucide.createIcons === "function") {
+                window.lucide.createIcons();
+            }
         });
     </script>
 </body>
