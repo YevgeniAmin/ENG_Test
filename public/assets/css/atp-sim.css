@@ -1,0 +1,362 @@
+    /* ==========================================================================
+           1. Global Variables & Base Styles (Google Studio Vibe)
+           ========================================================================== */
+        :root {
+            --bg-global: #f8f9fa;
+            --bg-surface: #ffffff;
+            --bg-header: #f1f3f4;
+            --border-color: #dadce0;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --color-primary: #1a73e8;
+            --color-pass: #1e8e3e;
+            --color-fail: #d93025;
+            --bg-pass: #e6f4ea;
+            --bg-fail: #fce8e6;
+            --bg-ai-highlight: #e8f0fe;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3);
+            --shadow-lg: 0 4px 8px 0 rgba(60,64,67,0.15);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-global);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 20px;
+        }
+
+        /* ==========================================================================
+           2. Toolbar & Layout
+           ========================================================================== */
+        .toolbar {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .toolbar-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 260px;
+            flex: 1 1 auto;
+        }
+
+        .toolbar-title h1 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .toolbar-title span {
+            color: var(--color-primary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-end;
+            flex: 1 1 auto;
+            min-width: 260px;
+        }
+
+        .toolbar-actions .btn,
+        .toolbar-actions .pdf-group {
+            flex: 0 1 auto;
+            min-width: 140px;
+            max-width: 320px;
+        }
+
+        .toolbar-actions .btn {
+            justify-content: center;
+            padding: 8px 12px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-surface);
+            color: var(--text-primary);
+            transition: all 0.2s;
+            min-width: 0;
+        }
+
+        .btn:hover { background-color: var(--bg-header); }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover { background-color: #1557b0; }
+        
+        .btn-primary:disabled {
+            background-color: #8ab4f8;
+            cursor: not-allowed;
+        }
+
+        .toolbar-actions .pdf-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 1 auto;
+            min-width: 180px;
+        }
+
+        .pdf-name-input {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 12px;
+            color: var(--text-primary);
+            background-color: var(--bg-surface);
+        }
+
+        .btn-success {
+            background-color: var(--color-pass);
+            color: white;
+            border: none;
+        }
+
+        /* ==========================================================================
+           3. Document Container & Forms
+           ========================================================================== */
+        .doc-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .doc-header {
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 24px;
+            margin-bottom: 32px;
+        }
+
+        .doc-header h2 { font-size: 24px; margin-bottom: 16px; }
+
+        .studio-input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px dashed var(--border-color);
+            background: transparent;
+            padding: 8px;
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+
+        .studio-input:focus { border-bottom: 2px solid var(--color-primary); }
+        .studio-input.text-center { text-align: center; }
+        
+        .header-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .pdf-compact .doc-container {
+            padding: 16px;
+            border-radius: 10px;
+        }
+
+        .pdf-compact .doc-header {
+            padding-bottom: 18px;
+            margin-bottom: 24px;
+        }
+
+        .pdf-compact .section-box {
+            margin-bottom: 24px;
+        }
+
+        .pdf-compact .section-title {
+            padding: 8px 12px;
+            margin-bottom: 14px;
+        }
+
+        .pdf-compact .studio-table td,
+        .pdf-compact .studio-table th,
+        .pdf-compact .input-cell input,
+        .pdf-compact .input-cell select,
+        .pdf-compact .pdf-name-input {
+            padding: 6px 8px;
+            font-size: 12px;
+        }
+
+        .pdf-compact .studio-table-wrapper {
+            margin-bottom: 12px;
+        }
+
+        /* ==========================================================================
+           4. Sections & Tables
+           ========================================================================== */
+        .section-box {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            background-color: var(--bg-header);
+            padding: 10px 16px;
+            border-left: 4px solid var(--color-primary);
+            margin-bottom: 16px;
+            border-radius: 0 4px 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .studio-table-wrapper {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            margin-bottom: 16px;
+        }
+
+        .studio-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .studio-table th {
+            background-color: var(--bg-header);
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .studio-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .studio-table tr:last-child td { border-bottom: none; }
+
+        .studio-table thead { display: table-header-group; }
+        .studio-table tfoot { display: table-footer-group; }
+
+        .studio-table td.label-col {
+            font-weight: 600;
+            color: var(--text-secondary);
+            background-color: #fcfcfc;
+            width: 25%;
+        }
+
+        .input-cell { padding: 0 !important; }
+        .input-cell input, .input-cell select {
+            width: 100%;
+            height: 100%;
+            border: none;
+            padding: 12px;
+            background: transparent;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .input-cell input:focus, .input-cell select:focus {
+            background-color: rgba(26, 115, 232, 0.05);
+        }
+
+        /* ==========================================================================
+           5. AI Simulation Highlights
+           ========================================================================== */
+        .ai-filled {
+            background-color: var(--bg-ai-highlight) !important;
+            color: var(--color-primary) !important;
+            transition: all 0.3s ease;
+        }
+
+        .status-pass {
+            color: var(--color-pass) !important;
+            font-weight: 700;
+        }
+
+        .status-fail,
+        .status-rejected {
+            color: var(--color-fail) !important;
+            font-weight: 700;
+        }
+
+        #final-status.status-accepted {
+            background-color: var(--bg-pass);
+            color: var(--color-pass);
+        }
+
+        #final-status.status-rejected {
+            background-color: var(--bg-fail);
+            color: var(--color-fail);
+        }
+
+        /* Print formatting */
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; padding: 0; }
+            .doc-container { box-shadow: none; border: none; padding: 0; }
+        }
+
+        @media (max-width: 760px) {
+            .toolbar {
+                padding: 12px 14px;
+            }
+
+            .toolbar-actions {
+                justify-content: center;
+            }
+
+            .toolbar-actions .btn,
+            .toolbar-actions .pdf-group {
+                flex: 1 1 100%;
+                min-width: 0;
+                max-width: none;
+            }
+
+            .toolbar-actions .btn {
+                width: 100%;
+            }
+
+            .pdf-name-input {
+                max-width: 100%;
+            }
+        }

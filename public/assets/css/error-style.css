@@ -1,0 +1,160 @@
+/* ==========================================================================
+   ENG-Portal - HTTP 404 Component Sheet
+   Architecture: Clean Flexbox Layout Centering (Zero Framework Dependencies)
+   Design System: Google Material Design 3 (M3 Hierarchy)
+   ========================================================================== */
+
+/* Full Layout Viewport Centering */
+.error-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: var(--spacing-4);
+    background-color: var(--md-sys-color-background);
+    font-family: var(--font-family-base, sans-serif);
+}
+
+/* Central Card Glassmorphism / M3 Panel Panel Component */
+.error-panel {
+    background-color: var(--md-sys-color-surface);
+    border: var(--border-thin);
+    border-radius: var(--radius-md);
+    box-shadow: var(--elevation-2);
+    padding: var(--spacing-6);
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-3);
+    margin-auto: auto;
+}
+
+/* Visual Node & Icon Styling */
+.error-visual-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+.icon-error-glow {
+    width: 64px;
+    height: 64px;
+    color: var(--md-sys-color-error);
+    filter: drop-shadow(0 2px 8px rgba(239, 68, 68, 0.2));
+}
+
+/* Badge Layout Component */
+.badge {
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: var(--font-family-mono, monospace);
+    letter-spacing: 0.5px;
+}
+
+.badge-error {
+    background-color: #fef2f2;
+    color: var(--md-sys-color-error);
+    border: 1px solid #fee2e2;
+}
+
+/* Typography Scale */
+.error-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--md-sys-color-text-main);
+    letter-spacing: -0.5px;
+}
+
+.error-subtitle {
+    font-size: 0.95rem;
+    color: var(--md-sys-color-text-muted);
+    line-height: 1.6;
+    margin-top: var(--spacing-1);
+}
+
+/* Information Logs Panel Component */
+.info-panel {
+    background-color: var(--md-sys-color-surface-variant);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-2) var(--spacing-3);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    text-align: left;
+    width: 100%;
+    font-size: 0.8rem;
+    color: var(--md-sys-color-secondary);
+    border-left: 3px solid var(--md-sys-color-outline);
+}
+
+.icon-small {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.log-tag {
+    font-family: var(--font-family-mono, monospace);
+    font-weight: 700;
+    color: var(--md-sys-color-primary);
+}
+
+/* Action Buttons Component */
+.error-actions {
+    margin-top: var(--spacing-2);
+    width: 100%;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2);
+    width: 100%;
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: var(--transition-standard);
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    box-shadow: var(--elevation-1);
+}
+
+.btn-primary:hover {
+    background-color: #0369a1;
+    box-shadow: var(--elevation-2);
+}
+
+/* Footer Telemetry Component Layout */
+.app-footer {
+    margin-top: var(--spacing-4);
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.725rem;
+    color: var(--md-sys-color-text-muted);
+}
+
+.version-tag {
+    font-family: var(--font-family-mono, monospace);
+    background-color: var(--md-sys-color-surface-variant);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}

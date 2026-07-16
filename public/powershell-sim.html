@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerShell Management Console | ENG-PORTAL</title>
+    <meta name="description" content="Interactive enterprise PowerShell command and remote system simulation.">
+    <link rel="stylesheet" href="assets/css/powershell-sim.css">
+    <link rel="stylesheet" href="assets/css/portal-quality.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+   
+
+    <div class="app-layout">
+
+        <main class="main-content" id="main-content">
+            
+            <header class="top-header">
+                <div class="header-titles">
+                    <h1 class="page-title">PowerShell Management Console</h1>
+                    <p class="page-subtitle">Enterprise Remote System Command Simulator</p>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="status-badge status-online">
+                        <span class="status-dot"></span>
+                        YEVGENI.INFO
+                    </div>
+                    <div class="home-icon-container">
+                        <a href="index.html" aria-label="Return to home page">
+                            <i data-lucide="home" class="home-icon"></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            
+
+            <section class="workflow-stepper" id="execution-stepper">
+                <div class="progress-track">
+                    <div class="progress-bar" id="execution-progress"></div>
+                </div>
+                <div class="progress-labels">
+                    <span class="progress-label active" data-step="1">Task Selection</span>
+                    <span class="progress-label" data-step="2">Connection Auth</span>
+                    <span class="progress-label" data-step="3">Execution</span>
+                    <span class="progress-label" data-step="4">Output Results</span>
+                </div>
+            </section>
+
+            <section class="workspace-grid">
+                <div class="terminal-container hidden">
+                    <div class="log-viewer">
+                        <div class="log-header">
+                            <span class="log-title"><i data-lucide="monitor-play"></i> Remote Simulation Terminal</span>
+                            <span class="badge badge-surface" id="terminal-status">READY</span>
+                        </div>
+                        
+                        <div class="log-body" id="terminal-screen">
+                            <div class="log-line text-muted">Windows PowerShell Simulator (C) Enterprise Core.</div>
+                            <div class="log-line text-muted">PS C:\ENG-Portal\Nexus> _</div>
+                        </div>
+
+                        <div class="log-actions">
+                            <button class="btn btn-secondary" id="btn-clear">
+                                <i data-lucide="eraser"></i>
+                                Clear Output
+                            </button>
+                            <button class="btn btn-primary" id="btn-execute">
+                                <i data-lucide="play"></i>
+                                Execute Command
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cards-container">
+                    <div class="command-toolbar">
+                        <span class="toolbar-note">Select a cmdlet then open the terminal to execute a command.</span>
+                        <button class="btn btn-primary" id="btn-open-terminal" disabled>
+                            <i data-lucide="terminal"></i>
+                            Open Terminal
+                        </button>
+                    </div>
+                    <h2 class="section-title">Active Cmdlet Toolbox</h2>
+                    <div id="cmdlet-list" class="cards-list"></div>
+                </div>
+            </section>
+
+            <section class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon-wrapper"><i data-lucide="terminal"></i></div>
+                    <div class="kpi-data">
+                        <span class="kpi-label">Available Cmdlets</span>
+                        <span class="kpi-value" id="kpi-cmdlets-count">0</span>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="app-footer">
+        <span>ENG-Portal Enterprise UI © 2026. Built on Material Design 3.
+            <portal-version></portal-version>
+        </span>
+        
+    </footer>
+
+    <script src="assets/js/powershell-sim.js"></script>
+    <script src="assets/js/version-sync.js"></script>
+</body>
+</html>

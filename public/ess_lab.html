@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESS Lab Simulation | ENG-Portal</title>
+    <meta name="description" content="Interactive environmental stress screening lab for vibration and engineering test analysis.">
+    <!-- Use the established Global Tokens -->
+    <link rel="stylesheet" href="assets/css/global-tokens.css">
+    <!-- Local Module Styles -->
+    <link rel="stylesheet" href="assets/css/ess-sim.css">
+    <link rel="stylesheet" href="assets/css/portal-quality.css">
+    
+    <!-- Chart.js for Data Visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <div class="app-layout">
+        <!-- Sidebar Placeholder (If you want to keep the standard layout) -->
+        <aside class="sidebar">
+             <div class="sidebar-header">
+                <div class="logo-container">
+                    <i data-lucide="activity" class="icon-primary"></i>
+                    <span class="logo-text">ESS Lab</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <span class="nav-section-title">Test Matrix</span>
+                <a href="#" class="nav-item active">
+                    <i data-lucide="waves"></i>
+                    <span>Dynamic Vibration</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i data-lucide="thermometer"></i>
+                    <span>Thermal Cycling</span>
+                </a>
+            </nav>
+            
+            <div class="info-panel mt-auto">
+                <i data-lucide="info" class="icon-small"></i>
+                <p>Simulating MIL-STD-810G vibration profile mapping.</p>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content" id="main-content">
+            
+            <header class="top-header">
+                <div class="header-titles">
+                    <h1 class="page-title">Environmental Stress Screening</h1>
+                    <p class="page-subtitle">Real-time PSD (Power Spectral Density) Telemetry</p>
+                </div>
+                <div class="header-actions">
+                     <a href="index.html" class="btn btn-secondary">
+                        <i data-lucide="layout-dashboard"></i> Return to Hub
+                    </a>
+                </div>
+            </header>
+
+            <!-- Control Deck -->
+            <section class="control-deck">
+                <button id="btn-start" class="btn btn-primary" onclick="startVibrationSimulation()">
+                    <i data-lucide="play"></i> Engage Shaker
+                </button>
+                <button id="btn-stop" class="btn btn-secondary" onclick="stopVibrationSimulation()" disabled>
+                    <i data-lucide="square"></i> Abort Test
+                </button>
+            </section>
+
+            <!-- The Vibration Module (Code Adapted to Vanilla M3) -->
+            <section class="vibration-module">
+                
+                <div class="vib-header">
+                    <h2 class="vib-title">
+                        <i data-lucide="activity-square"></i> DYNAMIC VIBRATION (PSD)
+                    </h2>
+                    <div class="vib-telemetry">
+                        <span id="vibTimestamp" class="vib-clock">--:--:--</span>
+                        <span id="vibStatus" class="badge badge-surface status-idle">IDLE</span>
+                    </div>
+                </div>
+                
+                <div class="vib-metrics">
+                    <div class="metric-group">
+                        <span class="metric-label">Target RMS</span>
+                        <span class="metric-value-static">6.00g</span>
+                    </div>
+                    <div class="metric-group align-right">
+                        <span class="metric-label">Measured RMS</span>
+                        <span id="vibMeasured" class="metric-value-dynamic">0.00g</span>
+                    </div>
+                </div>
+
+                <!-- Canvas Wrapper -->
+                <div class="chart-wrapper">
+                    <canvas id="vibChart"></canvas>
+                </div>
+                
+                <div class="vib-footer">
+                    <span>Axis: Z</span>
+                    <span>Profile: ESS Std</span>
+                    <span>Freq: 20Hz - 2000Hz</span>
+                </div>
+
+                <div class="version-sync">
+                    <span><portal-version></portal-version></span>
+                </div>
+
+        </main>
+    </div>
+
+    <!-- Script Execution -->
+    <script src="assets/js/ess-sim.js"></script>
+    <script src="assets/js/version-sync.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

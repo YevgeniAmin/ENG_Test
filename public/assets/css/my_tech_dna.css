@@ -1,0 +1,158 @@
+/* ==========================================================================
+   My Tech DNA - Specific Styles
+   Requires: global-tokens.css
+   ========================================================================== */
+
+.app-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--md-sys-color-background);
+    font-family: var(--font-family-base);
+    color: var(--md-sys-color-text-main);
+}
+
+.top-header {
+    background-color: var(--md-sys-color-surface);
+    padding: var(--spacing-4) var(--spacing-6);
+    border-bottom: var(--border-thin);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-titles .page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--md-sys-color-primary);
+    margin-bottom: var(--spacing-1);
+}
+
+.header-titles .page-subtitle {
+    color: var(--md-sys-color-text-muted);
+    font-size: 1rem;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: var(--spacing-6);
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.dna-intro-section {
+    margin-bottom: var(--spacing-6);
+}
+
+.info-panel {
+    background-color: #e0f2fe; /* Light Primary Variant */
+    border-radius: var(--radius-md);
+    padding: var(--spacing-4);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-3);
+    border: 1px solid #bae6fd;
+}
+
+.icon-large {
+    width: 48px;
+    height: 48px;
+    color: var(--md-sys-color-primary);
+}
+
+.info-panel h3 {
+    font-size: 1.25rem;
+    color: #0369a1;
+    margin-bottom: var(--spacing-1);
+}
+
+.info-panel p {
+    color: #0f172a;
+    line-height: 1.6;
+}
+
+.timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-4);
+}
+
+.timeline-card {
+    background-color: var(--md-sys-color-surface);
+    border-radius: var(--radius-md);
+    border: var(--border-thin);
+    padding: var(--spacing-4);
+    box-shadow: var(--elevation-1);
+    transition: var(--transition-standard);
+}
+
+.timeline-card:hover {
+    box-shadow: var(--elevation-2);
+    transform: translateY(-2px);
+    border-color: var(--md-sys-color-primary);
+}
+
+.card-header {
+    margin-bottom: var(--spacing-3);
+    border-bottom: 1px solid var(--md-sys-color-outline);
+    padding-bottom: var(--spacing-2);
+}
+
+.card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--md-sys-color-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+.card-body p {
+    font-size: 0.95rem;
+    color: var(--md-sys-color-text-muted);
+    line-height: 1.6;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition-standard);
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-secondary {
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-primary);
+    border: 1px solid var(--md-sys-color-primary);
+}
+
+.btn-secondary:hover {
+    background-color: #f0f9ff;
+}
+
+.app-footer {
+    padding: var(--spacing-4);
+    text-align: center;
+    border-top: var(--border-thin);
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-text-muted);
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.version-tag {
+    font-family: var(--font-family-mono);
+    background-color: var(--md-sys-color-surface-variant);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    color: var(--md-sys-color-secondary);
+}

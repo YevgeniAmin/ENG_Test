@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="main_title">AI Engineering Portal: Core Memory Suite</title>
+    <meta name="description" content="ENG-PORTAL — Architecture Memory Logs, Agent Chronicles, and Neural Telemetry Core.">
+    
+    <link rel="stylesheet" href="assets/css/global-tokens.css">
+    <link rel="stylesheet" href="assets/css/core-memory.css">
+    <link rel="stylesheet" href="assets/css/portal-quality.css">
+
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <div class="app-layout">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <i data-lucide="brain-circuit" class="icon-primary"></i>
+                    <span class="logo-text">ENG-Core</span>
+                </div>
+            </div>
+            
+            <div class="language-control-panel">
+                <span class="control-label"><i data-lucide="languages"></i> Core Language</span>
+                <div class="btn-group">
+                    <button class="btn btn-toggle" id="lang-en" onclick="setLanguage('en')">EN</button>
+                    <button class="btn btn-toggle" id="lang-he" onclick="setLanguage('he')">HE</button>
+                </div>
+            </div>
+
+            <div class="telemetry-widget">
+                <h3 class="widget-title">ESS Signal Monitor</h3>
+                <div class="oscilloscope-container">
+                    <svg id="oscilloscope" viewBox="0 0 200 100">
+                        <path id="oscilloscope-path" d="M 0 50 Q 50 50, 100 50 T 200 50" fill="none" stroke="var(--md-sys-color-primary)" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="widget-controls">
+                    <button class="btn btn-primary btn-sm" id="btn-simulate-telemetry">
+                        <i data-lucide="activity"></i> Run AI Telemetry
+                    </button>
+                </div>
+                <div id="telemetry-log-output" class="telemetry-log"></div>
+            </div>
+
+            <div class="modules-control-panel">
+                <span class="control-label"><i data-lucide="languages"></i> Core Language</span>
+                <a href="ess_lab.html" class="job-card">
+                    <div class="card-visual-slot">
+                        <img src="assets/images/environmental_stress_screening.webp" alt="Vibration Lab" loading="lazy">
+                    </div>
+                    <div class="card-content">
+                        <h3>ESS Simulator</h3>
+                        <p class="card-meta">(Remote Command Exercise)</p>
+                        <p class="card-desc">Interactive enterprise Vibration simulation.</p>
+                        <div class="card-footer">
+                            <span class="status-badge status-active">ACTIVE</span>
+                            <span class="nav-arrow">➔</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content" id="main-content">
+            
+            <header class="top-header">
+                <div class="header-titles">
+                    <h1 class="page-title" data-i18n="main_title">AI Engineering Portal: The Living Core</h1>
+                    <p class="page-subtitle">Historical Context Repository & Neural Activity Logs</p>
+                </div>
+                <div class="header-actions">
+                    <a href="index.html" class="btn btn-secondary">
+                        <i data-lucide="layout-dashboard"></i> Central Hub
+                    </a>
+                </div>
+            </header>
+
+            <article class="narrative-workspace">
+                <section class="narrative-chapter">
+                    <h2 data-i18n="ch00_title">00 Introduction: Chaos Before Order</h2>
+                    <p data-i18n="ch00_text" class="narrative-text"></p>
+                </section>
+
+                <section class="narrative-chapter">
+                    <h2 data-i18n="ch01_title">01 Architecture Memory</h2>
+                    <p data-i18n="ch01_text" class="narrative-text"></p>
+                </section>
+
+                
+            </article>
+
+            <section class="log-viewer-section">
+                <h3 class="section-title">Core Asset Registry (Dynamic Ledger)</h3>
+                <div class="log-grid" id="memory-ledger-container">
+                    </div>
+            </section>
+
+            <article class="narrative-workspace">
+                <section class="narrative-chapter">
+                    <h2 data-i18n="ch03_title">03 Core Memory Initialization</h2>
+                    <p data-i18n="ch03_text" class="narrative-text"></p>
+                </section>
+
+                <section class="narrative-chapter">
+                    <h2 data-i18n="ch04_title">04 Architecture Memory</h2>
+                    <p data-i18n="ch04_text" class="narrative-text"></p>
+                </section>
+
+                <section class="narrative-chapter">
+                    <h2 data-i18n="ch05_title">05 Multi-Agent Consensus.</h2>
+                    <p data-i18n="ch05_text" class="narrative-text"></p>
+
+                <section class="narrative-chapter">
+                    <h2 data-i18n="ch06_title">06 Multi-Agent Consensus.</h2>
+                    <p data-i18n="ch06_text" class="narrative-text"></p>
+
+                <section class="narrative-chapter">
+                    <h2 data-i18n="ch07_title">07 Multi-Agent Consensus.</h2>
+                    <p data-i18n="ch07_p1" class="narrative-text"></p>
+                    <p data-i18n="ch07_p2" class="narrative-text"></p>
+                    <p data-i18n="ch07_p3" class="narrative-text"></p> 
+                    <img src="assets/images/artificial_hallucination.webp" alt="Artificial Hallucination"
+                        style="max-width:100%;height:auto;display:block;border-radius:0.75rem;object-fit:cover;" />
+                       
+
+                    
+                </section>
+            </article>
+
+                <div class="version-sync">
+                    <span><portal-version></portal-version></span>
+                </div>
+
+
+        </main>
+    </div>
+
+    <footer class="app-footer">
+        <span data-i18n="end_badge">System Release Matrix // SYSTEM_TERMINATOR</span>
+        <div id="version-container" class="version-tag"></div>
+    </footer>
+
+    <script src="assets/js/core_memory_translator.js"></script>
+    <script src="assets/js/core_memory.js"></script>
+    <script src="assets/js/version-sync.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+/* ==========================================================================
+   Design Tokens (Google Material Design 3 - Enterprise Theme)
+   ========================================================================== */
+:root {
+    /* Color Palette */
+    --md-sys-color-background: #f8fafc;
+    --md-sys-color-surface: #ffffff;
+    --md-sys-color-surface-variant: #f1f5f9;
+    
+    /* Primary (Enterprise Blue) */
+    --md-sys-color-primary: #0284c7; 
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-primary-container: #e0f2fe;
+
+    /* Secondary / Neutrals */
+    --md-sys-color-secondary: #475569;
+    --md-sys-color-outline: #cbd5e1;
+
+    /* Tertiary (Purple - Visionary) */
+    --md-sys-color-tertiary: #8b5cf6;
+    --md-sys-color-tertiary-container: #ede9fe;
+
+    /* Semantic States */
+    --md-sys-color-error: #ef4444;
+    
+    --md-sys-color-warning: #f59e0b;
+    --md-sys-color-warning-container: #fef3c7;
+    
+    --md-sys-color-success: #10b981;
+    --md-sys-color-success-container: #d1fae5;
+
+    /* Text */
+    --md-sys-color-text-main: #0f172a;
+    --md-sys-color-text-muted: #64748b;
+
+    /* Typography */
+    --font-family-base: 'Segoe UI', Roboto, Inter, sans-serif;
+    --font-family-hebrew: 'Noto Sans Hebrew', 'Segoe UI', Arial, sans-serif;
+    --font-family-mono: 'Consolas', 'Courier New', monospace;
+    --font-mono: var(--font-family-mono);
+    --bg-panel: var(--md-sys-color-surface-variant);
+    --neon-blue: #0ea5e9;
+
+    /* Spacing System (8px Grid) */
+    --spacing-1: 8px;
+    --spacing-2: 16px;
+    --spacing-3: 24px;
+    --spacing-4: 32px;
+    --spacing-5: 40px;
+    --spacing-6: 48px;
+
+    /* Radius & Borders (Updated for sharp, minimal rounding) */
+    --radius-sm: 2px;
+    --radius-md: 4px;
+    --radius-full: 9999px;
+    --border-thin: 1px solid var(--md-sys-color-outline);
+
+    /* Elevations (Shadows) */
+    --elevation-1: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    --elevation-2: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+
+    /* Transitions */
+    --transition-standard: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Status Badge Colors */
+    --color-active: #1e8e3e;
+    --bg-active: #e6f4ea;
+    --color-deployed: #1a73e8;
+    --bg-deployed: #e8f0fe;
+    --color-dev: #f9ab00;
+    --bg-dev: #fef7e0;
+    --color-visionary: #9334e6;
+    --bg-visionary: #f3e8fd;
+}
+
+/* Base Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.version-sync {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: var(--md-sys-color-text-muted);
+    font-size: 0.95rem;
+}
+
+.version-widget-wrapper {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+    font-size: 11px;
+    color: #64748b;
+}
+
+.version-badges-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.version-badge {
+    border-radius: 0.375rem;
+    background-color: var(--bg-panel);
+    padding: 0.25rem 0.5rem;
+    border: 1px solid rgba(51, 65, 85, 0.5);
+    display: flex;
+    gap: 0.25rem;
+}
+
+.version-value {
+    font-family: var(--font-mono);
+    color: var(--neon-blue);
+}
+
+.version-value.bold {
+    font-weight: 700;
+}
+
+.status-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+}
+
+.nav-arrow {
+    font-size: 1.1rem;
+    color: var(--md-sys-color-primary);
+}
+
+.status-active { background-color: var(--bg-active); color: var(--color-active); }
+.status-deployed { background-color: var(--bg-deployed); color: var(--color-deployed); }
+.status-dev { background-color: var(--bg-dev); color: var(--color-dev); }
+.status-visionary { background-color: var(--bg-visionary); color: var(--color-visionary); }

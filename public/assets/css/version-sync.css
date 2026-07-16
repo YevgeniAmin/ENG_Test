@@ -1,0 +1,38 @@
+/* ============================================================
+   VERSION SYNC MODULE — Version Badges & Widget
+   ============================================================ */
+
+.version-widget-wrapper {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+    font-size: 11px;
+    color: #64748b;
+}
+
+.version-badges-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.version-badge {
+    border-radius: 0.375rem;
+    background-color: var(--bg-panel);
+    padding: 0.25rem 0.5rem;
+    border: 1px solid rgba(51, 65, 85, 0.5);
+    display: flex;
+    gap: 0.25rem;
+}
+
+.version-value {
+    font-family: var(--font-mono);
+    color: var(--neon-blue);
+}
+
+.version-value.bold {
+    font-weight: 700;
+}

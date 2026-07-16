@@ -1,0 +1,322 @@
+/* ==========================================================================
+   ENG-Portal - Core Memory & Telemetry Component Sheet
+   Architecture: Flexbox & Grid Modular Layout System (Zero Utilities Framework)
+   ========================================================================== */
+
+.app-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    min-height: 100vh;
+    background-color: var(--md-sys-color-background);
+    font-family: var(--font-family-base, sans-serif);
+}
+
+.sidebar {
+    background-color: var(--md-sys-color-surface);
+    border-right: var(--border-thin);
+    padding: var(--spacing-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
+.sidebar-header .logo-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--md-sys-color-primary);
+}
+
+.main-content {
+    padding: var(--spacing-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    max-width: 1100px;
+    width: 100%;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: var(--border-thin);
+    padding-bottom: var(--spacing-3);
+}
+
+.page-title {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--md-sys-color-text-main);
+}
+
+.page-subtitle {
+    font-size: 0.95rem;
+    color: var(--md-sys-color-text-muted);
+}
+
+/* Narrative Workspace Text Engine Typography */
+.narrative-workspace {
+    background-color: var(--md-sys-color-surface);
+    border: var(--border-thin);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-4);
+    box-shadow: var(--elevation-1);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
+.narrative-chapter h2 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--md-sys-color-text-main);
+    margin-bottom: var(--spacing-1);
+    border-left: 3px solid var(--md-sys-color-primary);
+    padding-left: var(--spacing-1);
+}
+
+.narrative-text {
+    font-family: var(--font-family-base, sans-serif);
+    font-size: 1rem;
+    line-height: 1.75;
+    letter-spacing: 0.01em;
+    color: var(--md-sys-color-secondary);
+    text-align: start;
+    hyphens: auto;
+    max-width: 70ch;
+    margin: 0 auto;
+    word-break: break-word;
+    font-feature-settings: "liga" 1, "clig" 1;
+}
+
+html[lang="he"] .narrative-text {
+    font-family: var(--font-family-hebrew), var(--font-family-base);
+    text-align: start;
+}
+
+html[lang="en"] .narrative-text {
+    font-family: var(--font-family-base);
+}
+
+.highlight-quote {
+    background-color: #f0f9ff;
+    border-left: 3px solid var(--md-sys-color-primary);
+    padding: var(--spacing-2);
+    border-radius: var(--radius-sm);
+    font-style: italic;
+    color: var(--md-sys-color-text-main);
+}
+
+.technical-note {
+    font-family: var(--font-family-mono, monospace);
+    font-size: 0.825rem;
+    background-color: var(--md-sys-color-surface-variant);
+    padding: var(--spacing-2);
+    border-radius: var(--radius-sm);
+    color: var(--md-sys-color-secondary);
+}
+
+/* Oscilloscope Diagnostic Widget Component */
+.telemetry-widget {
+    background-color: #0f172a; /* Slate 900 Dark Terminal Node */
+    border-radius: var(--radius-md);
+    padding: var(--spacing-3);
+    border: 1px solid #334155;
+    color: #e2e8f0;
+}
+
+.widget-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #38bdf8;
+    margin-bottom: var(--spacing-2);
+}
+
+.oscilloscope-container {
+    background-color: #020617;
+    border-radius: var(--radius-sm);
+    height: 80px;
+    margin-bottom: var(--spacing-2);
+    border: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+}
+
+.telemetry-log {
+    font-family: var(--font-family-mono, monospace);
+    font-size: 0.75rem;
+    height: 60px;
+    overflow-y: auto;
+    color: var(--md-sys-color-success);
+    padding-top: var(--spacing-1);
+    border-top: 1px solid #1e293b;
+}
+
+/* Dynamic Ledger Registry Grid */
+.log-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-3);
+}
+
+.ledger-card {
+    background-color: var(--md-sys-color-surface);
+    border: var(--border-thin);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-3);
+    box-shadow: var(--elevation-1);
+}
+
+.ledger-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-1);
+}
+
+.ledger-title { font-weight: 600; font-size: 0.95rem; }
+.ledger-meta { font-size: 0.725rem; font-family: var(--font-family-mono); color: var(--md-sys-color-text-muted); }
+
+/* Language Control Panel component */
+.language-control-panel {
+    background-color: var(--md-sys-color-surface-variant);
+    padding: var(--spacing-2);
+    border-radius: var(--radius-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+}
+
+.control-label { font-size: 0.75rem; font-weight: 600; color: var(--md-sys-color-secondary); display: flex; align-items: center; gap: 4px; }
+.btn-group { display: flex; gap: 4px; }
+
+/* Buttons & Toggles Systems */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition-standard);
+    text-decoration: none;
+}
+
+.btn-sm { padding: 6px 12px; font-size: 0.75rem; }
+.btn-primary { background-color: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); width: 100%; }
+.btn-primary:hover { background-color: #0369a1; }
+.btn-secondary { background-color: var(--md-sys-color-surface); color: var(--md-sys-color-primary); border: 1px solid var(--md-sys-color-primary); }
+.btn-secondary:hover { background-color: #f0f9ff; }
+
+.btn-toggle { background-color: var(--md-sys-color-surface); color: var(--md-sys-color-secondary); flex-grow: 1; border: var(--border-thin); }
+.btn-toggle.active { background-color: var(--md-sys-color-primary); color: white; border-color: var(--md-sys-color-primary); }
+
+.modules-control-panel {
+    background-color: var(--md-sys-color-surface-variant);
+    padding: var(--spacing-2);
+    border-radius: var(--radius-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+}
+
+.job-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background-color: var(--md-sys-color-surface);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.card-visual-slot {
+    width: 100%;
+    min-height: 160px;
+    overflow: hidden;
+    background-color: var(--md-sys-color-surface-variant);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.card-visual-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.card-content {
+    padding: var(--spacing-3);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.card-content h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--md-sys-color-text-main);
+}
+
+.card-meta,
+.card-desc {
+    margin: 0;
+    color: var(--md-sys-color-secondary);
+}
+
+.card-meta {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.card-desc {
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+
+/* Alert component classes used inside js hydration loops */
+.alert-box { padding: var(--spacing-2); border-radius: var(--radius-sm); font-size: 0.825rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.alert-success { background-color: #ecfdf5; color: var(--md-sys-color-success); border: 1px solid #a7f3d0; }
+.alert-danger { background-color: #fef2f2; color: var(--md-sys-color-error); border: 1px solid #fca5a5; }
+
+/* Global System Footer Matrix */
+.app-footer {
+    padding: var(--spacing-4);
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--md-sys-color-text-muted);
+    border-top: var(--border-thin);
+    background-color: var(--md-sys-color-surface);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+/* RTL Adjustments for Sidebar Alignment when Hebrew is Active */
+html[dir="rtl"] .app-layout { grid-template-columns: 1fr 300px; }
+html[dir="rtl"] .sidebar { border-right: none; border-left: var(--border-thin); order: 2; }
+html[dir="rtl"] .main-content { order: 1; }
+html[dir="rtl"] .info-panel, html[dir="rtl"] .info-panel { text-align: right; }
+html[dir="rtl"] .narrative-chapter h2 { border-left: none; border-right: 3px solid var(--md-sys-color-primary); padding-left: 0; padding-right: var(--spacing-1); }

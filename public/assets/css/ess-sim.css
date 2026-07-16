@@ -1,0 +1,216 @@
+/* ==========================================================================
+   Vibration Simulator Styles (Based on global-tokens.css)
+   ========================================================================== */
+
+/* Layout structure inherited from global tokens */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--md-sys-color-background);
+    font-family: var(--font-family-base);
+    color: var(--md-sys-color-text-main);
+}
+
+.sidebar {
+    width: 280px;
+    background-color: var(--md-sys-color-surface);
+    border-right: var(--border-thin);
+    padding: var(--spacing-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
+.sidebar-header .logo-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--md-sys-color-primary);
+}
+
+.nav-section-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--md-sys-color-text-muted);
+    font-weight: 600;
+    margin-bottom: var(--spacing-2);
+    display: block;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-2);
+    text-decoration: none;
+    color: var(--md-sys-color-text-main);
+    border-radius: var(--radius-md);
+    transition: var(--transition-standard);
+}
+
+.nav-item.active, .nav-item:hover {
+    background-color: var(--md-sys-color-surface-variant);
+    color: var(--md-sys-color-primary);
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: var(--spacing-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: var(--border-thin);
+    padding-bottom: var(--spacing-3);
+}
+
+.page-title { font-size: 1.75rem; font-weight: 700; }
+.page-subtitle { color: var(--md-sys-color-text-muted); font-size: 0.95rem; }
+
+.control-deck {
+    display: flex;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-2);
+}
+
+/* Button Component */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition-standard);
+    font-family: inherit;
+    text-decoration: none;
+}
+
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary { background-color: var(--md-sys-color-primary); color: white; }
+.btn-secondary { background-color: var(--md-sys-color-surface); color: var(--md-sys-color-primary); border: var(--border-thin); }
+
+/* ==========================================================================
+   The Vibration Module
+   ========================================================================== */
+.vibration-module {
+    background-color: #0f172a; /* Tech Dark Surface */
+    border-radius: var(--radius-md);
+    padding: var(--spacing-4);
+    box-shadow: var(--elevation-2);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 800px;
+    border: 1px solid #1e293b;
+}
+
+.vib-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-3);
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+}
+
+.vib-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--md-sys-color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+.vib-title i { color: #38bdf8; }
+
+.vib-telemetry {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+}
+
+.vib-clock {
+    font-size: 0.75rem;
+    color: var(--md-sys-color-text-muted);
+    font-family: var(--font-family-mono);
+}
+
+/* Status Badges */
+.badge {
+    font-size: 0.75rem;
+    font-family: var(--font-family-mono);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    transition: var(--transition-standard);
+}
+
+.status-idle { background-color: #1e293b; color: #94a3b8; border-color: #334155; }
+.status-ok { background-color: rgba(16,185,129,0.1); color: #10b981; border-color: #10b981; box-shadow: 0 0 10px rgba(16,185,129,0.2); }
+.status-warn { background-color: rgba(234,179,8,0.1); color: #eab308; border-color: #eab308; }
+.status-err { background-color: rgba(239,68,68,0.1); color: #ef4444; border-color: #ef4444; animation: pulse 1s infinite; }
+
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+/* Metrics */
+.vib-metrics {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: var(--spacing-3);
+    padding: 0 var(--spacing-1);
+}
+
+.metric-group { display: flex; flex-direction: column; }
+.align-right { text-align: right; }
+
+.metric-label { font-size: 0.75rem; color: var(--md-sys-color-text-muted); font-family: var(--font-family-mono); }
+.metric-value-static { font-size: 1.25rem; font-weight: 700; color: #e2e8f0; font-family: var(--font-family-mono); }
+.metric-value-dynamic { 
+    font-size: 2rem; 
+    font-weight: 700; 
+    color: #38bdf8; 
+    font-family: var(--font-family-mono);
+    text-shadow: 0 0 10px rgba(56,189,248,0.4);
+    transition: color var(--transition-standard);
+}
+.metric-value-dynamic.idle { color: #475569; text-shadow: none; }
+
+/* Chart Area */
+.chart-wrapper {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    margin-top: var(--spacing-2);
+}
+
+.vib-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--md-sys-color-text-muted);
+    font-family: var(--font-family-mono);
+    margin-top: var(--spacing-3);
+    padding-top: var(--spacing-2);
+    border-top: 1px solid #1e293b;
+}
+
+/* Layout Responsive Fixes */
+@media (max-width: 768px) {
+    .app-layout { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; border-right: none; border-bottom: var(--border-thin); }
+    .metric-value-dynamic { font-size: 1.5rem; }
+}

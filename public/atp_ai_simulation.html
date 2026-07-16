@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATP/ATR AI Simulation | ENG-PORTAL</title>
+    <meta name="description" content="AI-assisted acceptance test planning, reporting, and document automation simulation.">
+    <link rel="stylesheet" href="assets/css/atp-sim.css">
+    <link rel="stylesheet" href="assets/css/portal-quality.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+   
+</head>
+<body>
+
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <div class="toolbar no-print">
+        <div class="toolbar-title">
+            <i data-lucide="shield-check" style="color: var(--color-primary);"></i>
+            <div>
+                <h1>ATP Pipeline <span style="font-weight: normal; color: var(--text-secondary);">| Document Automation</span></h1>
+            </div>
+        </div>
+        <div class="toolbar-actions">
+            <button id="clearBtn" class="btn"><i data-lucide="rotate-ccw" width="16"></i> Clear Form</button>
+            <div class="pdf-group">
+                <input id="pdf-file-name" class="pdf-name-input" type="text" placeholder="ATP-Test-Plan.pdf" value="ATP-Test-Plan.pdf" aria-label="PDF file name">
+                <button id="printBtn" class="btn btn-primary"><i data-lucide="printer" width="16"></i> Download PDF</button>
+            </div>
+            <button id="aiFillBtn" class="btn btn-primary"><i data-lucide="sparkles" width="16"></i> Run AI Simulation</button>
+        </div>
+    </div>
+
+    <main class="doc-container" id="main-content">
+        
+        <div class="doc-header">
+            <h2>Acceptance Test Plan & Report</h2>
+            <div class="header-inputs">
+                <input type="text" id="doc-project-name" class="studio-input text-center" style="font-size: 18px; font-weight: 600;" placeholder="[Project Name]">
+                <input type="text" id="doc-uut" class="studio-input text-center" placeholder="[Unit Under Test – UUT]">
+            </div>
+        </div>
+
+        <div class="section-box">
+            <div class="section-title">1. Document Control</div>
+            <div class="studio-table-wrapper">
+                <table class="studio-table">
+                    <tr><td class="label-col">Document Number</td><td class="input-cell"><input type="text" id="dc-num"></td></tr>
+                    <tr><td class="label-col">Revision</td><td class="input-cell"><input type="text" id="dc-rev"></td></tr>
+                    <tr><td class="label-col">Date</td><td class="input-cell"><input type="text" id="dc-date"></td></tr>
+                    <tr><td class="label-col">Prepared By</td><td class="input-cell"><input type="text" id="dc-prep"></td></tr>
+                    <tr><td class="label-col">Reviewed By</td><td class="input-cell"><input type="text" id="dc-revby"></td></tr>
+                    <tr><td class="label-col">Approved By</td><td class="input-cell"><input type="text" id="dc-appby"></td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="section-box" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+                <div class="section-title">2. Scope</div>
+                <div class="studio-table-wrapper">
+                    <table class="studio-table">
+                        <tr><td class="label-col" style="width: 40%;">Product Family</td><td class="input-cell"><input type="text" id="scope-family"></td></tr>
+                        <tr><td class="label-col">Part Number</td><td class="input-cell"><input type="text" id="scope-pn"></td></tr>
+                        <tr><td class="label-col">Prod Stage</td><td class="input-cell"><input type="text" id="scope-stage"></td></tr>
+                    </table>
+                </div>
+            </div>
+            <div>
+                <div class="section-title">3. UUT Identification</div>
+                <div class="studio-table-wrapper">
+                        <tr><td class="label-col" style="width: 40%;">Serial Number</td><td class="input-cell"><input type="text" id="uut-sn"></td></tr>
+                        <tr><td class="label-col">HW Version</td><td class="input-cell"><input type="text" id="uut-hw"></td></tr>
+                        <tr><td class="label-col">SW/FW Version</td><td class="input-cell"><input type="text" id="uut-sw"></td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-box">
+            <div class="section-title">4. Detailed ATR Results Matrix</div>
+            
+            <div class="studio-table-wrapper">
+                <table class="studio-table">
+                    <thead>
+                        <tr><th colspan="5" style="background-color: white;"><i data-lucide="usb" width="16" style="vertical-align: text-bottom;"></i> 4.1 USB Peripheral Interface Test</th></tr>
+                        <tr><th style="width: 25%;">Test Target</th><th style="width: 25%;">Expected Criteria</th><th style="width: 20%;">Actual Readout</th><th style="width: 15%;">Pass/Fail</th><th>Evidence Ref</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>USB Flash P.1 & P.2</td><td>Speed > 100MB/s</td>
+                            <td class="input-cell"><input type="text" id="res-usb-1" style="text-align: center;"></td>
+                            <td class="input-cell"><select id="pf-usb-1" style="text-align: center; font-weight: bold;"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
+                            <td class="input-cell"><input type="text" id="ev-usb-1"></td>
+                        </tr>
+                        <tr>
+                            <td>USB Flash P.3 & P.4</td><td>SuperSpeed > 350MB/s</td>
+                            <td class="input-cell"><input type="text" id="res-usb-2" style="text-align: center;"></td>
+                            <td class="input-cell"><select id="pf-usb-2" style="text-align: center; font-weight: bold;"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
+                            <td class="input-cell"><input type="text" id="ev-usb-2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="studio-table-wrapper">
+                <table class="studio-table">
+                    <thead>
+                        <tr><th colspan="5" style="background-color: white;"><i data-lucide="binary" width="16" style="vertical-align: text-bottom;"></i> 4.2 Serial Port Communication Test</th></tr>
+                        <tr><th style="width: 25%;">Port Definition</th><th style="width: 25%;">Configuration</th><th style="width: 20%;">Actual Readout</th><th style="width: 15%;">Pass/Fail</th><th>Evidence Ref</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>COM1 Interface</td><td>RS232 @ 115200</td>
+                            <td class="input-cell"><input type="text" id="res-com-1" style="text-align: center;"></td>
+                            <td class="input-cell"><select id="pf-com-1" style="text-align: center; font-weight: bold;"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
+                            <td class="input-cell"><input type="text" id="ev-com-1"></td>
+                        </tr>
+                        <tr>
+                            <td>COM2 Interface</td><td>RS422 @ 921600</td>
+                            <td class="input-cell"><input type="text" id="res-com-2" style="text-align: center;"></td>
+                            <td class="input-cell"><select id="pf-com-2" style="text-align: center; font-weight: bold;"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
+                            <td class="input-cell"><input type="text" id="ev-com-2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="studio-table-wrapper">
+                <table class="studio-table">
+                    <thead>
+                        <tr><th colspan="5" style="background-color: white;"><i data-lucide="cpu" width="16" style="vertical-align: text-bottom;"></i> 4.3 Discrete Digital I/O (GPIO Matrix)</th></tr>
+                        <tr><th style="width: 25%;">GPIO Bank</th><th style="width: 25%;">Expected Logic</th><th style="width: 20%;">Actual Readout</th><th style="width: 15%;">Pass/Fail</th><th>Evidence Ref</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GPIO_HI Array (1-12)</td><td>Logic State 1</td>
+                            <td class="input-cell"><input type="text" id="res-gpio-hi" style="text-align: center;"></td>
+                            <td class="input-cell"><select id="pf-gpio-hi" style="text-align: center; font-weight: bold;"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
+                            <td class="input-cell"><input type="text" id="ev-gpio-hi"></td>
+                        </tr>
+                        <tr>
+                            <td>GPIO_L Array (1-24)</td><td>Logic State 0</td>
+                            <td class="input-cell"><input type="text" id="res-gpio-lo" style="text-align: center;"></td>
+                            <td class="input-cell"><select id="pf-gpio-lo" style="text-align: center; font-weight: bold;"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
+                            <td class="input-cell"><input type="text" id="ev-gpio-lo"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="studio-table-wrapper">
+                <table class="studio-table">
+                    <thead>
+                        <tr><th colspan="5" style="background-color: white;"><i data-lucide="flame" width="16" style="vertical-align: text-bottom;"></i> 4.4 Environmental Burn-In Screening</th></tr>
+                        <tr><th style="width: 25%;">Parameter</th><th style="width: 25%;">Setup</th><th style="width: 20%;">Execution Log</th><th style="width: 15%;">Pass/Fail</th><th>Evidence Ref</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cycle Duration</td><td class="input-cell"><input type="text" id="bi-duration"></td>
+                            <td class="input-cell" rowspan="2"><input type="text" id="res-burnin" style="text-align: center;"></td>
+                            <td class="input-cell" rowspan="2"><select id="pf-burnin" style="text-align: center; font-weight: bold;"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
+                            <td class="input-cell" rowspan="2"><input type="text" id="ev-burnin"></td>
+                        </tr>
+                        <tr>
+                            <td>Thermal Monitor</td><td class="input-cell"><input type="text" id="bi-temp"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section-box">
+            <div class="section-title">5. Final Disposition & Signatures</div>
+            <div style="display: flex; gap: 16px; margin-bottom: 16px; align-items: center;">
+                <span style="font-weight: 600;">UUT Acceptance:</span>
+                <select id="final-status" style="padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); font-weight: bold; width: 200px;">
+                    <option value="">[Select Status]</option>
+                    <option value="ACCEPTED">ACCEPTED</option>
+                    <option value="REJECTED">REJECTED</option>
+                </select>
+            </div>
+            
+            <div class="studio-table-wrapper">
+                <table class="studio-table">
+                    <thead><tr><th>Role</th><th>Name</th><th>Signature</th><th>Date</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td class="label-col">Test Engineer</td>
+                            <td class="input-cell"><input type="text" id="sig-name-1"></td>
+                            <td class="input-cell"><input type="text" id="sig-sign-1" style="font-family: serif; font-style: italic; color: var(--color-primary);"></td>
+                            <td class="input-cell"><input type="text" id="sig-date-1"></td>
+                        </tr>
+                        <tr>
+                            <td class="label-col">QA Inspector</td>
+                            <td class="input-cell"><input type="text" id="sig-name-2"></td>
+                            <td class="input-cell"><input type="text" id="sig-sign-2" style="font-family: serif; font-style: italic; color: var(--color-primary);"></td>
+                            <td class="input-cell"><input type="text" id="sig-date-2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+            
+
+    <script>
+        lucide.createIcons();
+
+        // Updated mock data mapping exactly to the new HTML IDs
+        const mockAIData = {
+            "doc-project-name": "Project Artemis - Comm Module",
+            "doc-uut": "UHF Transceiver Unit",
+            "dc-num": "DOC-2026-0042",
+            "dc-rev": "02",
+            "dc-date": "02/06/2026",
+            "dc-prep": "AI Test Agent (Auto-Gen)",
+            "dc-revby": "David Cohen, QA",
+            "dc-appby": "Sarah Levi, R&D",
+            "scope-family": "Artemis Comm",
+            "scope-pn": "ART-TRX-800",
+            "scope-stage": "Serial Production",
+            "uut-sn": "SN-2026-90014",
+            "uut-hw": "V1.4",
+            "uut-sw": "FW-2.0.1b",
+            
+            // USB
+            "res-usb-1": "118 MB/s", "pf-usb-1": "PASS", "ev-usb-1": "usb_mount.log",
+            "res-usb-2": "390 MB/s", "pf-usb-2": "PASS", "ev-usb-2": "usb_speed.log",
+            
+            // COM
+            "res-com-1": "Loopback OK", "pf-com-1": "PASS", "ev-com-1": "com1.log",
+            "res-com-2": "Sync Locked", "pf-com-2": "PASS", "ev-com-2": "com2.log",
+            
+            // GPIO
+            "res-gpio-hi": "Logic 1 Verified", "pf-gpio-hi": "PASS", "ev-gpio-hi": "gpio_h.xml",
+            "res-gpio-lo": "Logic 0 Verified", "pf-gpio-lo": "PASS", "ev-gpio-lo": "gpio_l.xml",
+            
+            // Burn-in
+            "bi-duration": "48 Hours", "bi-temp": "Max 72°C",
+            "res-burnin": "Cycle Complete", "pf-burnin": "PASS", "ev-burnin": "burnin.pdf",
+            
+            // Final
+            "final-status": "ACCEPTED",
+            "sig-name-1": "AI Test Rig", "sig-sign-1": "Verified by System", "sig-date-1": "02/06/2026",
+            "sig-name-2": "David Cohen", "sig-sign-2": "D. Cohen", "sig-date-2": "02/06/2026"
+        };
+
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+        async function startAISimulation() {
+            const btn = document.getElementById('aiFillBtn');
+            if (!btn) return;
+
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader" class="lucide-spin" width="16"></i> Processing...`;
+            lucide.createIcons();
+
+            for (const [id, value] of Object.entries(mockAIData)) {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.value = value;
+                    el.classList.add('ai-filled');
+                    
+                    // Style Pass/Fail dropdowns
+                    if (id.startsWith('pf-')) {
+                        el.classList.remove('status-pass', 'status-fail');
+                        el.classList.add(value === 'PASS' ? 'status-pass' : 'status-fail');
+                    }
+                    
+                    // Style Final Status
+                    if (id === 'final-status') {
+                        el.classList.remove('status-accepted', 'status-rejected');
+                        if (value === 'ACCEPTED') {
+                            el.classList.add('status-accepted');
+                        } else if (value === 'REJECTED') {
+                            el.classList.add('status-rejected');
+                        }
+                    }
+
+                    await sleep(Math.random() * 60 + 20); 
+                }
+            }
+
+            // Remove highlight effect after completion
+            setTimeout(() => {
+                document.querySelectorAll('.ai-filled').forEach(el => {
+                    el.classList.remove('ai-filled');
+                });
+            }, 1000);
+
+            btn.innerHTML = '<i data-lucide="check-circle" width="16"></i> Completed';
+            btn.classList.replace('btn-primary', 'btn-success');
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="sparkles" width="16"></i> Run AI Simulation`;
+                btn.classList.replace('btn-success', 'btn-primary');
+                lucide.createIcons();
+            }, 3000);
+        }
+
+        function updateFinalStatusStyle() {
+            const finalStatus = document.getElementById('final-status');
+            if (!finalStatus) return;
+
+            finalStatus.classList.remove('status-accepted', 'status-rejected');
+            if (finalStatus.value === 'ACCEPTED') {
+                finalStatus.classList.add('status-accepted');
+            } else if (finalStatus.value === 'REJECTED') {
+                finalStatus.classList.add('status-rejected');
+            }
+        }
+
+        function generatePDF() {
+            const element = document.querySelector('.doc-container');
+            if (!element) return;
+
+            const filenameInput = document.getElementById('pdf-file-name');
+            const filename = filenameInput && filenameInput.value.trim() ? filenameInput.value.trim() : 'ATP-Test-Plan.pdf';
+
+            element.classList.add('pdf-compact');
+
+            const opt = {
+                margin: [0.2, 0.2],
+                filename,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, logging: true },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+                pagebreak: {
+                    mode: ['legacy']
+                }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.classList.remove('pdf-compact');
+            }).catch(() => {
+                element.classList.remove('pdf-compact');
+            });
+        }
+
+        function clearForm() {
+            document.querySelectorAll('input[type="text"], select').forEach(el => {
+                el.value = '';
+                el.classList.remove('ai-filled', 'status-pass', 'status-fail', 'status-accepted', 'status-rejected');
+                if(el.id === 'final-status') {
+                    el.style.backgroundColor = '';
+                    el.style.color = '';
+                }
+            });
+        }
+
+        document.getElementById('aiFillBtn').addEventListener('click', startAISimulation);
+        document.getElementById('final-status').addEventListener('change', updateFinalStatusStyle);
+        document.getElementById('clearBtn').addEventListener('click', clearForm);
+        document.getElementById('printBtn').addEventListener('click', generatePDF);
+    
+    </script>
+    
+    
+</body>
+</html>

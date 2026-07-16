@@ -1,0 +1,79 @@
+/* Shared usability layer for every ENG-PORTAL surface. */
+html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+}
+
+body {
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg,
+canvas {
+    max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button,
+select,
+a[href] {
+    touch-action: manipulation;
+}
+
+:focus-visible {
+    outline: 3px solid #0ea5e9;
+    outline-offset: 3px;
+}
+
+.skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 10000;
+    padding: 10px 14px;
+    border-radius: 4px;
+    background: #0f172a;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    transform: translateY(-160%);
+    transition: transform 160ms ease;
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}
+
+::selection {
+    background: #bae6fd;
+    color: #0f172a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media (forced-colors: active) {
+    :focus-visible {
+        outline-color: Highlight;
+    }
+}

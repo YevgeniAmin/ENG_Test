@@ -1,0 +1,785 @@
+/* ==========================================================================
+   Design Tokens (Google Material Design 3 - Enterprise Theme)
+   ========================================================================== */
+   :root {
+    /* Color Palette */
+    --md-sys-color-background: #f8fafc;
+    --md-sys-color-surface: #ffffff;
+    --md-sys-color-surface-variant: #f1f5f9;
+    --md-sys-color-primary: #0284c7; /* Enterprise Blue */
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-secondary: #475569;
+    --md-sys-color-outline: #cbd5e1;
+    --md-sys-color-error: #ef4444;
+    --md-sys-color-success: #10b981;
+    --md-sys-color-text-main: #0f172a;
+    --md-sys-color-text-muted: #64748b;
+    
+    /* Terminal Theme (Dark Surface) */
+    --md-sys-color-terminal-bg: #0f172a;
+    --md-sys-color-terminal-text: #e2e8f0;
+    --md-sys-color-terminal-accent: #38bdf8;
+
+    /* Typography */
+    --font-family-base: 'Segoe UI', Roboto, Inter, sans-serif;
+    --font-family-mono: 'Consolas', 'Courier New', monospace;
+
+    /* Spacing System (8px Grid) */
+    --spacing-1: 8px;
+    --spacing-2: 16px;
+    --spacing-3: 24px;
+    --spacing-4: 32px;
+    --spacing-6: 48px;
+
+    /* Radius & Borders */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-full: 9999px;
+    --border-thin: 1px solid var(--md-sys-color-outline);
+
+    /* Elevations (Shadows) */
+    --elevation-1: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    --elevation-2: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+
+    /* Transitions */
+    --transition-standard: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   Reset & Base Styles
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family-base);
+    background-color: var(--md-sys-color-background);
+    color: var(--md-sys-color-text-main);
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+/* Utilities */
+.mt-24 { margin-top: var(--spacing-3); }
+.mt-auto { margin-top: auto; }
+.text-muted { color: var(--md-sys-color-text-muted) !important; }
+.status-text-success { color: var(--md-sys-color-success); font-weight: 600; }
+
+/* ==========================================================================
+   Layout Architecture
+   ========================================================================== */
+html, body {
+    min-height: 100%;
+    width: 100%;
+}
+
+body {
+    margin: 0;
+}
+
+..app-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+}
+
+.main-content {
+    padding: var(--spacing-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ==========================================================================
+   Sidebar Component
+   ========================================================================== */
+.sidebar {
+    background-color: var(--md-sys-color-surface);
+    border-left: var(--border-thin);
+    padding: var(--spacing-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+}
+
+.sidebar-header .logo-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--md-sys-color-primary);
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+}
+
+.nav-section-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--md-sys-color-text-muted);
+    font-weight: 600;
+    margin-bottom: var(--spacing-1);
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-2);
+    text-decoration: none;
+    color: var(--md-sys-color-text-main);
+    border-radius: var(--radius-md);
+    transition: var(--transition-standard);
+}
+
+.nav-item:hover, .nav-item.active {
+    background-color: var(--md-sys-color-surface-variant);
+    color: var(--md-sys-color-primary);
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Header & Status Components
+   ========================================================================== */
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+.page-subtitle {
+    color: var(--md-sys-color-text-muted);
+    font-size: 0.875rem;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+.home-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background-color: var(--md-sys-color-surface-variant);
+    border: var(--border-thin);
+}
+
+.home-icon-container a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--md-sys-color-primary);
+    text-decoration: none;
+}
+
+.home-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.status-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    background-color: var(--md-sys-color-surface);
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    border: var(--border-thin);
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: var(--font-family-mono);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--md-sys-color-success);
+}
+
+/* ==========================================================================
+   KPI Cards Component
+   ========================================================================== */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-3);
+}
+
+.kpi-card {
+    background-color: var(--md-sys-color-surface);
+    padding: var(--spacing-3);
+    border-radius: var(--radius-md);
+    border: var(--border-thin);
+    box-shadow: var(--elevation-1);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+}
+
+.kpi-icon-wrapper {
+    background-color: var(--md-sys-color-surface-variant);
+    color: var(--md-sys-color-primary);
+    padding: var(--spacing-2);
+    border-radius: var(--radius-md);
+    display: flex;
+}
+
+.kpi-data {
+    display: flex;
+    flex-direction: column;
+}
+
+.kpi-label {
+    font-size: 0.875rem;
+    color: var(--md-sys-color-text-muted);
+}
+
+.kpi-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   Workflow Stepper Component
+   ========================================================================== */
+.workflow-stepper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    background-color: var(--md-sys-color-surface);
+    padding: var(--spacing-3);
+    border-radius: var(--radius-md);
+    border: var(--border-thin);
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.progress-track {
+    height: 10px;
+    background-color: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #0284c7, #0ea5e9);
+    border-radius: 999px;
+    transition: width 320ms ease;
+}
+
+.progress-labels {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--spacing-2);
+    text-align: center;
+    align-items: center;
+}
+
+.progress-label {
+    font-size: 0.75rem;
+    color: var(--md-sys-color-text-muted);
+    font-weight: 600;
+    min-width: 0;
+}
+
+.progress-label.active,
+.progress-label.completed {
+    color: var(--md-sys-color-primary);
+}
+
+.progress-label.completed {
+    opacity: 0.9;
+}
+
+.progress-label.active {
+    text-decoration: underline;
+}
+
+@media (max-width: 720px) {
+    .progress-labels {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+/* ==========================================================================
+   Workspace Data Grid & Cards
+   ========================================================================== */
+.workspace-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-3);
+    align-items: start;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.cards-container {
+    width: 100%;
+    max-width: 780px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.command-toolbar {
+    justify-content: space-between;
+    gap: var(--spacing-3);
+}
+
+@media (max-width: 1024px) {
+    .workflow-stepper {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "step1"
+            "step2"
+            "step3"
+            "step4";
+        padding: var(--spacing-3);
+        gap: var(--spacing-3);
+    }
+
+    .cards-container {
+        max-width: 100%;
+    }
+
+    .command-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #btn-open-terminal {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 720px) {
+    .app-layout {
+        padding: 0 12px;
+    }
+
+    .main-content {
+        padding: var(--spacing-3);
+    }
+}
+
+.section-title {
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-2);
+    font-weight: 600;
+}
+
+.command-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-2);
+    margin-bottom: var(--spacing-3);
+}
+
+.toolbar-note {
+    color: var(--md-sys-color-text-muted);
+    font-size: 0.9rem;
+}
+
+#btn-open-terminal {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.terminal-container {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 200ms ease, max-height 240ms ease, margin-bottom 200ms ease;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.terminal-container.active {
+    opacity: 1;
+    max-height: 1200px;
+    margin-bottom: var(--spacing-3);
+}
+
+.terminal-container.hidden {
+    display: block;
+}
+
+.log-viewer,
+.cards-container,
+.workflow-stepper,
+.workspace-grid,
+.kpi-grid {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+}
+
+.card {
+    background-color: var(--md-sys-color-surface);
+    border: var(--border-thin);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-3);
+    cursor: pointer;
+    transition: var(--transition-standard);
+    box-shadow: var(--elevation-1);
+}
+
+.card:hover {
+    box-shadow: var(--elevation-2);
+    border-color: var(--md-sys-color-primary);
+}
+
+.card.selected {
+    border-color: var(--md-sys-color-primary);
+    border-width: 2px;
+    background-color: #f0f9ff;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-1);
+}
+
+.card-title {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.badge {
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-outline { border: var(--border-thin); color: var(--md-sys-color-text-muted); }
+.badge-surface { background-color: var(--md-sys-color-surface-variant); color: var(--md-sys-color-secondary); }
+
+.card-desc {
+    font-size: 0.875rem;
+    color: var(--md-sys-color-text-muted);
+    margin-bottom: var(--spacing-2);
+}
+
+/* ==========================================================================
+   Log Viewer (Terminal Component)
+   ========================================================================== */
+.log-viewer {
+    background-color: var(--md-sys-color-terminal-bg);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--elevation-2);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.log-header {
+    background-color: #1e293b;
+    padding: var(--spacing-2) var(--spacing-3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #334155;
+}
+
+.log-title {
+    color: var(--md-sys-color-surface);
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+}
+
+.log-body {
+    padding: var(--spacing-3);
+    font-family: var(--font-family-mono);
+    font-size: 0.8125rem;
+    color: var(--md-sys-color-terminal-text);
+    height: 300px;
+    overflow-y: auto;
+}
+
+.log-line { margin-bottom: 4px; word-break: break-all; }
+.log-cmd { color: var(--md-sys-color-terminal-accent); }
+.log-success { color: var(--md-sys-color-success); }
+.log-error { color: var(--md-sys-color-error); }
+
+.log-actions {
+    padding: var(--spacing-2) var(--spacing-3);
+    background-color: #1e293b;
+    display: flex;
+    gap: var(--spacing-2);
+    border-top: 1px solid #334155;
+}
+
+/* ==========================================================================
+   Buttons Component
+   ========================================================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-1);
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition-standard);
+    font-family: var(--font-family-base);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: #0369a1;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--md-sys-color-surface);
+    border: 1px solid var(--md-sys-color-outline);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.btn-icon {
+    padding: 8px;
+    border-radius: 50%;
+    background-color: var(--md-sys-color-surface);
+    border: var(--border-thin);
+    color: var(--md-sys-color-secondary);
+}
+
+/* ==========================================================================
+   Charts Placeholder & Information Panel
+   ========================================================================== */
+.info-panel {
+    background-color: #e0f2fe;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-2);
+    font-size: 0.75rem;
+    color: #0369a1;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-1);
+}
+
+.chart-placeholder {
+    background-color: var(--md-sys-color-surface);
+    border: var(--border-thin);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-3);
+}
+
+.chart-header {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-3);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    color: var(--md-sys-color-secondary);
+}
+
+.chart-body {
+    height: 100px;
+    display: flex;
+    align-items: flex-end;
+    gap: var(--spacing-2);
+    justify-content: space-around;
+}
+
+.placeholder-bar {
+    width: 20%;
+    background-color: var(--md-sys-color-primary);
+    border-radius: 4px 4px 0 0;
+    opacity: 0.7;
+}
+
+/* ==========================================================================
+   Footer Component
+   ========================================================================== */
+.app-footer {
+    padding: var(--spacing-3);
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--md-sys-color-text-muted);
+    border-top: var(--border-thin);
+    background-color: var(--md-sys-color-surface);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* Responsive Logic (Desktop First) */
+@media (max-width: 1024px) {
+    .app-layout {
+        grid-template-columns: 1fr;
+        padding: 0 16px;
+    }
+    .sidebar { display: none; }
+    .workspace-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+    .app-layout {
+        padding: 0 10px;
+    }
+    .main-content {
+        padding: var(--spacing-3);
+        gap: var(--spacing-3);
+    }
+    .top-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-3);
+    }
+    .header-actions {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+    .workflow-stepper {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-3);
+    }
+    .progress-labels {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .command-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    #btn-open-terminal {
+        width: 100%;
+        justify-content: center;
+    }
+    .cards-container,
+    .terminal-container,
+    .log-viewer,
+    .kpi-grid,
+    .workspace-grid {
+        width: 100%;
+        max-width: 100%;
+    }
+    .log-body {
+        height: 220px;
+    }
+    .card {
+        width: 100%;
+    }
+    .chart-body {
+        flex-direction: column;
+        height: auto;
+    }
+    .panel-header,
+    .chat-input-wrapper,
+    .recent-insights {
+        width: 100%;
+    }
+}
+
+/* Extremely small phones - extra adjustments */
+@media (max-width: 520px) {
+    .app-layout { padding: 0 8px; }
+    .main-content { padding: 16px; gap: 16px; }
+    .page-title { font-size: 1.25rem; }
+    .page-subtitle { font-size: 0.85rem; }
+
+    /* Stepper / progress */
+    .workflow-stepper { padding: 10px; }
+    .progress-track { height: 8px; }
+    .progress-bar { transition: width 240ms ease; }
+    .progress-labels { grid-template-columns: 1fr; gap: 8px; }
+    .progress-label { font-size: 0.72rem; }
+
+    /* Terminal & log viewer */
+    .log-viewer { border-radius: 8px; }
+    .log-body { height: 160px; padding: 12px; font-size: 12px; }
+    .log-actions { padding: 8px 12px; }
+
+    /* Command toolbar + buttons */
+    .command-toolbar { gap: 8px; }
+    #btn-open-terminal, .btn { width: 100%; padding: 10px 12px; }
+
+    /* Content containers */
+    .cards-container, .terminal-container, .kpi-grid, .workspace-grid { width: 100%; max-width: 100%; padding: 0; }
+    .cards-container { margin: 0; }
+
+    /* Cards and charts */
+    .card { padding: 12px; }
+    .chart-body { flex-direction: column; }
+
+    /* Sidebar panels */
+    .panel-header, .chat-input-wrapper, .recent-insights { width: 100%; }
+}

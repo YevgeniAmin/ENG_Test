@@ -1,629 +1,150 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI R&D Portal | Yevgeni.info</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap');
-        
-        body {
-            font-family: 'Heebo', sans-serif;
-            background-color: #0f172a; /* Slate 900 */
-            color: #e2e8f0;
-        }
-        
-        .font-mono {
-            font-family: 'Fira Code', monospace;
-        }
+    
+    <meta name="description" content="ENG-PORTAL — Engineering workspace for AI, cloud, automation, and digital systems.">
+    <meta property="og:title" content="ENG-PORTAL">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/images/preview.png">
 
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(56, 189, 248, 0.15);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-            transition: border-color 0.3s ease;
-        }
-
-        .glass-panel:hover {
-            border-color: rgba(56, 189, 248, 0.3);
-        }
-
-        .neon-text {
-            color: #38bdf8;
-            text-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
-        }
-
-        .terminal-glow {
-            box-shadow: inset 0 0 25px rgba(16, 185, 129, 0.05);
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(30, 41, 59, 0.5);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #38bdf8;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #0284c7;
-        }
-
-        /* Terminal blinking cursor */
-        .cursor-blink {
-            display: inline-block;
-            width: 8px;
-            height: 15px;
-            background-color: #cbd5e1;
-            vertical-align: middle;
-            animation: blink 1s step-end infinite;
-            margin-left: 4px;
-        }
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        /* Footer Actions Styling */
-        .footer-actions {
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 1px dashed rgba(0, 243, 255, 0.3);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        /* Status Badge */
-        .update-status {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 8px 16px;
-            border-radius: 50px;
-            border: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            font-size: 0.85em;
-            color: var(--text-muted);
-        }
-
-        .pulse-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #39ff14;
-            border-radius: 50%;
-            margin-left: 10px;
-            box-shadow: 0 0 10px #39ff14;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.7); }
-            70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(57, 255, 20, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(57, 255, 20, 0); }
-        }
-
-        /* The Cyber Button */
-        .nexus-btn {
-            position: relative;
-            padding: 12px 28px;
-            background: transparent;
-            color: #00f3ff;
-            text-decoration: none;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border: 1px solid #00f3ff;
-            border-radius: 4px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
-        }
-
-        .nexus-btn:hover {
-            background: #00f3ff;
-            color: #0f172a;
-            box-shadow: 0 0 30px #00f3ff;
-            text-shadow: none;
-        }
-
-        /* Glitch Effect on Hover */
-        .nexus-btn:hover .btn-glitch {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            animation: glitch 0.2s infinite;
-        }
-
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
-
-        @media (max-width: 600px) {
-            .footer-actions {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-    </style>
+    <title>ENG-PORTAL - Innovation & Engineering Hub</title>
+    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/portal-quality.css">
+    
 </head>
-<body class="min-h-screen p-4 md:p-8 flex flex-col gap-6 selection:bg-sky-500/30">
+<body>
 
-    <!-- Header Section -->
-    <header class="flex flex-col lg:flex-row justify-between items-center glass-panel rounded-2xl p-6 gap-6 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl -z-10 translate-x-1/2 -translate-y-1/2"></div>
-        
-        <div class="flex items-center gap-4 z-10 w-full lg:w-auto justify-center lg:justify-start">
-            <div class="p-3 bg-slate-800/80 rounded-xl border border-sky-500/50 shadow-[0_0_15px_rgba(56,189,248,0.2)] relative group">
-                <i data-lucide="cpu" class="text-sky-400 w-8 h-8 group-hover:scale-110 transition-transform duration-300"></i>
-            </div>
-            <div>
-                <h1 class="text-2xl md:text-3xl font-bold text-white tracking-wide">Yevgeni <span class="neon-text">AI Portal</span></h1>
-                <p class="text-slate-400 text-sm mt-1">Proxmox srv-1 | Local Agents & Automation Pipeline</p>
-            </div>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="studio-header">
+        <div class="header-left">
+            <button class="menu-toggle-btn" aria-label="Open menu" aria-expanded="false">☰</button>
+            <h1 class="portal-logo">ENG-PORTAL <V2 class="0">2.0</V2> <span class="subtitle">- INNOVATION & ENGINEERING HUB</span></h1>
         </div>
-
-        <div dir="ltr" class="bg-black/40 border border-gray-700/80 rounded-2xl p-3 w-full lg:max-w-sm backdrop-blur-md shadow-lg z-10">
-            <div class="flex items-center justify-between mb-2 border-b border-gray-700/50 pb-2 px-1">
-                <span class="text-sm font-semibold tracking-wider text-cyan-400 flex items-center gap-2">
-                    <span class="text-lg">🤖</span> AI Edge Translator
-                </span>
-                <span class="text-[10px] text-gray-500 uppercase tracking-widest">Select Lang</span>
-            </div>
-            <div class="flex overflow-x-auto snap-x snap-mandatory space-x-2 pb-1 hide-scrollbar cursor-pointer">
-                <button onclick="translatePortal('he')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">עברית</button>
-                <button onclick="translatePortal('ar')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">العربية</button>
-                <button onclick="translatePortal('en')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">English</button>
-                <button onclick="translatePortal('fr')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">Français</button>
-                <button onclick="translatePortal('it')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">Italiano</button>
-                <button onclick="translatePortal('uk')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">Українська</button>
-                <button onclick="translatePortal('ru')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">Русский</button>
-                <button onclick="translatePortal('hi')" class="snap-center shrink-0 px-4 py-1.5 bg-gray-800/80 hover:bg-cyan-900/60 border border-gray-600 hover:border-cyan-400 rounded-full text-white text-sm font-medium transition-all">हिन्दी</button>
-            </div>
-            
-        </div>
-
-        <div class="flex flex-col bg-slate-900/80 px-5 py-3 rounded-xl border border-slate-700/80 shadow-inner z-10 w-full lg:w-64">
-            
-            <div class="flex justify-between items-center border-b border-slate-700/50 pb-2 mb-2">
-                <div>
-                    <div class="text-[10px] text-slate-400 uppercase tracking-widest flex items-center gap-1.5 mb-0.5">
-                        <i data-lucide="map-pin" class="w-3 h-3 text-emerald-400"></i> זמן מקומי
-                    </div>
-                    <div id="liveClock" class="text-lg font-mono text-emerald-400 font-bold tracking-wider leading-none">--:--:--</div>
-                </div>
-                <div id="liveDate" class="text-xs font-mono text-slate-500 text-right mt-4">--/--/----</div>
-            </div>
-
-            <div class="flex justify-between items-end">
-                <div class="w-full">
-                    <select id="tzSelect" class="w-full bg-transparent text-[10px] text-sky-400 uppercase tracking-widest font-semibold cursor-pointer focus:outline-none appearance-none hover:text-sky-300 transition-colors mb-0.5">
-                        
-                        <option value="Asia/Jerusalem">🇮🇱 Jerusalem (IST)</option>
-                        <option value="Asia/Dubai">🇦🇪 Dubai (GST)</option>
-                        <option value="Europe/London">🇬🇧 London (GMT)</option>
-                        <option value="Europe/Paris">🇫🇷 Paris (CET)</option>
-                        <option value="Europe/Rome">🇮🇹 Rome (CET)</option>
-                        <option value="Europe/Kyiv">🇺🇦 Kyiv (EET)</option>
-                        <option value="Europe/Moscow">🇷🇺 Moscow (MSK)</option>
-                        
-                        <option value="America/New_York">🇺🇸 New York (EST)</option>
-                        <option value="America/Los_Angeles">🇺🇸 Los Angeles (PST)</option>
-
-                        <option value="Asia/Kolkata">🇮🇳 Bengaluru / Tech Hub (IST)</option>
-                        <option value="Asia/Bangkok">🇹🇭 Bangkok (ICT)</option>
-                        <option value="Asia/Tokyo">🇯🇵 Tokyo (JST)</option>
-                        
-                    </select>
-                    <div id="globalClock" class="text-lg font-mono text-sky-400 font-bold tracking-wider leading-none mt-1">--:--:--</div>
-                </div>
-                <i data-lucide="globe" class="w-5 h-5 text-slate-600 opacity-50 mb-1"></i>
+        <div class="header-right">
+            <span class="notification-bell" aria-hidden="true">🔔</span>
+            <div class="user-profile" aria-hidden="true">
+                <div class="avatar-placeholder"></div>
             </div>
         </div>
     </header>
 
-    <!-- Main Grid -->
-    <main class="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1">
+    <main class="workspace-container" id="main-content">
         
-        <!-- Left Column: Server Status, Links & Logs -->
-        <div class="flex flex-col gap-6 lg:col-span-1">
+        <section class="cards-dashboard">
+            <h2 class="section-title">Dynamic Job Cards</h2>
             
-            <!-- Proxmox Status Widget (Now Dynamic) -->
-            <div class="glass-panel rounded-2xl p-6">
-                <h2 class="text-lg font-semibold mb-5 flex items-center gap-2 text-white">
-                    <i data-lucide="server" class="text-sky-400 w-5 h-5"></i> srv-1 Status
-                    <span class="relative flex h-2.5 w-2.5 mr-auto">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                    </span>
-                </h2>
-                <div class="space-y-5">
-                    <div>
-                        <div class="flex justify-between text-sm mb-1.5">
-                            <span class="text-slate-400 font-medium">CPU (i5-12400)</span>
-                            <span id="cpuText" class="text-emerald-400 font-mono">12%</span>
-                        </div>
-                        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700">
-                            <div id="cpuBar" class="bg-emerald-400 h-2 rounded-full shadow-[0_0_8px_rgba(52,211,153,0.5)] transition-all duration-1000 ease-out" style="width: 12%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-1.5">
-                            <span class="text-slate-400 font-medium">RAM (32GB)</span>
-                            <span id="ramText" class="text-amber-400 font-mono">45%</span>
-                        </div>
-                        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700">
-                            <div id="ramBar" class="bg-amber-400 h-2 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.5)] transition-all duration-1000 ease-out" style="width: 45%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-1.5">
-                            <span class="text-slate-400 font-medium">GPU (RTX 5060 Ti)</span>
-                            <span id="gpuText" class="text-sky-400 font-mono">Idle</span>
-                        </div>
-                        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700">
-                            <div id="gpuBar" class="bg-sky-400 h-2 rounded-full shadow-[0_0_8px_rgba(56,189,248,0.5)] transition-all duration-500 ease-out" style="width: 5%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Access / App Links -->
-            <div class="glass-panel rounded-2xl p-6">
-                <h2 class="text-lg font-semibold mb-4 flex items-center gap-2 text-white">
-                    <i data-lucide="layout-grid" class="text-sky-400 w-5 h-5"></i> כלים ומערכות
-                </h2>
-                <div class="space-y-3">
-                    <a href="/audio-qa.html" class="flex items-center gap-3 p-3 bg-slate-800/40 hover:bg-slate-700/60 border border-slate-700/50 hover:border-emerald-500/50 rounded-xl transition-all cursor-pointer group">
-                        <div class="p-2 bg-slate-900 rounded-lg group-hover:bg-emerald-500/10 transition-colors">
-                            <i data-lucide="mic" class="text-emerald-400 w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="text-sm font-semibold text-white">מחשבוני Audio QA</div>
-                            <div class="text-xs text-slate-400 mt-0.5">SNR, THD, Vrms - עמוד נפרד</div>
-                        </div>
-                    </a>
-                    <a href="/fairy.html" class="flex items-center gap-3 p-3 bg-slate-800/40 hover:bg-slate-700/60 border border-slate-700/50 hover:border-purple-500/50 rounded-xl transition-all cursor-pointer group">
-                        <div class="p-2 bg-slate-900 rounded-lg group-hover:bg-purple-500/10 transition-colors">
-                            <i data-lucide="sparkles" class="text-purple-400 w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="text-sm font-semibold text-white">פיה דיגיטלית (AI Agent)</div>
-                            <div class="text-xs text-slate-400 mt-0.5">Gemini 1.5, Image Gen, TTS</div>
-                        </div>
-                    </a>
-                    <a href="/linux-nexus.html" class="flex items-center gap-3 p-3 bg-slate-800/40 hover:bg-slate-700/60 border border-slate-700/50 hover:border-sky-500/50 rounded-xl transition-all cursor-pointer group">
-                        <div class="p-2 bg-slate-900 rounded-lg group-hover:bg-sky-500/10 transition-colors">
-                            <i data-lucide="terminal-square" class="text-sky-400 w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="text-sm font-semibold text-white">Linux Command Nexus</div>
-                            <div class="text-xs text-slate-400 mt-0.5">מאגר פקודות וכלים לשרת</div>
-                        </div>
-                    </a>
-                    <a href="/PowerShell-Enterprise-IT-Administration.html" class="flex items-center gap-3 p-3 bg-slate-800/40 hover:bg-slate-700/60 border border-slate-700/50 hover:border-sky-500/50 rounded-xl transition-all cursor-pointer group">
-                        <div class="p-2 bg-slate-900 rounded-lg group-hover:bg-sky-500/10 transition-colors">
-                            <i data-lucide="terminal-square" class="text-sky-400 w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="text-sm font-semibold text-white">PowerShell for Enterprise IT Administration</div>
-                            <div class="text-xs text-slate-400 mt-0.5">מאגר פקודות וכלים לשרת</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Auto-Date Activity Logger -->
-            <div class="glass-panel rounded-2xl p-6 flex-1 flex flex-col min-h-[250px]">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold flex items-center gap-2 text-white">
-                        <i data-lucide="activity" class="text-rose-400 w-5 h-5"></i> יומן אירועים
-                    </h2>
-                    <button onclick="clearLogs()" class="text-xs text-slate-500 hover:text-slate-300 transition-colors" aria-label="נקה יומן אירועים">נקה</button>
-                </div>
-                <div id="activityLog" class="flex-1 bg-slate-900/80 rounded-xl p-4 border border-slate-700/80 overflow-y-auto space-y-2 font-mono text-xs text-left shadow-inner" dir="ltr">
-                    <!-- Logs injected securely here -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Column: Agent Pipeline Simulator -->
-        <div class="glass-panel rounded-2xl p-6 lg:col-span-2 flex flex-col">
-            <div class="flex justify-between items-start md:items-center flex-col md:flex-row mb-4 gap-3">
-                <h2 class="text-lg font-semibold flex items-center gap-2 text-white">
-                    <i data-lucide="bot" class="text-sky-400 w-5 h-5"></i> הדגמת סוכן מקומי (Local Agent Pipeline)
-                </h2>
-                <span class="px-3 py-1.5 bg-sky-500/10 text-sky-400 rounded-lg text-xs font-semibold border border-sky-500/20 shadow-[0_0_10px_rgba(56,189,248,0.1)]">
-                    Image Builder v1.0
-                </span>
-            </div>
-
-            <p class="text-slate-400 text-sm mb-6 leading-relaxed">
-                סימולציה זו מדגימה תהליך של סוכן AI הרץ על שרת ה-Proxmox המקומי. 
-                הסוכן קורא אפיון ממסמך Google Docs, מנתח את הדרישות באמצעות ה-GPU, ומייצר דוח פעולה או קוד מסכם.
-            </p>
-
-            <!-- Control Panel -->
-            <div class="flex flex-col md:flex-row gap-3 mb-6 bg-slate-800/40 p-3 rounded-xl border border-slate-700/50">
-                <input type="url" id="docUrl" aria-label="URL של מסמך אפיון" placeholder="הכנס קישור ל-Google Doc..." 
-                       value="https://docs.google.com/document/d/1Yb40Rpsd2HMwAquKcNZrrZNY37mWrohzbXDU_XC01zw/edit" 
-                       class="flex-1 bg-slate-900/80 border border-slate-600 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all text-left shadow-inner" dir="ltr">
+            <div class="cards-grid" id="dynamicCardsGrid">
                 
-                <div class="flex gap-3">
-                    <button onclick="startPipeline()" id="runBtn" class="bg-sky-600 hover:bg-sky-500 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 flex-1 md:flex-none shadow-lg shadow-sky-500/20 active:scale-95">
-                        <i data-lucide="play" class="w-4 h-4"></i> הפעל Pipeline
-                    </button>
-                    <button onclick="clearTerminal()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2.5 rounded-lg text-sm transition-all shadow-md active:scale-95 flex items-center gap-2" aria-label="נקה מסוף">
-                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Terminal Output -->
-            <div class="flex-1 min-h-[400px] bg-[#0c1017] rounded-xl border border-slate-700 p-5 font-mono text-sm terminal-glow relative flex flex-col shadow-inner">
-                <!-- Terminal Header Bar -->
-                <div class="absolute top-0 left-0 right-0 h-8 bg-slate-800/80 rounded-t-xl border-b border-slate-700 flex items-center px-4 justify-between select-none">
-                    <div class="flex gap-2">
-                        <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
-                        <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
-                        <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+                <a href="atp_ai_simulation.html" class="job-card">
+                    <div class="card-visual-slot">
+                        <img src="assets/images/atp_card_icon.webp" alt="ATP AI Simulation" loading="lazy">
                     </div>
-                    <div class="text-[10px] text-slate-500 font-sans font-medium tracking-widest uppercase">bash - root@srv-1</div>
+                    <div class="card-content">
+                        <h3>ATP/AI Simulation</h3>
+                        <p class="card-meta">(Automated Test Procedures)</p>
+                        <p class="card-desc">Validating engineering workflows with AI-driven Proof of Concept.</p>
+                        <div class="card-footer">
+                            <span class="status-badge status-active">ACTIVE</span>
+                            <span class="nav-arrow">➔</span>
+                        </div>
+                    </div>
+                </a>
+
+                
+                <a href="powershell-sim.html" class="job-card">
+                    <div class="card-visual-slot">
+                        <img src="assets/images/powershell.webp" alt="PowerShell Simulator" loading="lazy">
+                    </div>
+                    <div class="card-content">
+                        <h3>PowerShell Simulator</h3>
+                        <p class="card-meta">(Remote Command Exercise)</p>
+                        <p class="card-desc">Interactive enterprise command simulation with endpoint and network insights.</p>
+                        <div class="card-footer">
+                            <span class="status-badge status-active">ACTIVE</span>
+                            <span class="nav-arrow">➔</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="core_memory.html" class="job-card">
+                    <div class="card-visual-slot">
+                        <img src="assets/images/secret_nexus.webp" alt="Secret Nexus Proxy" loading="lazy">
+                    </div>
+                    <div class="card-content">
+                        <h3>Secret Nexus Proxy</h3>
+                        <p class="card-meta">(Google Secret Manager Integration)</p>
+                        <p class="card-desc">Secure credential handling and API translation for Edge deployments.</p>
+                        <div class="card-footer">
+                            <span class="status-badge status-dev">IN DEVELOPMENT</span>
+                            <span class="nav-arrow">➔</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="my_tech_dna.html" class="job-card">
+                    <div class="card-visual-slot">
+                        <span role="img" aria-label="DNA icon">🧬</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Digital Engineer's Vision</h3>
+                        <p class="card-meta">(Personal Tech DNA)</p>
+                        <p class="card-desc">Core competencies, future roadmap, and hybrid architecture philosophies.</p>
+                        <div class="card-footer">
+                            <span class="status-badge status-visionary">VISIONARY</span>
+                            <span class="nav-arrow">➔</span>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <aside class="ai-insights-panel">
+            <div class="panel-header">
+                <h3>Gemini & NotebookLM Insights</h3>
+                <span class="panel-dots">⋮</span>
+            </div>
+            
+            <div class="ai-chat-interface">
+                <div class="ai-welcome-box">
+                    <p>Hello! Ask Gemini about my engineering work, methodologies, or active projects.<br><br><em>(Powered by my curated NotebookLM data)</em></p>
                 </div>
                 
-                <div id="terminalOutput" class="flex-1 overflow-y-auto pt-6 mt-4 text-left pb-4" dir="ltr">
-                    <div class="text-slate-500" id="terminalInit">root@srv-1:~# ready for execution...<span class="cursor-blink"></span></div>
+                <div class="chat-input-wrapper">
+                    <input type="text" placeholder="Type your prompt..." id="aiPromptInput" aria-label="AI Prompt Query">
+                    <button class="send-prompt-btn" id="sendPromptBtn" aria-label="Send Query">➔</button>
                 </div>
             </div>
-        </div>
+
+            <div class="templates-section">
+                <label for="templateSelector">Select Notebook Template</label>
+                <select id="templateSelector" class="studio-select">
+                    <option value="system-evolution">System Evolution</option>
+                    <option value="architectural-decisions">Architectural Decisions</option>
+                    <option value="code-components">Code Components</option>
+                    <option value="ai-advisory-board">AI Advisory Board</option>
+                    <option value="glossary">Glossary & Terminology</option>
+                </select>
+            </div>
+
+            <div class="recent-insights">
+                <h4>Recent Insights from NotebookLM</h4>
+                <ul class="insights-list">
+                    </ul>
+            </div>
+        </aside>
+
     </main>
 
-    <div class="footer-actions">
-        <div class="update-status">
-            <span class="pulse-dot"></span>
-            <span class="status-text">גרסה: 2.0.4 | עודכן לאחרונה: <span id="last-update-date">--/--/----</span></span>
-        </div>
-        <a href="https://yevgeni.info/project_readme" class="nexus-btn">
-           AI Portal & Engineering Lab
-            <span class="btn-glitch"></span>
-        </a>
-    </div>
+    <footer class="portal-footer">
+        <p>© 2026 ENG-PORTAL — Engineering & Innovation Hub</p>
+        <p><a href="legal_terms.html">Legal Terms & Privacy</a></p>
+    </footer>
 
-    <!-- MAIN SCRIPT (Dashboard Logic + Translation Logic) -->
-    <script>
-        // --- Initialize Lucide Icons ---
-        lucide.createIcons();
-
-        // --- State variables ---
-        let isSystemInitialized = false;
-        let isPipelineRunning = false;
-
-        // --- Auto-Date Module (Live Clock) ---
-        // --- Dual Auto-Date Module (Local & World Clock) ---
-        function updateClock() {
-            const now = new Date();
-            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-            const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
-            
-            // 1. שעון מקומי (נלקח אוטומטית ממערכת ההפעלה/דפדפן)
-            document.getElementById('liveClock').textContent = now.toLocaleTimeString('en-GB', timeOptions);
-            document.getElementById('liveDate').textContent = now.toLocaleDateString('en-GB', dateOptions);
-
-            // 2. שעון גלובלי (מחושב לפי בחירת המשתמש בתפריט)
-            const tzSelect = document.getElementById('tzSelect');
-            if(tzSelect) {
-                const selectedTz = tzSelect.value;
-                // הזרקת אזור הזמן המבוקש לאופציות של גוגל/דפדפן
-                const globalTimeOptions = { ...timeOptions, timeZone: selectedTz };
-                document.getElementById('globalClock').textContent = now.toLocaleTimeString('en-GB', globalTimeOptions);
-            }
-        }
-        
-        // הרצה כל שנייה
-        setInterval(updateClock, 1000);
-        updateClock();
-        
-        // --- Simulated Proxmox Telemetry ---
-        function simulateProxmoxMetrics() {
-            if(isPipelineRunning) return; // Managed by the pipeline when running
-
-            // CPU 5% to 20% randomly
-            const cpuVal = Math.floor(Math.random() * 15) + 5;
-            document.getElementById('cpuBar').style.width = `${cpuVal}%`;
-            document.getElementById('cpuText').textContent = `${cpuVal}%`;
-
-            // RAM 40% to 48% randomly
-            const ramVal = Math.floor(Math.random() * 8) + 40;
-            document.getElementById('ramBar').style.width = `${ramVal}%`;
-            document.getElementById('ramText').textContent = `${ramVal}%`;
-            
-            document.getElementById('gpuText').textContent = 'Idle';
-            document.getElementById('gpuBar').style.width = '2%';
-            document.getElementById('gpuBar').classList.replace('bg-rose-400', 'bg-sky-400');
-        }
-        setInterval(simulateProxmoxMetrics, 3500);
-
-        // --- Auditor Fix: Secure Auto-Date Activity Logger ---
-        function logActivity(message, type = 'info') {
-            const logContainer = document.getElementById('activityLog');
-            
-            if (!isSystemInitialized) {
-                logContainer.innerHTML = '';
-                isSystemInitialized = true;
-            }
-
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            
-            let colorClass = 'text-slate-300';
-            if (type === 'success') { colorClass = 'text-emerald-400'; }
-            if (type === 'warning') { colorClass = 'text-amber-400'; }
-            if (type === 'error') { colorClass = 'text-rose-400'; }
-
-            const logEntry = document.createElement('div');
-            logEntry.className = `flex items-start gap-2 border-b border-slate-800/50 pb-2.5 pt-1 ${colorClass} animate-[fadeIn_0.3s_ease-out]`;
-            
-            const timeSpan = document.createElement('span');
-            timeSpan.className = 'text-slate-500 shrink-0 mt-0.5 text-[11px]';
-            timeSpan.textContent = `[${timeString}]`;
-            
-            const msgSpan = document.createElement('span');
-            msgSpan.className = 'flex-1 leading-relaxed';
-            msgSpan.textContent = message;
-
-            logEntry.appendChild(timeSpan);
-            logEntry.appendChild(msgSpan);
-            
-            logContainer.prepend(logEntry);
-        }
-
-        function clearLogs() {
-            document.getElementById('activityLog').innerHTML = '';
-            isSystemInitialized = true; 
-            logActivity('Log cleared manually by user.', 'info');
-        }
-
-        // --- Agent Pipeline Simulator ---
-        const terminal = document.getElementById('terminalOutput');
-        
-        function typeLine(text, colorClass = 'text-slate-300', delay) {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    const oldCursor = document.querySelector('.cursor-blink');
-                    if (oldCursor) oldCursor.remove();
-
-                    const line = document.createElement('div');
-                    line.className = `${colorClass} mb-1.5 leading-relaxed`;
-                    
-                    const textNode = document.createTextNode(text);
-                    line.appendChild(textNode);
-                    
-                    const cursor = document.createElement('span');
-                    cursor.className = 'cursor-blink';
-                    line.appendChild(cursor);
-
-                    terminal.appendChild(line);
-                    terminal.scrollTop = terminal.scrollHeight;
-                    resolve();
-                }, delay);
-            });
-        }
-
-        function clearTerminal() {
-            terminal.innerHTML = '';
-            const line = document.createElement('div');
-            line.className = 'text-slate-500';
-            line.textContent = 'root@srv-1:~# ready for execution...';
-            const cursor = document.createElement('span');
-            cursor.className = 'cursor-blink';
-            line.appendChild(cursor);
-            terminal.appendChild(line);
-        }
-
-        async function startPipeline() {
-            const docUrlInput = document.getElementById('docUrl');
-            const docUrl = docUrlInput.value.trim();
-            const btn = document.getElementById('runBtn');
-            
-            if (!docUrl) {
-                logActivity('שגיאה: חסר קישור למסמך אפיון ב-Google Docs.', 'error');
-                docUrlInput.focus();
-                docUrlInput.classList.add('ring-2', 'ring-rose-500');
-                setTimeout(() => docUrlInput.classList.remove('ring-2', 'ring-rose-500'), 2000);
-                return;
-            }
-
-            isPipelineRunning = true;
-            btn.disabled = true;
-            btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> מעבד...';
-            btn.classList.replace('bg-sky-600', 'bg-slate-600');
-            btn.classList.add('cursor-not-allowed');
-            lucide.createIcons();
-            
-            logActivity('Initiated Image Build Pipeline', 'info');
-            clearTerminal();
-            
-            document.getElementById('cpuBar').style.width = `88%`;
-            document.getElementById('cpuText').textContent = `88%`;
-            document.getElementById('gpuBar').classList.replace('bg-sky-400', 'bg-rose-400');
-            document.getElementById('gpuBar').style.width = `94%`;
-            document.getElementById('gpuText').textContent = `Computing`;
-            
-            try {
-                await typeLine(`root@srv-1:~# ./run_agent_pipeline.sh --source="${docUrl.substring(0,35)}..."`, 'text-white', 400);
-                await typeLine(`[INFO] Authenticating with Secret Nexus Proxy... OK`, 'text-sky-300', 800);
-                
-                logActivity('Connecting to Google Drive API...', 'info');
-                await typeLine(`[AGENT] Fetching document content from Google Drive API...`, 'text-slate-400', 1200);
-                await typeLine(`[AGENT] Document retrieved successfully. Size: 14.2 KB`, 'text-emerald-400', 1000);
-                
-                await typeLine(`[AGENT] Parsing requirements and architecture notes...`, 'text-slate-400', 1500);
-                
-                logActivity('Allocating local GPU (RTX 5060 Ti) for LLM Inference', 'warning');
-                await typeLine(`[SYS] Allocating local GPU resources (NVIDIA RTX 5060 Ti)...`, 'text-amber-300', 800);
-                await typeLine(`[SYS] VRAM Usage: 6.2GB / 8.0GB | Temp: 68C`, 'text-slate-400', 600);
-                
-                await typeLine(`[OLLAMA] Processing data through local LLaMA3 model...`, 'text-purple-400', 2000);
-                await typeLine(`[OLLAMA] Generating Dockerfile and Build Scripts...`, 'text-purple-400', 1800);
-                
-                await typeLine(`[BUILD] Starting Image Build Process...`, 'text-sky-300', 1000);
-                await typeLine(`STEP 1/5: FROM ubuntu:22.04`, 'text-slate-500', 500);
-                await typeLine(`STEP 2/5: RUN apt-get update && apt-get install -y python3`, 'text-slate-500', 1200);
-                await typeLine(`STEP 3/5: COPY ./src /app`, 'text-slate-500', 800);
-                await typeLine(`STEP 4/5: RUN pip install -r requirements.txt`, 'text-slate-500', 2000);
-                
-                logActivity('Generating final engineering report', 'info');
-                await typeLine(`[AGENT] Compiling Engineering Report...`, 'text-slate-400', 1500);
-                
-                await typeLine(`[SUCCESS] Pipeline Completed Successfully!`, 'text-emerald-500 font-bold', 1000);
-                await typeLine(`root@srv-1:~# Report saved to /var/reports/build_1042.pdf`, 'text-white', 600);
-
-                logActivity('Pipeline executed successfully', 'success');
-            } catch (e) {
-                logActivity('Pipeline failed during execution.', 'error');
-                await typeLine(`[ERROR] Pipeline aborted unexpectedly.`, 'text-rose-500 font-bold', 100);
-            } finally {
-                isPipelineRunning = false;
-                btn.disabled = false;
-                btn.innerHTML = '<i data-lucide="play" class="w-4 h-4"></i> הפעל Pipeline';
-                btn.classList.replace('bg-slate-600', 'bg-sky-600');
-                btn.classList.remove('cursor-not-allowed');
-                lucide.createIcons();
-            }
-        }
-        
-        // Initial setup
-        window.addEventListener('DOMContentLoaded', () => {
-            logActivity('System Initialized. Awaiting events...', 'info');
-
-            // Set last modified date
-            const lastMod = new Date(document.lastModified);
-            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-            if (lastMod.getFullYear() > 2000) {
-                document.getElementById('last-update-date').textContent = lastMod.toLocaleDateString('he-IL', options);
-            } else {
-                document.getElementById('last-update-date').textContent = new Date().toLocaleDateString('he-IL', options);
-            }
-        });
-    </script>
+    <script src="assets/js/notebook-simulator.js"></script>
     
-    <!-- חיבור קובץ ה-JS החיצוני של התרגום -->
-    <script src="translator.js" defer></script>
-</body>
+    </body>
 </html>
