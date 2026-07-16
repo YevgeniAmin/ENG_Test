@@ -10,16 +10,7 @@
       "**/node_modules/**"
     ],
     "cleanUrls": true,
-    "rewrites": [
-      {
-        "source": "/ai-fairy",
-        "destination": "/ai-fairy.html"
-      },
-      {
-        "source": "/api/secret-nexus-proxy",
-        "function": "secretNexusProxy"
-      }
-    ],
+    "rewrites": [],
     "headers": [
       {
         "source": "/**",
