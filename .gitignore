@@ -67,3 +67,23 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Local environment and secrets
+.env.*
+!.env.example
+.runtimeconfig.json
+serviceAccount*.json
+*-firebase-adminsdk-*.json
+
+# Generated output and caches
+dist/
+build/
+.cache/
+.parcel-cache/
+.vite/
+
+# Operating system and temporary files
+.DS_Store
+Thumbs.db
+*.tmp
+*.bak
