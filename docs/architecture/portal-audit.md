@@ -24,7 +24,6 @@ C:\eng-portal
 │       └── data/               3 Markdown files and 1 JSON file
 ├── functions/
 │   ├── index.js                Firebase Cloud Function
-│   ├── import json.py          Local/support script
 │   ├── package.json
 │   └── package-lock.json
 ├── .github/workflows/          Firebase preview and production workflows
@@ -41,8 +40,6 @@ C:\eng-portal
 Architecture observations:
 public/ is a flat multi-page application rather than a component-based frontend.
 Page filenames mix underscores and hyphens.
-Python maintenance scripts are mixed into runtime directories:public/assets/js/update_notebook_db.py
-functions/import json.py
 
 There are two separate Node dependency manifests. Root dependencies substantially overlap the Functions dependencies, but there are no root scripts showing how the root packages are used.
 .agents/ is tracked development tooling, not portal runtime code.
@@ -64,7 +61,7 @@ All statically referenced local stylesheets, scripts, images, and internal page 
 Images used in HTML all have alt text.
 The primary portal links point to existing HTML files.
 Structural concerns:
-ATP contains roughly half its behavior inline instead of loading the existing atp-sim.js.
+ATP contains its behavior inline.
 Shared headers, footers, home buttons, version widgets, and CDN initialization are manually repeated.
 index.html contains unusual markup: <V2 class="0">. Browsers tolerate custom elements, but this is not meaningful semantic markup and appears accidental.
 ESS sidebar links use href="#", creating non-functional navigation and unexpected page jumps.
@@ -94,7 +91,6 @@ Shared component styles remain duplicated.
 Buttons, headers, footers, cards, badges, sidebars, and page containers are redefined across page stylesheets.
 
 Unused stylesheets:
-memory_log.css
 version-sync.css
 version-sync.css is especially notable because the active <portal-version> component generates classes defined there, but no HTML page loads the file. The version widget may therefore be unstyled or depend accidentally on similarly named page selectors.
 
@@ -125,7 +121,7 @@ Index and ATP do not use it.
 There is no general shared application shell or utility module. Scripts use global scope rather than ES modules.
 Page-specific JavaScript
 notebook-simulator.jsIndex-only template selection and prompt simulation.
-Embeds its knowledge base directly in JavaScript rather than loading notebookKnowledgeBase.json.
+Embeds its knowledge base directly in JavaScript.
 
 powershell-sim.jsPowerShell command data, card rendering, terminal simulation, and progress UI.
 
@@ -136,7 +132,6 @@ core_memory.jsLedger rendering, telemetry simulation, and language-button synchr
 core_memory_translator.jsEnglish/Hebrew translation table and document direction changes.
 
 ATP behaviorImplemented in the inline script in atp_ai_simulation.html.
-atp-sim.js exists but is not referenced and represents a different implementation state.
 
 Backend JavaScript
 [functions/index.js](C:/eng-portal/functions/index.js) exports only:
@@ -156,22 +151,17 @@ There is no linting, unit test, or browser smoke-test configuration.
 5. Duplicate and copied files
 Exact duplicate
 public/assets/js/core_memory.js
-public/assets/js/core_memory - Copy.js
 These files have identical SHA-256 hashes.
 Diverged copy
 notebook-simulator.js
-notebook-simulator - Copy.js
 The copy is older or different: the files differ by 26 added and 50 removed lines. Only the non-copy version is loaded by the portal.
 Parallel ATP implementations
 Inline script in atp_ai_simulation.html
-public/assets/js/atp-sim.js
 These are not exact copies, but they implement the same feature with different IDs and behavior. This is a source-of-truth risk.
 Similar image variants
 Potential copied or superseded image pairs:
 artificial_hallucination.webp
-artificial_hallucination_small.webp
 environmental_stress_screening.webp
-environmental_str_ess_screening.webp
 Only the first image in each pair is referenced by HTML.
 6. Inline CSS and JavaScript
 Page	Inline styles	Inline handlers	Inline script blocks
@@ -205,24 +195,12 @@ Direct .html paths happen to work.
 version-sync.js assumes a successful response contains portalRegistry.items.
 version-sync.css is not loaded, so the active version widget lacks its intended CSS.
 No broken local HTML asset path was found in the current static scan.
-CSS contains no local url(...) asset dependencies; memory_log.css has an external Google Fonts import but is unused.
+CSS contains no local url(...) asset dependencies.
 8. Obsolete or unused files
 These are candidates for quarantine and later removal, not safe deletion conclusions yet:
 Strong candidates
-public/assets/js/core_memory - Copy.js
-public/assets/js/notebook-simulator - Copy.js
-public/assets/js/atp-sim.js, unless it is intended to replace ATP’s inline script
-public/assets/js/clock.js
-public/assets/css/memory_log.css
 public/assets/css/version-sync.css is currently unused, but likely should be activated rather than deleted
-public/assets/images/artificial_hallucination_small.webp
-public/assets/images/environmental_str_ess_screening.webp
-public/assets/data/notebookKnowledgeBase.json
 Support files with unclear ownership
-public/assets/js/update_notebook_db.py
-functions/import json.py
-Project_Historical_Context_He.md
-project_tracker.md
 These may support manual content generation even though the browser does not load them.
 Dependency/configuration questions
 Root package.json has dependencies but no scripts or application entry point.
@@ -296,7 +274,7 @@ Add SRI or self-host dependencies where practical.
 Deployment/security configuration should only be changed with explicit approval.
 Phase 2 — Resolve sources of truth
 Mark copy files as archival candidates.
-Compare the ATP inline implementation against atp-sim.js and select the canonical version.
+Confirm the ATP inline implementation as the canonical version.
 Determine whether the JSON knowledge base or embedded JS data is canonical.
 Document whether Markdown and Python files are source inputs or obsolete artifacts.
 Remove nothing until behavior and ownership are verified.
