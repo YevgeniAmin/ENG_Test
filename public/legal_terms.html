@@ -15,6 +15,12 @@
 
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- BEGIN Portal Favicons -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/favicon-64x64.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+    <!-- END Portal Favicons -->
 </head>
 
 <body>
@@ -100,14 +106,13 @@
                 <span>Document Classification: Controlled Internal & Public Release</span>
             </div>
             <div class="version-sync">
-                    <span><portal-version></portal-version></span>
+                    <span></span>
             </div>
         </footer>
 
     </div>
 
     <!-- Scripts Execution -->
-    <script src="assets/js/version-sync.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             lucide.createIcons();
