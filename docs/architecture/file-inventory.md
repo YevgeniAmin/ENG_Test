@@ -17,11 +17,11 @@ Candidate classifications are not deletion instructions. Ignored/generated conte
 |---|---|---|
 | `public/index.html` | active | Main portal entry point and notebook simulator UI. |
 | `public/404.html` | active | Firebase Hosting error page. |
-| `public/atp_ai_simulation.html` | active | ATP/ATR document simulator; contains the active inline ATP behavior. |
-| `public/core_memory.html` | active | Core Memory dashboard and bilingual narrative. |
-| `public/ess_lab.html` | active | ESS vibration simulation page. |
-| `public/legal_terms.html` | active | Terms, privacy, and disclaimer page. |
-| `public/my_tech_dna.html` | active | Technical profile page. |
+| `public/atp-ai-simulation.html` | active | ATP/ATR document simulator; contains the active inline ATP behavior. |
+| `public/core-memory.html` | active | Core Memory dashboard and bilingual narrative. |
+| `public/ess-lab.html` | active | ESS vibration simulation page. |
+| `public/legal-terms.html` | active | Terms, privacy, and disclaimer page. |
+| `public/my-tech-dna.html` | active | Technical profile page. |
 | `public/powershell-sim.html` | active | PowerShell management-console simulator. |
 
 ## CSS files
@@ -72,7 +72,7 @@ Candidate classifications are not deletion instructions. Ignored/generated conte
 | `public/assets/images/favicon-64x64.png` | active | Site favicon, loaded by all eight HTML pages. |
 | `public/assets/images/apple-touch-icon.png` | active | Apple touch icon, loaded by all eight HTML pages. |
 | `public/assets/images/tech_dna.webp` | active | Tech DNA card image on the main portal. |
-| `public/assets/images/tech_dna_preview.png` | active | Open Graph/Twitter preview image on index.html and my_tech_dna.html. |
+| `public/assets/images/tech_dna_preview.jpg` | active | Open Graph/Twitter preview image on index.html and my-tech-dna.html. |
 
 ## Runtime configuration and dependency manifests
 

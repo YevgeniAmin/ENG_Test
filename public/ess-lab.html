@@ -88,7 +88,7 @@
                     </h2>
                     <div class="vib-telemetry">
                         <span id="vibTimestamp" class="vib-clock">--:--:--</span>
-                        <span id="vibStatus" class="badge badge-surface status-idle">IDLE</span>
+                        <span id="vibStatus" class="badge badge-surface status-idle" role="status">IDLE</span>
                     </div>
                 </div>
                 
@@ -105,7 +105,8 @@
 
                 <!-- Canvas Wrapper -->
                 <div class="chart-wrapper">
-                    <canvas id="vibChart"></canvas>
+                    <canvas id="vibChart" aria-describedby="vibChart-desc"></canvas>
+                    <p id="vibChart-desc" class="sr-only">Live power spectral density chart of simulated Z-axis vibration across the 20Hz-2000Hz test profile range. Current measured RMS and run status are shown in the metrics above the chart.</p>
                 </div>
                 
                 <div class="vib-footer">

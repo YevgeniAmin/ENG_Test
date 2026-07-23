@@ -9,11 +9,11 @@ C:\eng-portal
 ├── public/                     Firebase Hosting document root
 │   ├── index.html              Main portal
 │   ├── 404.html
-│   ├── atp_ai_simulation.html
-│   ├── core_memory.html
-│   ├── ess_lab.html
-│   ├── legal_terms.html
-│   ├── my_tech_dna.html
+│   ├── atp-ai-simulation.html
+│   ├── core-memory.html
+│   ├── ess-lab.html
+│   ├── legal-terms.html
+│   ├── my-tech-dna.html
 │   ├── powershell-sim.html
 │   └── assets/
 │       ├── css/                12 stylesheets
@@ -46,11 +46,11 @@ Both root and Functions dependency trees are installed locally and ignored by Gi
 Entry point	Purpose	CSS	JavaScript
 [index.html](C:/eng-portal/public/index.html)	Main portal/dashboard	index.css, portal-quality.css	notebook-simulator.js
 [404.html](C:/eng-portal/public/404.html)	Firebase error page	Global tokens, error, quality	Lucide CDN, version sync, inline icon setup
-[atp_ai_simulation.html](C:/eng-portal/public/atp_ai_simulation.html)	ATP document simulator	ATP, quality	Lucide, html2pdf, large inline implementation
-[core_memory.html](C:/eng-portal/public/core_memory.html)	Core-memory dashboard	Global tokens, core memory, quality	Lucide, translator, core memory, version sync
-[ess_lab.html](C:/eng-portal/public/ess_lab.html)	ESS vibration simulation	Global tokens, ESS, quality	Chart.js, Lucide, ESS simulation, version sync
-[legal_terms.html](C:/eng-portal/public/legal_terms.html)	Legal terms	Global tokens, legal, quality	Lucide, version sync, inline icon setup
-[my_tech_dna.html](C:/eng-portal/public/my_tech_dna.html)	Technical profile page	Global tokens, page CSS, quality	Lucide, version sync, inline icon setup
+[atp-ai-simulation.html](C:/eng-portal/public/atp-ai-simulation.html)	ATP document simulator	ATP, quality	Lucide, html2pdf, large inline implementation
+[core-memory.html](C:/eng-portal/public/core-memory.html)	Core-memory dashboard	Global tokens, core memory, quality	Lucide, translator, core memory, version sync
+[ess-lab.html](C:/eng-portal/public/ess-lab.html)	ESS vibration simulation	Global tokens, ESS, quality	Chart.js, Lucide, ESS simulation, version sync
+[legal-terms.html](C:/eng-portal/public/legal-terms.html)	Legal terms	Global tokens, legal, quality	Lucide, version sync, inline icon setup
+[my-tech-dna.html](C:/eng-portal/public/my-tech-dna.html)	Technical profile page	Global tokens, page CSS, quality	Lucide, version sync, inline icon setup
 [powershell-sim.html](C:/eng-portal/public/powershell-sim.html)	PowerShell simulator	PowerShell, quality	Lucide, PowerShell simulation, version sync
 
 Positive findings:
@@ -130,7 +130,7 @@ core_memory.jsLedger rendering, telemetry simulation, and language-button synchr
 
 core_memory_translator.jsEnglish/Hebrew translation table and document direction changes.
 
-ATP behaviorImplemented in the inline script in atp_ai_simulation.html.
+ATP behaviorImplemented in the inline script in atp-ai-simulation.html.
 
 Backend JavaScript
 [functions/index.js](C:/eng-portal/functions/index.js) exports only:
@@ -155,7 +155,7 @@ Diverged copy
 notebook-simulator.js
 The copy is older or different: the files differ by 26 added and 50 removed lines. Only the non-copy version is loaded by the portal.
 Parallel ATP implementations
-Inline script in atp_ai_simulation.html
+Inline script in atp-ai-simulation.html
 These are not exact copies, but they implement the same feature with different IDs and behavior. This is a source-of-truth risk.
 Similar image variants
 Potential copied or superseded image pairs:
@@ -181,13 +181,13 @@ Repeated Lucide initialization could become a small shared initializer.
 Inline scripts currently prevent a strict Content Security Policy without allowing 'unsafe-inline' or supplying hashes/nonces.
 7. Broken or potentially broken asset paths
 Confirmed configuration failures
-Resolved as of current main: [firebase.json](C:/eng-portal/firebase.json) now ships an empty `rewrites` array — the /ai-fairy and /api/secret-nexus-proxy rewrites described below no longer exist. The home-page card was also relabeled from "Secret Nexus Proxy" to "Architecture Memory" (still linking to core_memory.html), so the label/destination mismatch is resolved; the underlying image filename (`secret_nexus.webp`) is unchanged but is an internal asset name, not user-facing text. Original findings preserved below.
+Resolved as of current main: [firebase.json](C:/eng-portal/firebase.json) now ships an empty `rewrites` array — the /ai-fairy and /api/secret-nexus-proxy rewrites described below no longer exist. The home-page card was also relabeled from "Secret Nexus Proxy" to "Architecture Memory" (now linking to core-memory.html after the filename standardization pass), so the label/destination mismatch is resolved; the underlying image filename (`secret_nexus.webp`) is unchanged but is an internal asset name, not user-facing text. Original findings preserved below.
 firebase.json previously mapped /ai-fairy to /ai-fairy.html, but that file did not exist.
 The /api/secret-nexus-proxy rewrite previously targeted secretNexusProxy, which [functions/index.js](C:/eng-portal/functions/index.js) did not export.
 Potential failures
 External CDN availability or incompatible future releases can break Lucide and Chart.js.
 version-sync.js always contacts the production us-central1-eng-web-portal project, including local or preview environments.
-Clean URLs may make page-key detection inconsistent:/legal_terms produces legal_terms.
+Clean URLs may make page-key detection inconsistent:/legal_terms produces legal_terms. (This referred to version-sync.js's page-key logic, which no longer exists; the page itself is now at /legal-terms, with a redirect from the old /legal_terms path.)
 A trailing slash produces index.
 Direct .html paths happen to work.
 

@@ -43,8 +43,8 @@
         <div class="doc-header">
             <h2>Acceptance Test Plan & Report</h2>
             <div class="header-inputs">
-                <input type="text" id="doc-project-name" class="studio-input text-center" style="font-size: 18px; font-weight: 600;" placeholder="[Project Name]">
-                <input type="text" id="doc-uut" class="studio-input text-center" placeholder="[Unit Under Test – UUT]">
+                <input type="text" id="doc-project-name" class="studio-input text-center" style="font-size: 18px; font-weight: 600;" placeholder="[Project Name]" aria-label="Project name">
+                <input type="text" id="doc-uut" class="studio-input text-center" placeholder="[Unit Under Test – UUT]" aria-label="Unit under test">
             </div>
         </div>
 
@@ -52,12 +52,12 @@
             <div class="section-title">1. Document Control</div>
             <div class="studio-table-wrapper">
                 <table class="studio-table">
-                    <tr><td class="label-col">Document Number</td><td class="input-cell"><input type="text" id="dc-num"></td></tr>
-                    <tr><td class="label-col">Revision</td><td class="input-cell"><input type="text" id="dc-rev"></td></tr>
-                    <tr><td class="label-col">Date</td><td class="input-cell"><input type="text" id="dc-date"></td></tr>
-                    <tr><td class="label-col">Prepared By</td><td class="input-cell"><input type="text" id="dc-prep"></td></tr>
-                    <tr><td class="label-col">Reviewed By</td><td class="input-cell"><input type="text" id="dc-revby"></td></tr>
-                    <tr><td class="label-col">Approved By</td><td class="input-cell"><input type="text" id="dc-appby"></td></tr>
+                    <tr><td class="label-col">Document Number</td><td class="input-cell"><input type="text" id="dc-num" aria-label="Document Number"></td></tr>
+                    <tr><td class="label-col">Revision</td><td class="input-cell"><input type="text" id="dc-rev" aria-label="Revision"></td></tr>
+                    <tr><td class="label-col">Date</td><td class="input-cell"><input type="text" id="dc-date" aria-label="Document date"></td></tr>
+                    <tr><td class="label-col">Prepared By</td><td class="input-cell"><input type="text" id="dc-prep" aria-label="Prepared by"></td></tr>
+                    <tr><td class="label-col">Reviewed By</td><td class="input-cell"><input type="text" id="dc-revby" aria-label="Reviewed by"></td></tr>
+                    <tr><td class="label-col">Approved By</td><td class="input-cell"><input type="text" id="dc-appby" aria-label="Approved by"></td></tr>
                 </table>
             </div>
         </div>
@@ -67,18 +67,18 @@
                 <div class="section-title">2. Scope</div>
                 <div class="studio-table-wrapper">
                     <table class="studio-table">
-                        <tr><td class="label-col" style="width: 40%;">Product Family</td><td class="input-cell"><input type="text" id="scope-family"></td></tr>
-                        <tr><td class="label-col">Part Number</td><td class="input-cell"><input type="text" id="scope-pn"></td></tr>
-                        <tr><td class="label-col">Prod Stage</td><td class="input-cell"><input type="text" id="scope-stage"></td></tr>
+                        <tr><td class="label-col" style="width: 40%;">Product Family</td><td class="input-cell"><input type="text" id="scope-family" aria-label="Product Family"></td></tr>
+                        <tr><td class="label-col">Part Number</td><td class="input-cell"><input type="text" id="scope-pn" aria-label="Part Number"></td></tr>
+                        <tr><td class="label-col">Prod Stage</td><td class="input-cell"><input type="text" id="scope-stage" aria-label="Production Stage"></td></tr>
                     </table>
                 </div>
             </div>
             <div>
                 <div class="section-title">3. UUT Identification</div>
                 <div class="studio-table-wrapper">
-                        <tr><td class="label-col" style="width: 40%;">Serial Number</td><td class="input-cell"><input type="text" id="uut-sn"></td></tr>
-                        <tr><td class="label-col">HW Version</td><td class="input-cell"><input type="text" id="uut-hw"></td></tr>
-                        <tr><td class="label-col">SW/FW Version</td><td class="input-cell"><input type="text" id="uut-sw"></td></tr>
+                        <tr><td class="label-col" style="width: 40%;">Serial Number</td><td class="input-cell"><input type="text" id="uut-sn" aria-label="Serial Number"></td></tr>
+                        <tr><td class="label-col">HW Version</td><td class="input-cell"><input type="text" id="uut-hw" aria-label="Hardware Version"></td></tr>
+                        <tr><td class="label-col">SW/FW Version</td><td class="input-cell"><input type="text" id="uut-sw" aria-label="Software/Firmware Version"></td></tr>
                     </table>
                 </div>
             </div>
@@ -96,15 +96,15 @@
                     <tbody>
                         <tr>
                             <td>USB Flash P.1 & P.2</td><td>Speed > 100MB/s</td>
-                            <td class="input-cell"><input type="text" id="res-usb-1" style="text-align: center;"></td>
-                            <td class="input-cell"><select id="pf-usb-1" style="text-align: center; font-weight: bold;"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
-                            <td class="input-cell"><input type="text" id="ev-usb-1"></td>
+                            <td class="input-cell"><input type="text" id="res-usb-1" style="text-align: center;" aria-label="USB Flash P.1 & P.2 actual readout"></td>
+                            <td class="input-cell"><select id="pf-usb-1" style="text-align: center; font-weight: bold;" aria-label="USB Flash P.1 & P.2 pass/fail"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
+                            <td class="input-cell"><input type="text" id="ev-usb-1" aria-label="USB Flash P.1 & P.2 evidence reference"></td>
                         </tr>
                         <tr>
                             <td>USB Flash P.3 & P.4</td><td>SuperSpeed > 350MB/s</td>
-                            <td class="input-cell"><input type="text" id="res-usb-2" style="text-align: center;"></td>
-                            <td class="input-cell"><select id="pf-usb-2" style="text-align: center; font-weight: bold;"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
-                            <td class="input-cell"><input type="text" id="ev-usb-2"></td>
+                            <td class="input-cell"><input type="text" id="res-usb-2" style="text-align: center;" aria-label="USB Flash P.3 & P.4 actual readout"></td>
+                            <td class="input-cell"><select id="pf-usb-2" style="text-align: center; font-weight: bold;" aria-label="USB Flash P.3 & P.4 pass/fail"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
+                            <td class="input-cell"><input type="text" id="ev-usb-2" aria-label="USB Flash P.3 & P.4 evidence reference"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -119,15 +119,15 @@
                     <tbody>
                         <tr>
                             <td>COM1 Interface</td><td>RS232 @ 115200</td>
-                            <td class="input-cell"><input type="text" id="res-com-1" style="text-align: center;"></td>
-                            <td class="input-cell"><select id="pf-com-1" style="text-align: center; font-weight: bold;"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
-                            <td class="input-cell"><input type="text" id="ev-com-1"></td>
+                            <td class="input-cell"><input type="text" id="res-com-1" style="text-align: center;" aria-label="COM1 Interface actual readout"></td>
+                            <td class="input-cell"><select id="pf-com-1" style="text-align: center; font-weight: bold;" aria-label="COM1 Interface pass/fail"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
+                            <td class="input-cell"><input type="text" id="ev-com-1" aria-label="COM1 Interface evidence reference"></td>
                         </tr>
                         <tr>
                             <td>COM2 Interface</td><td>RS422 @ 921600</td>
-                            <td class="input-cell"><input type="text" id="res-com-2" style="text-align: center;"></td>
-                            <td class="input-cell"><select id="pf-com-2" style="text-align: center; font-weight: bold;"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
-                            <td class="input-cell"><input type="text" id="ev-com-2"></td>
+                            <td class="input-cell"><input type="text" id="res-com-2" style="text-align: center;" aria-label="COM2 Interface actual readout"></td>
+                            <td class="input-cell"><select id="pf-com-2" style="text-align: center; font-weight: bold;" aria-label="COM2 Interface pass/fail"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
+                            <td class="input-cell"><input type="text" id="ev-com-2" aria-label="COM2 Interface evidence reference"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -142,15 +142,15 @@
                     <tbody>
                         <tr>
                             <td>GPIO_HI Array (1-12)</td><td>Logic State 1</td>
-                            <td class="input-cell"><input type="text" id="res-gpio-hi" style="text-align: center;"></td>
-                            <td class="input-cell"><select id="pf-gpio-hi" style="text-align: center; font-weight: bold;"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
-                            <td class="input-cell"><input type="text" id="ev-gpio-hi"></td>
+                            <td class="input-cell"><input type="text" id="res-gpio-hi" style="text-align: center;" aria-label="GPIO_HI Array actual readout"></td>
+                            <td class="input-cell"><select id="pf-gpio-hi" style="text-align: center; font-weight: bold;" aria-label="GPIO_HI Array pass/fail"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
+                            <td class="input-cell"><input type="text" id="ev-gpio-hi" aria-label="GPIO_HI Array evidence reference"></td>
                         </tr>
                         <tr>
                             <td>GPIO_L Array (1-24)</td><td>Logic State 0</td>
-                            <td class="input-cell"><input type="text" id="res-gpio-lo" style="text-align: center;"></td>
-                            <td class="input-cell"><select id="pf-gpio-lo" style="text-align: center; font-weight: bold;"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
-                            <td class="input-cell"><input type="text" id="ev-gpio-lo"></td>
+                            <td class="input-cell"><input type="text" id="res-gpio-lo" style="text-align: center;" aria-label="GPIO_L Array actual readout"></td>
+                            <td class="input-cell"><select id="pf-gpio-lo" style="text-align: center; font-weight: bold;" aria-label="GPIO_L Array pass/fail"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
+                            <td class="input-cell"><input type="text" id="ev-gpio-lo" aria-label="GPIO_L Array evidence reference"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -164,13 +164,13 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Cycle Duration</td><td class="input-cell"><input type="text" id="bi-duration"></td>
-                            <td class="input-cell" rowspan="2"><input type="text" id="res-burnin" style="text-align: center;"></td>
-                            <td class="input-cell" rowspan="2"><select id="pf-burnin" style="text-align: center; font-weight: bold;"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
-                            <td class="input-cell" rowspan="2"><input type="text" id="ev-burnin"></td>
+                            <td>Cycle Duration</td><td class="input-cell"><input type="text" id="bi-duration" aria-label="Cycle Duration"></td>
+                            <td class="input-cell" rowspan="2"><input type="text" id="res-burnin" style="text-align: center;" aria-label="Burn-in actual readout"></td>
+                            <td class="input-cell" rowspan="2"><select id="pf-burnin" style="text-align: center; font-weight: bold;" aria-label="Burn-in pass/fail"><option></option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></td>
+                            <td class="input-cell" rowspan="2"><input type="text" id="ev-burnin" aria-label="Burn-in evidence reference"></td>
                         </tr>
                         <tr>
-                            <td>Thermal Monitor</td><td class="input-cell"><input type="text" id="bi-temp"></td>
+                            <td>Thermal Monitor</td><td class="input-cell"><input type="text" id="bi-temp" aria-label="Thermal Monitor reading"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -181,7 +181,7 @@
             <div class="section-title">5. Final Disposition & Signatures</div>
             <div style="display: flex; gap: 16px; margin-bottom: 16px; align-items: center;">
                 <span style="font-weight: 600;">UUT Acceptance:</span>
-                <select id="final-status" style="padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); font-weight: bold; width: 200px;">
+                <select id="final-status" style="padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); font-weight: bold; width: 200px;" aria-label="UUT acceptance status">
                     <option value="">[Select Status]</option>
                     <option value="ACCEPTED">ACCEPTED</option>
                     <option value="REJECTED">REJECTED</option>
@@ -194,15 +194,15 @@
                     <tbody>
                         <tr>
                             <td class="label-col">Test Engineer</td>
-                            <td class="input-cell"><input type="text" id="sig-name-1"></td>
-                            <td class="input-cell"><input type="text" id="sig-sign-1" style="font-family: serif; font-style: italic; color: var(--color-primary);"></td>
-                            <td class="input-cell"><input type="text" id="sig-date-1"></td>
+                            <td class="input-cell"><input type="text" id="sig-name-1" aria-label="Test Engineer name"></td>
+                            <td class="input-cell"><input type="text" id="sig-sign-1" style="font-family: serif; font-style: italic; color: var(--color-primary);" aria-label="Test Engineer signature"></td>
+                            <td class="input-cell"><input type="text" id="sig-date-1" aria-label="Test Engineer date"></td>
                         </tr>
                         <tr>
                             <td class="label-col">QA Inspector</td>
-                            <td class="input-cell"><input type="text" id="sig-name-2"></td>
-                            <td class="input-cell"><input type="text" id="sig-sign-2" style="font-family: serif; font-style: italic; color: var(--color-primary);"></td>
-                            <td class="input-cell"><input type="text" id="sig-date-2"></td>
+                            <td class="input-cell"><input type="text" id="sig-name-2" aria-label="QA Inspector name"></td>
+                            <td class="input-cell"><input type="text" id="sig-sign-2" style="font-family: serif; font-style: italic; color: var(--color-primary);" aria-label="QA Inspector signature"></td>
+                            <td class="input-cell"><input type="text" id="sig-date-2" aria-label="QA Inspector date"></td>
                         </tr>
                     </tbody>
                 </table>
