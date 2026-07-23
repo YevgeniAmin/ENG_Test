@@ -1,11 +1,9 @@
 Technical Architecture Audit
 Executive summary
-The portal is a small Firebase-hosted, multi-page static site with eight HTML entry points, page-oriented CSS and JavaScript, plus one deployed Cloud Function. The working tree is clean and the active branch is refactor/portal-architecture.
-The architecture is understandable but has accumulated copied files, unused assets, duplicated design tokens, inline ATP implementation code, and inconsistent responsive coverage. The most urgent functional concern is stale Firebase routing:
-/ai-fairy rewrites to an HTML file that does not exist.
-/api/secret-nexus-proxy targets a Cloud Function that is not exported.
-version-sync.js calls a hard-coded production endpoint and does not check response.ok.
-No files were changed.
+The portal is a small Firebase-hosted, multi-page static site with eight HTML entry points, page-oriented CSS and JavaScript, plus one deployed Cloud Function. The working tree was clean when this audit was captured on the refactor/portal-architecture branch; that branch has since been merged into main, which is now the active branch.
+The architecture is understandable but has accumulated copied files, unused assets, duplicated design tokens, inline ATP implementation code, and inconsistent responsive coverage.
+Update: as of the current `main` branch, the stale Firebase routing described below has been resolved — `firebase.json` now ships an empty `rewrites` array, and no HTML/JS/JSON file references `/ai-fairy` or `secretNexusProxy` anymore. `version-sync.js` itself has also been deleted from the repo (see Known Risks R-07); the pages that used it now render a static `.version-sync` placeholder instead. The findings below are preserved as the original Phase 0 record.
+No files were changed at the time of this audit.
 1. Current folder structure
 C:\eng-portal
 ├── public/                     Firebase Hosting document root
@@ -97,7 +95,8 @@ version-sync.css is especially notable because the active <portal-version> compo
 Uneven responsive coverage:
 Stronger coverage: Index, PowerShell, ATP.
 Basic coverage: ESS and Legal.
-No page-specific media queries: Core Memory, Tech DNA, 404.
+No page-specific media queries: Core Memory, 404.
+Update: this originally also listed Tech DNA, but `my_tech_dna.css` was rewritten for "Tech DNA V2" (commit `cc4a809`, predating this audit's Phase 0 baseline commit) and now has its own `@media (max-width: 900px)` and `@media (max-width: 680px)` breakpoints. See `known-risks.md` R-11 (closed).
 
 Core Memory is a significant mobile risk.
 It uses a fixed 300px 1fr application grid and switches to 1fr 300px for RTL, but has no small-screen breakpoint.
@@ -182,9 +181,9 @@ Repeated Lucide initialization could become a small shared initializer.
 Inline scripts currently prevent a strict Content Security Policy without allowing 'unsafe-inline' or supplying hashes/nonces.
 7. Broken or potentially broken asset paths
 Confirmed configuration failures
-[firebase.json](C:/eng-portal/firebase.json) maps /ai-fairy to /ai-fairy.html, but that file does not exist.
-The /api/secret-nexus-proxy rewrite targets secretNexusProxy, but [functions/index.js](C:/eng-portal/functions/index.js) does not export that function.
-The home-page “Secret Nexus Proxy” card currently links to core_memory.html, so the card label, image, link destination, and stale API rewrite do not describe one coherent feature.
+Resolved as of current main: [firebase.json](C:/eng-portal/firebase.json) now ships an empty `rewrites` array — the /ai-fairy and /api/secret-nexus-proxy rewrites described below no longer exist. The home-page card was also relabeled from "Secret Nexus Proxy" to "Architecture Memory" (still linking to core_memory.html), so the label/destination mismatch is resolved; the underlying image filename (`secret_nexus.webp`) is unchanged but is an internal asset name, not user-facing text. Original findings preserved below.
+firebase.json previously mapped /ai-fairy to /ai-fairy.html, but that file did not exist.
+The /api/secret-nexus-proxy rewrite previously targeted secretNexusProxy, which [functions/index.js](C:/eng-portal/functions/index.js) did not export.
 Potential failures
 External CDN availability or incompatible future releases can break Lucide and Chart.js.
 version-sync.js always contacts the production us-central1-eng-web-portal project, including local or preview environments.

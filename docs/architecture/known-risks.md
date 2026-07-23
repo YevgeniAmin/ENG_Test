@@ -13,7 +13,7 @@ This register captures risks observed during the Phase 0 static audit. It does n
 | R-06 | External dependencies | Medium | Lucide and Chart.js use unpinned CDN URLs; CDN scripts do not declare Subresource Integrity. | Upstream changes or CDN failures can alter or break pages without a repository change. | Phase 1 or approved dependency work |
 | R-07 | Version synchronization | Medium | `version-sync.js` calls a hard-coded production endpoint and parses JSON without checking `response.ok`. | Preview/local pages depend on production and error responses may be handled inconsistently. | Phase 4; configuration aspects require approval |
 | R-08 | Styling | Medium | `version-sync.css` is not loaded although `version-sync.js` generates matching component classes. | The active version widget may be unstyled or depend on accidental page styles. | Phase 1–3 |
-| R-11 | Responsive layout | Medium | Tech DNA uses a 300px minimum card width without a narrow-screen override. | Cards can overflow on very narrow devices after page padding is included. | Phase 5 |
+| R-11 | Responsive layout | Resolved | ~~Tech DNA used a 300px minimum card width without a narrow-screen override.~~ Resolved by the "Tech DNA V2" rewrite (commit `cc4a809`), which predates this audit's Phase 0 baseline commit. `my_tech_dna.css` now uses a hero/pillar-grid layout with its own `@media (max-width: 900px)` and `@media (max-width: 680px)` breakpoints; no `minmax(300px, 1fr)` card grid remains. | None (historical). | Closed |
 | R-12 | Inline implementation | Medium | ATP contains 49 inline style attributes and a large inline script; Core Memory and ESS use inline handlers. | Responsive maintenance and strict Content Security Policy adoption are harder. | Phase 3–4 |
 | R-13 | Dynamic accessibility | Medium | Simulation status, terminal output, version state, and generated notebook content do not clearly expose live-region behavior. | Assistive-technology users may not be notified of content changes. | Phase 6 |
 | R-14 | Navigation | Medium | ESS sidebar items use `href="#"` without real destinations. | Keyboard and pointer activation can jump the page without performing meaningful navigation. | Phase 6 |
@@ -24,7 +24,7 @@ This register captures risks observed during the Phase 0 static audit. It does n
 | R-19 | Canvas accessibility | Medium | The ESS Chart.js canvas has no documented equivalent textual representation. | Users who cannot perceive the chart may miss information. | Phase 6 |
 | R-20 | Information exposure | Low | PowerShell simulation data includes a private-address example endpoint. | Public users can see internal-looking addressing conventions even though no request is made. | Ownership/security review |
 | R-21 | Fixed regions | Low | ESS, Core Memory, and PowerShell use fixed-height chart/log/terminal regions. | Text zoom or long content can be clipped or require nested scrolling. | Phase 5–6 |
-| R-22 | Dependencies | Low | Root and Functions manifests overlap, while the root manifest has no scripts or declared entry point. | Dependency ownership and update scope are unclear. | Phase 1 or 7 |
+| R-22 | Dependencies | Low | Root and Functions manifests overlap; the root manifest has no scripts, no declared entry point, and (confirmed on current `main`) no consuming file anywhere in the repo — no `server.js` or equivalent ever loads `@google/genai`, `cors`, `dotenv`, or `express` from the root manifest. | The root manifest is fully orphaned dead weight, not merely ambiguous ownership. | Phase 7 |
 
 ## Positive baseline controls
 

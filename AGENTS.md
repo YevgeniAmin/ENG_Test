@@ -32,3 +32,9 @@ This repository contains Yevgeni's engineering portal.
 - Never expose API keys, passwords or tokens.
 - Never modify deployment or security configuration without explicit approval.
 - Create or recommend a Git checkpoint before broad refactoring.
+
+## Git workflow
+
+- Branch names follow `<type>/<kebab-description>`, e.g. `feature/portal-branding-pass`, `ci/firebase-hosting`, `refactor/portal-architecture`, `fix/portal-quality-lighthouse`. Common types: `feature`, `fix`, `ci`, `refactor`.
+- All changes land on `main` through a GitHub pull request — no direct pushes to `main`.
+- This is a single-owner repository, so PRs are self-reviewed and self-merged; the PR still exists to keep a reviewable diff and CI/preview-deploy signal before merge.

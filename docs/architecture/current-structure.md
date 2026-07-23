@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document records the Phase 0 architecture baseline for the ENG Portal. It describes the repository as observed on the `refactor/portal-architecture` branch before any runtime refactoring.
+This document records the Phase 0 architecture baseline for the ENG Portal. It describes the repository as observed on the `refactor/portal-architecture` branch before any runtime refactoring. That branch has since been merged into `main`, which is now the active branch; the structure below reflects the merged baseline and has not been re-verified against later branding/cleanup commits.
 
 ## Repository layout
 
