@@ -24,7 +24,7 @@ This register captures risks observed during the Phase 0 static audit. It does n
 | R-19 | Canvas accessibility | Medium | The ESS Chart.js canvas has no documented equivalent textual representation. | Users who cannot perceive the chart may miss information. | Phase 6 |
 | R-20 | Information exposure | Low | PowerShell simulation data includes a private-address example endpoint. | Public users can see internal-looking addressing conventions even though no request is made. | Ownership/security review |
 | R-21 | Fixed regions | Low | ESS, Core Memory, and PowerShell use fixed-height chart/log/terminal regions. | Text zoom or long content can be clipped or require nested scrolling. | Phase 5–6 |
-| R-22 | Dependencies | Low | Root and Functions manifests overlap, while the root manifest has no scripts or declared entry point. | Dependency ownership and update scope are unclear. | Phase 1 or 7 |
+| R-22 | Dependencies | Low | Root and Functions manifests overlap; the root manifest has no scripts, no declared entry point, and (confirmed on current `main`) no consuming file anywhere in the repo — no `server.js` or equivalent ever loads `@google/genai`, `cors`, `dotenv`, or `express` from the root manifest. | The root manifest is fully orphaned dead weight, not merely ambiguous ownership. | Phase 7 |
 
 ## Positive baseline controls
 

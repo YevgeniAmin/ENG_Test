@@ -64,9 +64,15 @@ Candidate classifications are not deletion instructions. Ignored/generated conte
 |---|---|---|
 | `public/assets/images/atp_card_icon.webp` | active | ATP card image on the main portal. |
 | `public/assets/images/powershell.webp` | active | PowerShell card image on the main portal. |
-| `public/assets/images/secret_nexus.webp` | active | Secret Nexus-labelled card image on the main portal. |
+| `public/assets/images/secret_nexus.webp` | active | Card image for the "Architecture Memory" card on the main portal (filename predates the card's rename from "Secret Nexus Proxy"). |
 | `public/assets/images/environmental_stress_screening.webp` | active | ESS card image on Core Memory. |
 | `public/assets/images/artificial_hallucination.webp` | active | Core Memory narrative image. |
+| `public/assets/images/favicon-16x16.png` | active | Site favicon, loaded by all eight HTML pages. |
+| `public/assets/images/favicon-32x32.png` | active | Site favicon, loaded by all eight HTML pages. |
+| `public/assets/images/favicon-64x64.png` | active | Site favicon, loaded by all eight HTML pages. |
+| `public/assets/images/apple-touch-icon.png` | active | Apple touch icon, loaded by all eight HTML pages. |
+| `public/assets/images/tech_dna.webp` | active | Tech DNA card image on the main portal. |
+| `public/assets/images/tech_dna_preview.png` | active | Open Graph/Twitter preview image on index.html and my_tech_dna.html. |
 
 ## Runtime configuration and dependency manifests
 
@@ -93,6 +99,8 @@ Candidate classifications are not deletion instructions. Ignored/generated conte
 | `skills-lock.json` | active | Locks repository agent-skill metadata. |
 | `.agents/skills/**` | active | Repository-provided agent skills and references. |
 | `.codex/**` | active | Repository-local Codex configuration/metadata where present. |
+| `scripts/update-favicons.ps1` | active | Maintenance script used to (re)generate the favicon/apple-touch-icon set. |
+| `scripts/BOM-LineEndings.ps1` | active | Maintenance script for normalizing file BOM/line-endings. |
 
 ## Phase 0 documentation
 
