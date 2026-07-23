@@ -55,7 +55,7 @@ This document serves as the absolute single source of truth for the architectura
 * **NotebookLM Cognitive Simulator Layer (`notebook-simulator.js`):** An high-fidelity portfolio presentation widget embedded in the main dashboard workspace. Uses a highly stable client-side chunking mechanism to partition raw project data arrays into 3 curated templates. Renders outputs using a typewriter animation loop (4ms cadence) to safely mockup interactive model execution without network overhead or XSS vulnerabilities.
 * **PowerShell Enterprise Systems Cockpit (`powershell-sim.html`):** A beautiful, desktop-first, multi-column simulation board. Features a live cmdlet list creating dynamic data blocks for specialized system tests (Win32 Physical Memory tracking, CimInstance hardware auditing, secure Proxmox CT 102 package updates, and local token throughput benchmarks). Includes a functional 4-stage Workflow Stepper panel.
 * **Lossless Audio Verification Lab:** A modular DSP calculation component built using the native Web Audio API suite. Supports accurate SNR sweeps, absolute phase reversal tests, pink/white noise wave compilation, and high-resolution 24-bit/96kHz output file creation blocks.
-* **The Digital Mirror & Legal Engine (`my_tech_dna.html` & `legal_terms.html`):** Fully sanitized, isolated document templates running entirely on the new token system, containing deep, legally binding intellectual property clauses and R&D logs.
+* **The Digital Mirror & Legal Engine (`my-tech-dna.html` & `legal-terms.html`):** Fully sanitized, isolated document templates running entirely on the new token system, containing deep, legally binding intellectual property clauses and R&D logs.
 
 ---
 

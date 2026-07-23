@@ -11,11 +11,11 @@ eng-portal/
 |-- public/                         Firebase Hosting document root
 |   |-- index.html                  Main portal page
 |   |-- 404.html                    Hosting error page
-|   |-- atp_ai_simulation.html      ATP document simulator
-|   |-- core_memory.html            Core Memory dashboard
-|   |-- ess_lab.html                ESS vibration simulator
-|   |-- legal_terms.html            Legal terms page
-|   |-- my_tech_dna.html            Technical profile page
+|   |-- atp-ai-simulation.html      ATP document simulator
+|   |-- core-memory.html            Core Memory dashboard
+|   |-- ess-lab.html                ESS vibration simulator
+|   |-- legal-terms.html            Legal terms page
+|   |-- my-tech-dna.html            Technical profile page
 |   |-- powershell-sim.html         PowerShell simulator
 |   `-- assets/
 |       |-- css/                    Shared and page-specific stylesheets
@@ -54,11 +54,11 @@ External CDN dependencies are listed separately from repository-local files.
 |---|---|---|---|---|---|
 | `public/index.html` | Main portal and notebook simulator | `assets/css/index.css`; `assets/css/portal-quality.css` | `assets/js/notebook-simulator.js` | None | None |
 | `public/404.html` | Hosting error page | `assets/css/global-tokens.css`; `assets/css/error-style.css`; `assets/css/portal-quality.css` | `assets/js/version-sync.js` | Lucide | Lucide initialization |
-| `public/atp_ai_simulation.html` | ATP/ATR document simulator | `assets/css/atp-sim.css`; `assets/css/portal-quality.css` | None | Lucide; html2pdf 0.9.3 | ATP simulation, clearing, PDF/print actions, and status styling |
-| `public/core_memory.html` | Core Memory dashboard and bilingual narrative | `assets/css/global-tokens.css`; `assets/css/core-memory.css`; `assets/css/portal-quality.css` | `assets/js/core_memory_translator.js`; `assets/js/core_memory.js`; `assets/js/version-sync.js` | Lucide | Language button handlers and one inline image style |
-| `public/ess_lab.html` | Environmental Stress Screening simulator | `assets/css/global-tokens.css`; `assets/css/ess-sim.css`; `assets/css/portal-quality.css` | `assets/js/ess-sim.js`; `assets/js/version-sync.js` | Chart.js; Lucide | Start/stop handlers and Lucide initialization |
-| `public/legal_terms.html` | Terms, privacy, and disclaimer content | `assets/css/global-tokens.css`; `assets/css/legal-style.css`; `assets/css/portal-quality.css` | `assets/js/version-sync.js` | Lucide | Lucide initialization |
-| `public/my_tech_dna.html` | Technical profile and portal history | `assets/css/global-tokens.css`; `assets/css/my_tech_dna.css`; `assets/css/portal-quality.css` | `assets/js/version-sync.js` | Lucide | Lucide initialization |
+| `public/atp-ai-simulation.html` | ATP/ATR document simulator | `assets/css/atp-sim.css`; `assets/css/portal-quality.css` | None | Lucide; html2pdf 0.9.3 | ATP simulation, clearing, PDF/print actions, and status styling |
+| `public/core-memory.html` | Core Memory dashboard and bilingual narrative | `assets/css/global-tokens.css`; `assets/css/core-memory.css`; `assets/css/portal-quality.css` | `assets/js/core_memory_translator.js`; `assets/js/core_memory.js`; `assets/js/version-sync.js` | Lucide | Language button handlers and one inline image style |
+| `public/ess-lab.html` | Environmental Stress Screening simulator | `assets/css/global-tokens.css`; `assets/css/ess-sim.css`; `assets/css/portal-quality.css` | `assets/js/ess-sim.js`; `assets/js/version-sync.js` | Chart.js; Lucide | Start/stop handlers and Lucide initialization |
+| `public/legal-terms.html` | Terms, privacy, and disclaimer content | `assets/css/global-tokens.css`; `assets/css/legal-style.css`; `assets/css/portal-quality.css` | `assets/js/version-sync.js` | Lucide | Lucide initialization |
+| `public/my-tech-dna.html` | Technical profile and portal history | `assets/css/global-tokens.css`; `assets/css/my_tech_dna.css`; `assets/css/portal-quality.css` | `assets/js/version-sync.js` | Lucide | Lucide initialization |
 | `public/powershell-sim.html` | PowerShell management-console simulator | `assets/css/powershell-sim.css`; `assets/css/portal-quality.css` | `assets/js/powershell-sim.js`; `assets/js/version-sync.js` | Lucide | None |
 
 ## CSS organization

@@ -11,6 +11,18 @@
     ],
     "cleanUrls": true,
     "rewrites": [],
+    "redirects": [
+      { "source": "/atp_ai_simulation", "destination": "/atp-ai-simulation", "type": 301 },
+      { "source": "/atp_ai_simulation.html", "destination": "/atp-ai-simulation", "type": 301 },
+      { "source": "/core_memory", "destination": "/core-memory", "type": 301 },
+      { "source": "/core_memory.html", "destination": "/core-memory", "type": 301 },
+      { "source": "/ess_lab", "destination": "/ess-lab", "type": 301 },
+      { "source": "/ess_lab.html", "destination": "/ess-lab", "type": 301 },
+      { "source": "/legal_terms", "destination": "/legal-terms", "type": 301 },
+      { "source": "/legal_terms.html", "destination": "/legal-terms", "type": 301 },
+      { "source": "/my_tech_dna", "destination": "/my-tech-dna", "type": 301 },
+      { "source": "/my_tech_dna.html", "destination": "/my-tech-dna", "type": 301 }
+    ],
     "headers": [
       {
         "source": "/**",
