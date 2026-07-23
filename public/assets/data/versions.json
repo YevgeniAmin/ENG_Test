@@ -1,0 +1,247 @@
+{
+  "portal": {
+    "name": "ENG-PORTAL",
+    "currentVersion": "2.0",
+    "releaseDate": "2026-07-23",
+    "description": "Engineering workspace for AI, cloud, automation, and digital systems"
+  },
+  "pages": [
+    {
+      "id": "index",
+      "filename": "index.html",
+      "title": "ENG-PORTAL Dashboard",
+      "status": "active",
+      "version": "2.0",
+      "releaseDate": "2026-07-23",
+      "lastUpdated": "2026-07-23T19:37:27Z",
+      "description": "Main portal dashboard with dynamic job cards",
+      "changelog": [
+        {
+          "version": "2.0",
+          "date": "2026-07-23",
+          "changes": [
+            "Redesigned card layout with improved visual hierarchy",
+            "Added NotebookLM insights panel",
+            "Integrated AI chat interface",
+            "Added template selector for engineering notebooks"
+          ]
+        },
+        {
+          "version": "1.0",
+          "date": "2026-05-15",
+          "changes": [
+            "Initial portal launch",
+            "Basic card grid layout",
+            "Navigation structure"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "atp-ai-simulation",
+      "filename": "atp-ai-simulation.html",
+      "title": "ATP/AI Simulation",
+      "subtitle": "Automated Test Procedures",
+      "status": "active",
+      "version": "1.2",
+      "releaseDate": "2026-07-20",
+      "lastUpdated": "2026-07-20T14:22:15Z",
+      "description": "Validating engineering workflows with AI-driven Proof of Concept",
+      "changelog": [
+        {
+          "version": "1.2",
+          "date": "2026-07-20",
+          "changes": [
+            "Enhanced simulation accuracy",
+            "Improved UI responsiveness",
+            "Added performance metrics dashboard"
+          ]
+        },
+        {
+          "version": "1.1",
+          "date": "2026-06-10",
+          "changes": [
+            "Bug fixes and stability improvements",
+            "Added dark mode support"
+          ]
+        },
+        {
+          "version": "1.0",
+          "date": "2026-05-20",
+          "changes": [
+            "Initial ATP/AI simulation launch"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "powershell-sim",
+      "filename": "powershell-sim.html",
+      "title": "PowerShell Simulator",
+      "subtitle": "Remote Command Exercise",
+      "status": "active",
+      "version": "1.1",
+      "releaseDate": "2026-07-18",
+      "lastUpdated": "2026-07-18T10:45:32Z",
+      "description": "Interactive enterprise command simulation with endpoint and network insights",
+      "changelog": [
+        {
+          "version": "1.1",
+          "date": "2026-07-18",
+          "changes": [
+            "Added command history feature",
+            "Improved error messages",
+            "Enhanced network simulation accuracy"
+          ]
+        },
+        {
+          "version": "1.0",
+          "date": "2026-06-01",
+          "changes": [
+            "Initial PowerShell simulator launch",
+            "Basic command execution and feedback"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "core-memory",
+      "filename": "core-memory.html",
+      "title": "Architecture Memory",
+      "subtitle": "Engineering Knowledge System",
+      "status": "development",
+      "version": "0.8",
+      "releaseDate": "2026-07-15",
+      "lastUpdated": "2026-07-23T19:25:44Z",
+      "description": "A living engineering knowledge layer that preserves technical context, system relationships, decisions, lessons learned, and project evolution",
+      "changelog": [
+        {
+          "version": "0.8",
+          "date": "2026-07-15",
+          "changes": [
+            "Added knowledge graph visualization",
+            "Improved search functionality",
+            "Enhanced memory persistence",
+            "WIP: AI-powered knowledge extraction"
+          ]
+        },
+        {
+          "version": "0.7",
+          "date": "2026-07-01",
+          "changes": [
+            "Initial beta release",
+            "Core memory storage system",
+            "Basic tagging and categorization"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "my-tech-dna",
+      "filename": "my-tech-dna.html",
+      "title": "Digital Engineer's Vision",
+      "subtitle": "Personal Tech DNA",
+      "status": "visionary",
+      "version": "1.0",
+      "releaseDate": "2026-07-10",
+      "lastUpdated": "2026-07-10T08:15:22Z",
+      "description": "Core competencies, future roadmap, and hybrid architecture philosophies",
+      "changelog": [
+        {
+          "version": "1.0",
+          "date": "2026-07-10",
+          "changes": [
+            "Launched Digital Engineer's Vision",
+            "Documented core competencies",
+            "Outlined future roadmap and architectural philosophies"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ess-lab",
+      "filename": "ess-lab.html",
+      "title": "ESS Lab",
+      "status": "planning",
+      "version": "0.1",
+      "releaseDate": "2026-07-22",
+      "lastUpdated": "2026-07-22T16:30:00Z",
+      "description": "Engineering systems and services laboratory",
+      "changelog": [
+        {
+          "version": "0.1",
+          "date": "2026-07-22",
+          "changes": [
+            "Initial placeholder created",
+            "Planning phase - feature design in progress"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "legal-terms",
+      "filename": "legal-terms.html",
+      "title": "Legal Terms & Privacy",
+      "status": "static",
+      "version": "1.0",
+      "releaseDate": "2026-05-15",
+      "lastUpdated": "2026-05-15T12:00:00Z",
+      "description": "Legal terms, privacy policy, and compliance information",
+      "changelog": [
+        {
+          "version": "1.0",
+          "date": "2026-05-15",
+          "changes": [
+            "Initial legal documentation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "404",
+      "filename": "404.html",
+      "title": "Page Not Found",
+      "status": "static",
+      "version": "1.0",
+      "releaseDate": "2026-05-15",
+      "lastUpdated": "2026-05-15T12:00:00Z",
+      "description": "Error page for missing resources",
+      "changelog": [
+        {
+          "version": "1.0",
+          "date": "2026-05-15",
+          "changes": [
+            "Initial 404 error page"
+          ]
+        }
+      ]
+    }
+  ],
+  "statusDefinitions": {
+    "active": {
+      "label": "ACTIVE",
+      "description": "Production-ready, fully functional",
+      "color": "#28a745"
+    },
+    "development": {
+      "label": "DEVELOPMENT",
+      "description": "Open Memory System - actively being developed",
+      "color": "#ffc107"
+    },
+    "visionary": {
+      "label": "VISIONARY",
+      "description": "Long-term vision and roadmap",
+      "color": "#0275d8"
+    },
+    "planning": {
+      "label": "PLANNING",
+      "description": "In planning phase, feature design in progress",
+      "color": "#6c757d"
+    },
+    "static": {
+      "label": "STATIC",
+      "description": "Non-updating reference pages",
+      "color": "#495057"
+    }
+  }
+}
