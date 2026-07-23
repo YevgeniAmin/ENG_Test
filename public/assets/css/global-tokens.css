@@ -8,7 +8,7 @@
     --md-sys-color-surface-variant: #f1f5f9;
     
     /* Primary (Enterprise Blue) */
-    --md-sys-color-primary: #0284c7; 
+    --md-sys-color-primary: #0277ac;
     --md-sys-color-on-primary: #ffffff;
     --md-sys-color-primary-container: #e0f2fe;
 
@@ -63,13 +63,13 @@
     --transition-standard: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 
     /* Status Badge Colors */
-    --color-active: #1e8e3e;
+    --color-active: #1a6b30;
     --bg-active: #e6f4ea;
-    --color-deployed: #1a73e8;
+    --color-deployed: #1257b0;
     --bg-deployed: #e8f0fe;
-    --color-dev: #f9ab00;
+    --color-dev: #8a5a00;
     --bg-dev: #fef7e0;
-    --color-visionary: #9334e6;
+    --color-visionary: #7a1fc7;
     --bg-visionary: #f3e8fd;
 }
 
