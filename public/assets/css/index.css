@@ -14,13 +14,13 @@
             --text-link: #1a73e8;
             
             /* Status Badge Colors */
-            --color-active: #1e8e3e;
+            --color-active: #1a6b30;
             --bg-active: #e6f4ea;
-            --color-deployed: #1a73e8;
+            --color-deployed: #1257b0;
             --bg-deployed: #e8f0fe;
-            --color-dev: #f9ab00;
+            --color-dev: #8a5a00;
             --bg-dev: #fef7e0;
-            --color-visionary: #9334e6;
+            --color-visionary: #7a1fc7;
             --bg-visionary: #f3e8fd;
 
             /* Shadows & Radius */
