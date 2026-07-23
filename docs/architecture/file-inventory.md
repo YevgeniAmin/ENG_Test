@@ -72,7 +72,7 @@ Candidate classifications are not deletion instructions. Ignored/generated conte
 | `public/assets/images/favicon-64x64.png` | active | Site favicon, loaded by all eight HTML pages. |
 | `public/assets/images/apple-touch-icon.png` | active | Apple touch icon, loaded by all eight HTML pages. |
 | `public/assets/images/tech_dna.webp` | active | Tech DNA card image on the main portal. |
-| `public/assets/images/tech_dna_preview.png` | active | Open Graph/Twitter preview image on index.html and my-tech-dna.html. |
+| `public/assets/images/tech_dna_preview.jpg` | active | Open Graph/Twitter preview image on index.html and my-tech-dna.html. |
 
 ## Runtime configuration and dependency manifests
 
