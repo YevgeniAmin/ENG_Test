@@ -95,7 +95,8 @@ version-sync.css is especially notable because the active <portal-version> compo
 Uneven responsive coverage:
 Stronger coverage: Index, PowerShell, ATP.
 Basic coverage: ESS and Legal.
-No page-specific media queries: Core Memory, Tech DNA, 404.
+No page-specific media queries: Core Memory, 404.
+Update: this originally also listed Tech DNA, but `my_tech_dna.css` was rewritten for "Tech DNA V2" (commit `cc4a809`, predating this audit's Phase 0 baseline commit) and now has its own `@media (max-width: 900px)` and `@media (max-width: 680px)` breakpoints. See `known-risks.md` R-11 (closed).
 
 Core Memory is a significant mobile risk.
 It uses a fixed 300px 1fr application grid and switches to 1fr 300px for RTL, but has no small-screen breakpoint.
