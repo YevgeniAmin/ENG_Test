@@ -98,7 +98,11 @@ Also new on Legal Terms: a `heading-order` failure — `.contact-box` used `<h4>
 
 All 8 routes score `categories.accessibility.score == 1.00` against the PR #6 preview at validated head SHA `8ebc2d3` (preview workflow run [30114308449](https://github.com/YevgeniAmin/ENG_Test/actions/runs/30114308449)). Full detail, including the two pre-existing non-scoring findings (`table-fake-caption` on ATP, `label-content-name-mismatch` on My Tech DNA) and the live dynamic-state validation table (ATP pass/fail, PowerShell executing, and confirmation that Core Memory's `.alert-danger` is unreachable dead code), is in `docs/Reports/preview/pr-6-8ebc2d3/manifest.md`.
 
-**Not yet done: merge PR #6, deploy, and a fresh Lighthouse pass against production** to confirm Legal Terms/ESS Lab/404/Core Memory/PowerShell Sim all reach A11y 100 live.
+## PR #6 merged and production-validated (2026-07-24)
+
+PR #6 merged 2026-07-24T18:04:54Z (merge commit `28f1907`). Production deploy confirmed via workflow run [30115527966](https://github.com/YevgeniAmin/ENG_Test/actions/runs/30115527966), completed 2026-07-24T18:05:38Z, success, no failed/cancelled steps.
+
+**All 8 routes reconfirmed live against `https://yevgeni.info` at commit `28f1907`** — every one at `categories.accessibility.score == 1.00`, including Legal Terms, ESS Lab, 404, Core Memory, and PowerShell Sim (the five that were failing at the `7543cc2` baseline). Dynamic states re-verified live in production too: ATP accepted (5.8:1) and rejected (5.39:1), PowerShell executing (5.91:1, was 3.44:1 failing pre-fix). Full detail in `docs/Reports/production/2026-07-24-28f1907/manifest.md`.
 
 ## Evidence location
 
@@ -109,12 +113,13 @@ docs/Reports/
 ├── historical/
 │   ├── 2026-07-23-pr4-baseline/     (first real run, pre-PR #5, commit 701c69f)
 │   └── 2026-07-24-superseded/       (earlier reruns replaced by a later same-day run, plus one run that hit a wrong URL)
+├── preview/
+│   └── pr-6-8ebc2d3/                (PR #6 preview, pre-merge validation)
 └── production/
-    └── 2026-07-24-7543cc2/          (current: all 8 routes, commit 7543cc2 — the "before" state for the fixes above)
+    ├── 2026-07-24-7543cc2/          (live production BEFORE PR #6 — 3 of 8 routes failing)
+    └── 2026-07-24-28f1907/          (live production AFTER PR #6 — all 8 routes passing)
 ```
-
-`7543cc2` is confirmed (via `gh run list`) as the last successful "Deploy to Firebase Hosting on merge" run, 2026-07-23T21:10:52Z, with no newer deploy since — so every report in `production/2026-07-24-7543cc2/` was tested against that exact commit.
 
 ### Other pages
 
-All 8 routes (Home, ATP/AI Simulation, Core Memory, PowerShell Sim, My Tech DNA, ESS Lab, Legal Terms, 404) now have production evidence — see `production/2026-07-24-7543cc2/`. No page is outstanding for a first pass; three (ESS Lab, Legal Terms, 404) need a re-run after the fixes above ship.
+All 8 routes (Home, ATP/AI Simulation, Core Memory, PowerShell Sim, My Tech DNA, ESS Lab, Legal Terms, 404) have production evidence confirming accessibility 1.00 as of commit `28f1907`. No page is outstanding.
