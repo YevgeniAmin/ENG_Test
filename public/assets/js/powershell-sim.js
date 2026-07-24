@@ -200,7 +200,7 @@ function executeSimulation() {
     
     updateStepper(3);
     document.getElementById('terminal-status').innerText = "EXECUTING";
-    document.getElementById('terminal-status').style.color = "var(--md-sys-color-error)";
+    document.getElementById('terminal-status').style.color = "var(--md-sys-color-error-on-light)";
 
     // Append standard initiation text
     appendLog(`Connecting to target node [SRV-1] via secure port...`, 'text-muted');
