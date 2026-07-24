@@ -134,7 +134,7 @@
     border: 1px solid var(--md-sys-color-outline);
 }
 
-.contact-box h4 {
+.contact-box h3 {
     font-size: 1.1rem;
     color: var(--md-sys-color-secondary);
     margin-bottom: var(--spacing-1);
@@ -145,7 +145,7 @@
 
 .contact-box p {
     font-size: 0.85rem;
-    color: var(--md-sys-color-text-muted);
+    color: var(--md-sys-color-text-muted-on-light);
     margin-bottom: var(--spacing-2);
 }
 
@@ -217,6 +217,7 @@
 .version-tag {
     font-family: var(--font-family-mono);
     background-color: var(--md-sys-color-surface-variant);
+    color: var(--md-sys-color-text-muted-on-light);
     padding: 4px 8px;
     border-radius: var(--radius-sm);
     border: var(--border-thin);

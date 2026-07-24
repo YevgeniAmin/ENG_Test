@@ -298,7 +298,7 @@ html[lang="en"] .narrative-text {
 /* Alert component classes used inside js hydration loops */
 .alert-box { padding: var(--spacing-2); border-radius: var(--radius-sm); font-size: 0.825rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
 .alert-success { background-color: #ecfdf5; color: var(--md-sys-color-success); border: 1px solid #a7f3d0; }
-.alert-danger { background-color: #fef2f2; color: var(--md-sys-color-error); border: 1px solid #fca5a5; }
+.alert-danger { background-color: #fef2f2; color: var(--md-sys-color-error-on-light); border: 1px solid #fca5a5; }
 
 /* Global System Footer Matrix */
 .app-footer {

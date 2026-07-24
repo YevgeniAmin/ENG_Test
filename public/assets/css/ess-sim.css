@@ -128,7 +128,7 @@
     font-size: 0.875rem;
     font-weight: 700;
     letter-spacing: 1px;
-    color: var(--md-sys-color-text-muted);
+    color: var(--md-sys-color-text-muted-on-dark);
     display: flex;
     align-items: center;
     gap: var(--spacing-2);
@@ -144,7 +144,7 @@
 
 .vib-clock {
     font-size: 0.75rem;
-    color: var(--md-sys-color-text-muted);
+    color: var(--md-sys-color-text-muted-on-dark);
     font-family: var(--font-family-mono);
 }
 
@@ -177,7 +177,7 @@
 .metric-group { display: flex; flex-direction: column; }
 .align-right { text-align: right; }
 
-.metric-label { font-size: 0.75rem; color: var(--md-sys-color-text-muted); font-family: var(--font-family-mono); }
+.metric-label { font-size: 0.75rem; color: var(--md-sys-color-text-muted-on-dark); font-family: var(--font-family-mono); }
 .metric-value-static { font-size: 1.25rem; font-weight: 700; color: #e2e8f0; font-family: var(--font-family-mono); }
 .metric-value-dynamic { 
     font-size: 2rem; 
@@ -201,7 +201,7 @@
     display: flex;
     justify-content: space-between;
     font-size: 0.75rem;
-    color: var(--md-sys-color-text-muted);
+    color: var(--md-sys-color-text-muted-on-dark);
     font-family: var(--font-family-mono);
     margin-top: var(--spacing-3);
     padding-top: var(--spacing-2);

@@ -22,7 +22,8 @@
 
     /* Semantic States */
     --md-sys-color-error: #ef4444;
-    
+    --md-sys-color-error-on-light: #b91c1c;
+
     --md-sys-color-warning: #f59e0b;
     --md-sys-color-warning-container: #fef3c7;
     
@@ -32,6 +33,8 @@
     /* Text */
     --md-sys-color-text-main: #0f172a;
     --md-sys-color-text-muted: #64748b;
+    --md-sys-color-text-muted-on-light: #475569;
+    --md-sys-color-text-muted-on-dark: #94a3b8;
 
     /* Typography */
     --font-family-base: 'Segoe UI', Roboto, Inter, sans-serif;
@@ -98,7 +101,7 @@
     gap: 0.5rem;
     text-align: center;
     font-size: 11px;
-    color: #64748b;
+    color: var(--md-sys-color-text-muted);
 }
 
 .version-badges-container {
