@@ -90,9 +90,15 @@ Also new on Legal Terms: a `heading-order` failure — `.contact-box` used `<h4>
 - `text-muted-on-light` applied to: `.contact-box p` and `.version-tag` (`legal-style.css`), `.version-tag` (`error-style.css` — duplicated between the two files, same as R-16).
 - `text-muted-on-dark` applied to: `.vib-title`, `.vib-clock`, `.metric-label`, `.vib-footer` (`ess-sim.css`) — all four live inside `.vibration-module`'s dark background; only three were actually caught by the crawl, the fourth (`.vib-clock`) got the identical fix proactively.
 - `legal-terms.html` / `legal-style.css`: `.contact-box` heading changed from `<h4>` to `<h3>` to restore heading order.
-- New `--md-sys-color-error-on-light: #b91c1c` token (5.91:1 vs `#fef2f2`), applied to `error-style.css`'s `.badge-error` and `core-memory.css`'s `.alert-danger` (identical `#ef4444`-on-`#fef2f2` pair; the latter wasn't caught by the crawl since it's not in Core Memory's default DOM, but it's the same bug). The shared `--md-sys-color-error` token itself was deliberately left untouched — PowerShell Sim's `.log-error` uses it at 4.74:1 against the dark terminal background, which darkening would have broken.
+- New `--md-sys-color-error-on-light: #b91c1c` token (5.91:1 vs `#fef2f2`), applied to `error-style.css`'s `.badge-error` and `core-memory.css`'s `.alert-danger` (identical `#ef4444`-on-`#fef2f2` pair; the latter wasn't caught by the crawl since it's not in Core Memory's default DOM, but it's the same bug).
 
-**Not yet done: commit, push, PR, merge, deploy, and a fresh Lighthouse pass against production** to confirm Legal Terms/ESS Lab/404 all reach A11y 100.
+**Correction #3 (caught during dynamic-state validation on the PR #6 preview, live Puppeteer interaction, commit `54286c6`):** the claim above — that the shared `--md-sys-color-error` token had to stay untouched because PowerShell Sim's `.log-error` used it at 4.74:1 against a dark terminal background — was never actually verified and turned out to be wrong. Grepping `powershell-sim.js` shows `.log-error` is dead code: no script path ever applies that class. The real reachable dynamic error-colored state is `#terminal-status`, set inline to `var(--md-sys-color-error)` by `executeSimulation()` while a command runs — and it sits on `.badge-surface`'s **light** background (`#f1f5f9`), not a dark one. Live-measured on the PR #6 preview: `rgb(239,68,68)` on `rgb(241,245,249)` = 3.44:1, failing. Fixed in commit `8ebc2d3` by routing that inline style through `--md-sys-color-error-on-light` instead (`powershell-sim.css` got its own copy of the token since this page doesn't link `global-tokens.css`). Re-verified live post-fix: `rgb(185,28,28)` on the same background = 5.91:1, passing.
+
+## PR #6 preview validation (2026-07-24)
+
+All 8 routes score `categories.accessibility.score == 1.00` against the PR #6 preview at validated head SHA `8ebc2d3` (preview workflow run [30114308449](https://github.com/YevgeniAmin/ENG_Test/actions/runs/30114308449)). Full detail, including the two pre-existing non-scoring findings (`table-fake-caption` on ATP, `label-content-name-mismatch` on My Tech DNA) and the live dynamic-state validation table (ATP pass/fail, PowerShell executing, and confirmation that Core Memory's `.alert-danger` is unreachable dead code), is in `docs/Reports/preview/pr-6-8ebc2d3/manifest.md`.
+
+**Not yet done: merge PR #6, deploy, and a fresh Lighthouse pass against production** to confirm Legal Terms/ESS Lab/404/Core Memory/PowerShell Sim all reach A11y 100 live.
 
 ## Evidence location
 
