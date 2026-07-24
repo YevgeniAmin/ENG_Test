@@ -30,7 +30,7 @@
 | Filename | github_workflow.md |
 | Document Title | GitHub Workflow |
 | Document Type | Engineering |
-| Status | **Draft** |
+| Status | **Review** |
 | Framework | ATC Engineering Ecosystem |
 | Knowledge Layer | Engineering Knowledge Management System |
 | Documentation Standard | ATC Documentation Standard (ADS) |
@@ -73,17 +73,18 @@ naming, PR-only-merge rule.
 | #3 | `docs/portal-doc-sync` | Sync architecture docs with current main | Merged |
 | #4 | `fix/portal-quality-lighthouse` | Portal quality/accessibility pass: cleanup, filename standardization, ARIA fixes | **Merged** (2026-07-23T18:10:47Z, commit `701c69f`) |
 | #5 | `fix/global-tokens-contrast` | Fix duplicated-token contrast failures (global-tokens, powershell-sim, atp-sim) | **Merged** (2026-07-23T19:36:08Z, commit `b96ec84`) |
-| #6 | `fix/global-tokens-contrast` (reused after #5) | Fix remaining contrast/heading-order failures (Legal Terms, ESS Lab, 404, Core Memory) | **Open**, mergeable, head SHA `8ebc2d3be9dff96218e2e9413789dc292297a813`, awaiting preview validation sign-off before merge |
+| #6 | `fix/global-tokens-contrast` (reused after #5) | Fix remaining contrast/heading-order failures (Legal Terms, ESS Lab, 404, Core Memory) | **Merged** (2026-07-24T18:04:54Z, merge commit `28f19076085f14b1ec4bbbdc779dab3f631f307b`, merge method: merge commit) |
 
-**Note:** PR #4 and PR #5 are both already merged. Earlier drafts of this
-document stated "PR #4 is now clean and mergeable" and instructed the Owner
-to "Merge PR #4" — both statements are stale as of 2026-07-23 and have been
-removed. There is no open PR #4. The only open PR as of this writing is #6.
+**Note:** PR #4, #5, and #6 are all merged. Earlier drafts of this document
+stated "PR #4 is now clean and mergeable" and instructed the Owner to "Merge
+PR #4" — both statements were stale as of 2026-07-23 and have been removed.
+There is no open PR as of this writing.
 
-`main` has also received 3 direct commits after PR #5 unrelated to this
+`main` had also received 3 direct commits after PR #5 unrelated to this
 workflow (`a04cb3b`, `49e00f1`, `7543cc2` — a version-display component).
 PR #6's branch was rebased onto latest `main` (including those 3 commits)
-before pushing, cleanly, no conflicts.
+before pushing, cleanly, no conflicts. The branch was deleted after merge
+confirmation.
 
 ---
 
@@ -95,9 +96,11 @@ in CI itself; Lighthouse validation in this process is run manually against
 preview and production URLs and the results committed as evidence.
 
 **[Verified, 2026-07-24, `gh run list`]** Last successful production deploy:
-commit `7543cc2`, run `30045146731`, 2026-07-23T21:10:52Z. No newer
-production deploy has run since — `7543cc2` is still the live commit as of
-this writing.
+commit `28f1907` (PR #6's merge commit), run
+[30115527966](https://github.com/YevgeniAmin/ENG_Test/actions/runs/30115527966),
+triggered from `main` by the merge push, started 2026-07-24T18:04:56Z,
+completed 2026-07-24T18:05:38Z, conclusion: success, no failed or cancelled
+steps. This is the current live commit as of this writing.
 
 ---
 
@@ -146,10 +149,11 @@ of the contrast work below.
    Fixed by routing that inline style through
    `--md-sys-color-error-on-light` instead.
 
-**All 8 routes now score `categories.accessibility.score == 1.00` on the PR
-#6 preview** (validated head SHA `8ebc2d3`, preview workflow run
-`30114308449`) — see Evidence Location below. **Not yet re-validated against
-production**, since PR #6 is not yet merged.
+**All 8 routes scored `categories.accessibility.score == 1.00` on the PR #6
+preview** (validated head SHA `8ebc2d3`, preview workflow run `30114308449`),
+**and this has since been reconfirmed live against production** after merge
+and deploy (commit `28f1907`, all 8 routes, 2026-07-24) — see Evidence
+Location below for both.
 
 ---
 
@@ -208,53 +212,72 @@ docs/Reports/
 ├── preview/
 │   └── pr-6-8ebc2d3/                (PR #6 preview, all 8 routes, manifest.md)
 └── production/
-    └── 2026-07-24-7543cc2/          (current live production, all 8 routes — pre-PR #6 state)
+    ├── 2026-07-24-7543cc2/          (live production BEFORE PR #6 — pre-fix state, 3 of 8 routes failing)
+    └── 2026-07-24-28f1907/          (live production AFTER PR #6 merged and deployed — all 8 routes passing, manifest.md)
 ```
 
-For the current validation:
-- Preview report directory: `docs/Reports/preview/pr-6-8ebc2d3/`
-- Preview manifest: `docs/Reports/preview/pr-6-8ebc2d3/manifest.md`
-- Validated deployment: Firebase preview channel for PR #6, commit
-  `8ebc2d3be9dff96218e2e9413789dc292297a813`
+**Final validation (production, post-merge):**
+- Production report directory: `docs/Reports/production/2026-07-24-28f1907/`
+- Production manifest: `docs/Reports/production/2026-07-24-28f1907/manifest.md`
+- Validated deployment: `https://yevgeni.info`, commit
+  `28f19076085f14b1ec4bbbdc779dab3f631f307b` (PR #6's merge commit)
+- Production workflow run: [30115527966](https://github.com/YevgeniAmin/ENG_Test/actions/runs/30115527966)
 - Execution date: 2026-07-24
 - Lighthouse version: 13.4.1
 - Accessibility scores: 8/8 routes at exactly `1.00` (`categories.accessibility.score`,
-  read directly from JSON — see manifest for the per-route audit-level detail,
-  including two non-scoring informational findings)
+  read directly from JSON — see manifest for per-route audit-level detail,
+  including the two non-scoring informational findings and live dynamic-state
+  validation)
+
+Preview evidence (`preview/pr-6-8ebc2d3/`) is retained as the pre-merge
+validation record but is superseded by the production manifest above as the
+basis for this document's status.
 
 ---
 
 # Next Steps — for the Owner
 
-1. Review PR #6 (preview evidence above; not yet merged).
-2. Merge PR #6 when ready — this will trigger a production deploy via the
-   existing "Deploy to Firebase Hosting on merge" workflow.
-3. After merge and deploy, re-run Lighthouse against production for all 8
-   routes and record results under `docs/Reports/production/<date>-<new-sha>/`.
-4. Once production evidence confirms all 8 routes at accessibility 1.00,
-   ADS-003's [Needs Verification] items are resolved and it can move to
-   Review. **This has not happened yet — do not treat preview evidence as
-   sufficient for Review.**
-5. Separately: decide timing/priority for the R-14 / full-R-13 follow-up
+1. Review the production evidence above (PR #6 merged and deployed; all 8
+   routes confirmed at accessibility 1.00 live).
+2. Record a docs-only evidence PR against `main` capturing the production
+   manifest and this update (see `docs/pr6-production-evidence` branch).
+3. Separately: decide timing/priority for the R-14 / full-R-13 follow-up
    branch (`fix/portal-nav-and-live-regions`). No urgency identified; both
-   items are already correctly scheduled at Phase 6.
+   items are already correctly scheduled at Phase 6 and remain deferred,
+   non-blocking scope.
+4. Separately: `table-fake-caption` (ATP) and `label-content-name-mismatch`
+   (My Tech DNA) are real, non-scoring findings, deferred as follow-up —
+   not required for this document's Review status, but worth a ticket.
 
 ---
 
 # Approval
 
-Current Status: **Draft**
+Current Status: **Review**
 
-Remaining before this document can move to Review:
-1. PR #6 merged.
-2. Production deploy confirmed (new commit SHA, new "Deploy to Firebase
-   Hosting on merge" run).
-3. Fresh production Lighthouse pass across all 8 routes, each confirmed at
-   `categories.accessibility.score == 1.00` by direct JSON inspection.
-4. Production evidence recorded under `docs/Reports/production/` and this
-   document updated with the deployed commit SHA and workflow run ID.
+All four gating conditions for advancing out of Draft are met:
+1. **PR #6 merged** — 2026-07-24T18:04:54Z, merge commit `28f1907`.
+2. **Production deploy confirmed** — workflow run `30115527966`, completed
+   2026-07-24T18:05:38Z, conclusion: success, no failed/cancelled steps.
+3. **Fresh production Lighthouse pass across all 8 routes**, each confirmed
+   at `categories.accessibility.score == 1.00` by direct JSON inspection
+   (not a rounded UI score) — Home, Core Memory, PowerShell Sim, ATP AI
+   Simulation, My Tech DNA, ESS Lab, Legal Terms, 404.
+4. **Production evidence recorded** under
+   `docs/Reports/production/2026-07-24-28f1907/`, including a manifest and
+   live (not just static-crawl) validation of the ATP accepted/rejected and
+   PowerShell executing dynamic states. Core Memory's `.alert-danger` was
+   confirmed as unreachable dead code via source inspection (no live trigger
+   exists), documented as static CSS verification rather than a live-state
+   result.
 
-None of the four steps above have occurred yet. **ADS-003 remains Draft.**
+**Remaining deferred, non-blocking follow-up scope** (does not block Review):
+R-13 (full ATP/notebook-simulator live-region coverage), R-14 (ESS sidebar
+real navigation destinations), `table-fake-caption` (ATP), and
+`label-content-name-mismatch` (My Tech DNA).
+
+This document is not moved to Approved — that remains a separate,
+explicit Owner decision.
 
 ---
 
