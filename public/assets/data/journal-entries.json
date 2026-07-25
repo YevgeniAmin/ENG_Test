@@ -1,0 +1,61 @@
+{
+  "version": "1.0",
+  "source": "Project_Historical_Context.md",
+  "templates": [
+    {
+      "key": "system-evolution",
+      "title": "1. System Evolution & R&D Milestones",
+      "source": "Source: Project_Historical_Context.md",
+      "insights": [
+        "Phase 1: Cloud-Only UI Era focused on static interfaces using Tailwind CSS and Web Audio API.",
+        "Phase 2: Local Edge AI Shift via bare-metal self-hosting on Proxmox VE (srv-1), utilizing a dedicated RTX 5060 Ti GPU passed through to LXC/Docker.",
+        "Phase 3 & 4: Overcame strict CORS policies and firewall crashes by inventing the Secret Nexus Proxy (Node.js) for Hybrid Edge-Cloud Routing.",
+        "Phase 5: Transitioned to Enterprise Zero-Trust infrastructure using Cloudflare Tunnels (srv-1.yevgeni.info) and Bearer Token authorizations."
+      ]
+    },
+    {
+      "key": "architectural-decisions",
+      "title": "2. Major Architectural & Business Decisions",
+      "source": "Source: Project_Historical_Context.md",
+      "insights": [
+        "Hybrid Edge-Cloud Routing: Prioritize local 48W GPU for heavy R&D tasks, with dynamic failover to elastic Google Gemini Cloud APIs.",
+        "Vanilla Web Standard: Purged external frameworks (Tailwind, React) in favor of semantic HTML5, vanilla JS, and global M3 CSS variables (:root).",
+        "Constitutional AI: Hard-coded behavioral safety policies inside the server.js proxy to guarantee deterministic mapping formats.",
+        "Semantic Global Sync: Deployed version-sync.js to inject unified version strings (v2.4.0-Sim) and telemetry across all decoupled portal interfaces."
+      ]
+    },
+    {
+      "key": "code-components",
+      "title": "3. Developed Code Components & Technical Modules",
+      "source": "Source: Project_Historical_Context.md",
+      "insights": [
+        "Secret Nexus Proxy: Node.js middleware powered by Firebase/Firestore to manage telemetry, routing, and token protection.",
+        "PowerShell Enterprise Simulator: Desktop-first Material Design 3 dashboard dynamically rendering client-side script outputs and execution progress.",
+        "Advanced Audio QA Lab: Web Audio API engine executing SNR sweeps, phase control, and 24-bit/96kHz lossless file compilation.",
+        "Vision-to-Code Pipeline: Local Docker multi-agent script converting Base64 schematic data through LLaVA/Gemini to deep-learning models (Llama 3.1)."
+      ]
+    },
+    {
+      "key": "ai-advisory-board",
+      "title": "4. AI Advisory Board Framework & Team Personas",
+      "source": "Source: Project_Historical_Context.md",
+      "insights": [
+        "Max (Gemini Node): SQA Director executing strict bug hunting, CORS testing, event log audits, and Audio lab validation.",
+        "David (ChatGPT Node): Technical PM orchestrating Agile sprints, milestone tracking, and timeline enforcement.",
+        "Copilot (GitHub Node): Solutions Architect generating ATP templates, infrastructure blueprints, and cloud configurations.",
+        "Naftali (Local Agent): Electronics & Hardware Specialist handling EDA, OrCAD library validation, and MPN matrices."
+      ]
+    },
+    {
+      "key": "glossary",
+      "title": "5. Internal Vocabulary, Glossary & Terminology",
+      "source": "Source: Project_Historical_Context.md",
+      "insights": [
+        "ATP/ATR & VDD: Strict hardware/software workflow patterns for Acceptance Testing and automated Version Description tracking.",
+        "LXC (Linux Containers): Lightweight virtualization on Proxmox separating frontend interfaces from backend AI engines.",
+        "M3 Tokens: Semantic design atoms stored as CSS variables enforcing visual continuity across the decoupled system.",
+        "Zero Inline Styles: Mandatory engineering constraint forcing layout control into pure layout spreadsheets."
+      ]
+    }
+  ]
+}

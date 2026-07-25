@@ -1,14 +1,17 @@
 /**
  * ENG-Portal - NotebookLM Simulation Engine
  * Architecture: Component-Based Vanilla JS (Zero Frameworks)
- * Telemetry Tier: Staged Data Extraction from Curated Project Context
+ * Telemetry Tier: Structured JSON journal data, with a Gemini-backed
+ * live insight mode and an offline keyword-match fallback.
  * Safety Protocol: Secure Context Protection & Client-Side Output Sanitization
  */
 
-// ==========================================================================
-// Curated Context Database (Extracted from Project Historical Context)
-// ==========================================================================
-const notebookKnowledgeBase = {
+const JOURNAL_DATA_URL = "assets/data/journal-entries.json";
+const GEMINI_REQUEST_TIMEOUT_MS = 8000;
+
+// Retained as a resilience fallback if journal-entries.json can't be
+// fetched (offline, network hiccup, etc.) so the panel never goes blank.
+const FALLBACK_KNOWLEDGE_BASE = {
     "system-evolution": {
         title: "1. System Evolution & R&D Milestones",
         source: "Source: Project_Historical_Context.md",
@@ -61,6 +64,8 @@ const notebookKnowledgeBase = {
     }
 };
 
+let notebookKnowledgeBase = FALLBACK_KNOWLEDGE_BASE;
+
 // ==========================================================================
 // Component Initialization & Event Mapping
 // ==========================================================================
@@ -68,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initNotebookSimulator();
 });
 
-function initNotebookSimulator() {
+async function initNotebookSimulator() {
     const selector = document.getElementById("templateSelector");
     const sendBtn = document.getElementById("sendPromptBtn");
     const inputField = document.getElementById("aiPromptInput");
@@ -77,6 +82,8 @@ function initNotebookSimulator() {
         console.warn("[NotebookLM Sim] Required DOM nodes not found. Staging fallback event attachment loops.");
         return;
     }
+
+    notebookKnowledgeBase = await loadJournalEntries();
 
     // Trigger initial render based on default selection
     loadSelectedTemplate(selector.value);
@@ -98,6 +105,34 @@ function initNotebookSimulator() {
             inputField.value = "";
         }
     });
+}
+
+// ==========================================================================
+// Structured Journal Data Loading (with offline fallback)
+// ==========================================================================
+async function loadJournalEntries() {
+    try {
+        const response = await fetch(JOURNAL_DATA_URL, { cache: "no-store" });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const templates = Array.isArray(data.templates) ? data.templates : [];
+        if (templates.length === 0) {
+            throw new Error("journal-entries.json contained no templates");
+        }
+
+        return templates.reduce((knowledgeBase, entry) => {
+            if (entry && typeof entry.key === "string") {
+                knowledgeBase[entry.key] = entry;
+            }
+            return knowledgeBase;
+        }, {});
+    } catch (error) {
+        console.warn("[NotebookLM Sim] Falling back to embedded journal data:", error);
+        return FALLBACK_KNOWLEDGE_BASE;
+    }
 }
 
 // ==========================================================================
@@ -126,7 +161,7 @@ function loadSelectedTemplate(key) {
     // Build the consolidated string to type out smoothly
     let masterTextIndex = 0;
     const combinedContent = data.insights.map(item => `• ${item}`).join("\n\n");
-    
+
     // Create a safe text layout block inside the viewport
     const blockDisplay = document.createElement("div");
     blockDisplay.style.whiteSpace = "pre-wrap";
@@ -150,9 +185,11 @@ function loadSelectedTemplate(key) {
 }
 
 /**
- * Handle custom user prompt queries safely (Sanitized Sandbox Execution)
+ * Handle custom user prompt queries. Tries a live Gemini-backed answer
+ * first; falls back to the offline keyword-match simulation if the
+ * backend is unreachable (no network, no functions emulator, CORS, etc.).
  */
-function handleUserPrompt(rawInput) {
+async function handleUserPrompt(rawInput) {
     // 1. Strict Input Sanitization Protocol
     const sanitizedInput = rawInput.replace(/<[^>]*>/g, "").trim();
     if (!sanitizedInput) return;
@@ -162,7 +199,7 @@ function handleUserPrompt(rawInput) {
 
     // 2. Clear old lines and render staging indicators
     insightsList.innerHTML = "";
-    
+
     const statusFeedback = document.createElement("div");
     statusFeedback.className = "text-muted";
     statusFeedback.style.fontSize = "0.8rem";
@@ -170,34 +207,81 @@ function handleUserPrompt(rawInput) {
     statusFeedback.innerHTML = `Searching compiled index for: "<strong>${escapeHtml(sanitizedInput)}</strong>"...`;
     insightsList.appendChild(statusFeedback);
 
-    // 3. Process dynamic text mapping response after brief processing latency
-    setTimeout(() => {
-        statusFeedback.remove();
-        
-        const responseBlock = document.createElement("div");
-        responseBlock.style.fontSize = "0.85rem";
-        responseBlock.style.lineHeight = "1.5";
-        
-        // Dynamic search check against active template entries
-        const inputLower = sanitizedInput.toLowerCase();
-        let matchedText = "Cognitive engine query complete. No direct mapping constraint found for this query token. Please select a template tab above to stream verified engineering specs.";
-        
-        if (inputLower.includes("evolution") || inputLower.includes("proxmox") || inputLower.includes("cors") || inputLower.includes("cloudflare") || inputLower.includes("gpu")) {
-            matchedText = `[Matched Asset Index: System Evolution]\n• ${notebookKnowledgeBase["system-evolution"].insights[1]}\n\n• ${notebookKnowledgeBase["system-evolution"].insights[2]}`;
-        } else if (inputLower.includes("architecture") || inputLower.includes("vanilla") || inputLower.includes("css") || inputLower.includes("hybrid") || inputLower.includes("m3") || inputLower.includes("routing")) {
-            matchedText = `[Matched Asset Index: Architectural Decisions]\n• ${notebookKnowledgeBase["architectural-decisions"].insights[0]}\n\n• ${notebookKnowledgeBase["architectural-decisions"].insights[1]}`;
-        } else if (inputLower.includes("audio") || inputLower.includes("vision") || inputLower.includes("proxy") || inputLower.includes("powershell") || inputLower.includes("code") || inputLower.includes("lab")) {
-            matchedText = `[Matched Asset Index: Code Components]\n• ${notebookKnowledgeBase["code-components"].insights[2]}\n\n• ${notebookKnowledgeBase["code-components"].insights[3]}`;
-        } else if (inputLower.includes("ai") || inputLower.includes("max") || inputLower.includes("david") || inputLower.includes("copilot") || inputLower.includes("naftali") || inputLower.includes("qa") || inputLower.includes("agent")) {
-            matchedText = `[Matched Asset Index: AI Advisory Board]\n• ${notebookKnowledgeBase["ai-advisory-board"].insights[0]}\n\n• ${notebookKnowledgeBase["ai-advisory-board"].insights[3]}`;
-        } else if (inputLower.includes("atp") || inputLower.includes("vdd") || inputLower.includes("lxc") || inputLower.includes("glossary") || inputLower.includes("inline") || inputLower.includes("acronym")) {
-            matchedText = `[Matched Asset Index: Glossary]\n• ${notebookKnowledgeBase["glossary"].insights[0]}\n\n• ${notebookKnowledgeBase["glossary"].insights[1]}`;
-        }
+    // 3. Try the live Gemini endpoint, otherwise fall back to the local match
+    const liveAnswer = await requestGeminiInsight(sanitizedInput);
 
-        responseBlock.style.whiteSpace = "pre-wrap";
-        responseBlock.textContent = matchedText;
-        insightsList.appendChild(responseBlock);
-    }, 600);
+    statusFeedback.remove();
+
+    const responseBlock = document.createElement("div");
+    responseBlock.style.whiteSpace = "pre-wrap";
+    responseBlock.style.fontSize = "0.85rem";
+    responseBlock.style.lineHeight = "1.5";
+    responseBlock.textContent = liveAnswer
+        ? `[Gemini Live]\n${liveAnswer}`
+        : matchLocalInsight(sanitizedInput);
+
+    insightsList.appendChild(responseBlock);
+}
+
+// ==========================================================================
+// Gemini Live Insight Mode
+// ==========================================================================
+function resolveJournalInsightEndpoint() {
+    const { hostname } = window.location;
+    const isLocal = hostname === "localhost" || hostname === "127.0.0.1";
+    return isLocal
+        ? "http://127.0.0.1:5001/eng-web-portal/us-central1/journalInsightProxy"
+        : "https://us-central1-eng-web-portal.cloudfunctions.net/journalInsightProxy";
+}
+
+async function requestGeminiInsight(prompt) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), GEMINI_REQUEST_TIMEOUT_MS);
+
+    try {
+        const response = await fetch(resolveJournalInsightEndpoint(), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                prompt,
+                context: Object.values(notebookKnowledgeBase)
+            }),
+            signal: controller.signal
+        });
+
+        if (!response.ok) return null;
+
+        const data = await response.json();
+        return typeof data.response === "string" ? data.response : null;
+    } catch (error) {
+        console.warn("[NotebookLM Sim] Gemini live request unavailable, using offline match:", error);
+        return null;
+    } finally {
+        clearTimeout(timeoutId);
+    }
+}
+
+/**
+ * Offline keyword-match simulation (original static behavior), used when
+ * the Gemini backend can't be reached.
+ */
+function matchLocalInsight(sanitizedInput) {
+    const inputLower = sanitizedInput.toLowerCase();
+    let matchedText = "Cognitive engine query complete. No direct mapping constraint found for this query token. Please select a template tab above to stream verified engineering specs.";
+
+    if (inputLower.includes("evolution") || inputLower.includes("proxmox") || inputLower.includes("cors") || inputLower.includes("cloudflare") || inputLower.includes("gpu")) {
+        matchedText = `[Matched Asset Index: System Evolution]\n• ${notebookKnowledgeBase["system-evolution"].insights[1]}\n\n• ${notebookKnowledgeBase["system-evolution"].insights[2]}`;
+    } else if (inputLower.includes("architecture") || inputLower.includes("vanilla") || inputLower.includes("css") || inputLower.includes("hybrid") || inputLower.includes("m3") || inputLower.includes("routing")) {
+        matchedText = `[Matched Asset Index: Architectural Decisions]\n• ${notebookKnowledgeBase["architectural-decisions"].insights[0]}\n\n• ${notebookKnowledgeBase["architectural-decisions"].insights[1]}`;
+    } else if (inputLower.includes("audio") || inputLower.includes("vision") || inputLower.includes("proxy") || inputLower.includes("powershell") || inputLower.includes("code") || inputLower.includes("lab")) {
+        matchedText = `[Matched Asset Index: Code Components]\n• ${notebookKnowledgeBase["code-components"].insights[2]}\n\n• ${notebookKnowledgeBase["code-components"].insights[3]}`;
+    } else if (inputLower.includes("ai") || inputLower.includes("max") || inputLower.includes("david") || inputLower.includes("copilot") || inputLower.includes("naftali") || inputLower.includes("qa") || inputLower.includes("agent")) {
+        matchedText = `[Matched Asset Index: AI Advisory Board]\n• ${notebookKnowledgeBase["ai-advisory-board"].insights[0]}\n\n• ${notebookKnowledgeBase["ai-advisory-board"].insights[3]}`;
+    } else if (inputLower.includes("atp") || inputLower.includes("vdd") || inputLower.includes("lxc") || inputLower.includes("glossary") || inputLower.includes("inline") || inputLower.includes("acronym")) {
+        matchedText = `[Matched Asset Index: Glossary]\n• ${notebookKnowledgeBase["glossary"].insights[0]}\n\n• ${notebookKnowledgeBase["glossary"].insights[1]}`;
+    }
+
+    return matchedText;
 }
 
 /**
