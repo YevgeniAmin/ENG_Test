@@ -32,6 +32,11 @@ This repository contains Yevgeni's engineering portal.
 - Never expose API keys, passwords or tokens.
 - Never modify deployment or security configuration without explicit approval.
 - Create or recommend a Git checkpoint before broad refactoring.
+- Before uploading any local project folder to Google Drive for review,
+  exclude every file matching the repo's `.gitignore` secret patterns
+  (`.env`, `.env.*`, `.runtimeconfig.json`, `serviceAccount*.json`,
+  `*-firebase-adminsdk-*.json`) — Google Drive uploads do NOT respect
+  `.gitignore` automatically; this must be checked manually every time.
 
 ## Git workflow
 

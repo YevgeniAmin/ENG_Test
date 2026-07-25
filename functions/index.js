@@ -10,7 +10,7 @@ const DRIVE_FOLDER_ID = "1FfVbQsuEWd90rNDJFcccgSw7gjhX4tgv";
 // ⚠️
 const LOCAL_NEXUS_URL = ""; 
 
-// חוקת אבטחה סמנטית לעקיפת חסימות שווא בניתוח קוד ושרטוטים הנדסיים
+// See docs/architecture/decisions/0001-gemini-safety-settings.md
 const SEMANTIC_SAFETY_SETTINGS = [
     { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
     { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
