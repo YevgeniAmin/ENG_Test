@@ -21,7 +21,7 @@ const SEMANTIC_SAFETY_SETTINGS = Object.freeze([
   })
 ]);
 
-const JOURNAL_INSIGHT_MODEL = "gemini-2.5-flash";
+const JOURNAL_INSIGHT_MODEL = "gemini-2.0-flash";
 const JOURNAL_PROMPT_MAX_LENGTH = 500;
 
 // Phase 2: multi-turn conversations are capped to this many prior turns

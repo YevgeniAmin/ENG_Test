@@ -6,7 +6,8 @@ const {
   handleJournalInsightRequest,
   validateJournalPayload,
   trimHistory,
-  MAX_HISTORY_MESSAGES
+  MAX_HISTORY_MESSAGES,
+  ALLOWED_ORIGINS
 } = require("../src/http/journalInsightProxy");
 
 function createMockResponse() {
@@ -20,6 +21,10 @@ function createMockResponse() {
     },
     json(payload) {
       this.body = payload;
+      return this;
+    },
+    send(payload) {
+      this.body = payload === undefined ? null : payload;
       return this;
     },
     set(key, value) {
@@ -201,6 +206,77 @@ test("handleJournalInsightRequest rejects disallowed origins with 403", async ()
   await handleJournalInsightRequest(req, res);
 
   assert.equal(res.statusCode, 403);
+});
+
+test("handleJournalInsightRequest rejects origins that merely contain an allowed origin as a substring", async () => {
+  const req = createMockRequest({ origin: "https://yevgeni.info.attacker.example" });
+  const res = createMockResponse();
+
+  await handleJournalInsightRequest(req, res);
+
+  assert.equal(res.statusCode, 403);
+  assert.equal(res.headers["Access-Control-Allow-Origin"], undefined);
+});
+
+test("handleJournalInsightRequest sets Access-Control-Allow-Origin for allowed origins on a normal POST", async () => {
+  await withMockedGenerateJournalInsight(
+    async () => ({ text: "answer", usageMetadata: null }),
+    async () => {
+      const req = createMockRequest({ body: { prompt: "hi" } });
+      const res = createMockResponse();
+
+      await handleJournalInsightRequest(req, res);
+
+      assert.equal(res.statusCode, 200);
+      assert.equal(res.headers["Access-Control-Allow-Origin"], "https://yevgeni.info");
+      assert.match(res.headers["Access-Control-Allow-Methods"], /POST/);
+      assert.match(res.headers["Access-Control-Allow-Methods"], /OPTIONS/);
+    }
+  );
+});
+
+test("OPTIONS preflight requests", async (t) => {
+  await t.test("returns 204 with CORS headers for an allowed origin", async () => {
+    const req = createMockRequest({ method: "OPTIONS", origin: "https://yevgeni.info" });
+    const res = createMockResponse();
+
+    await handleJournalInsightRequest(req, res);
+
+    assert.equal(res.statusCode, 204);
+    assert.equal(res.headers["Access-Control-Allow-Origin"], "https://yevgeni.info");
+    assert.match(res.headers["Access-Control-Allow-Methods"], /POST/);
+    assert.match(res.headers["Access-Control-Allow-Methods"], /OPTIONS/);
+    assert.equal(res.headers["Access-Control-Allow-Headers"], "Content-Type, Authorization");
+  });
+
+  await t.test("omits Access-Control-Allow-Origin for a disallowed origin but still returns 204", async () => {
+    const req = createMockRequest({ method: "OPTIONS", origin: "https://malicious.example" });
+    const res = createMockResponse();
+
+    await handleJournalInsightRequest(req, res);
+
+    assert.equal(res.statusCode, 204);
+    assert.equal(res.headers["Access-Control-Allow-Origin"], undefined);
+  });
+
+  await t.test("reflects each documented local-dev origin", async () => {
+    for (const origin of ["http://localhost:5000", "http://127.0.0.1:5000", "http://localhost:8080"]) {
+      const req = createMockRequest({ method: "OPTIONS", origin });
+      const res = createMockResponse();
+
+      await handleJournalInsightRequest(req, res);
+
+      assert.equal(res.statusCode, 204);
+      assert.equal(res.headers["Access-Control-Allow-Origin"], origin);
+    }
+  });
+
+  await t.test("ALLOWED_ORIGINS exports the exact set this suite checks against", () => {
+    assert.deepEqual(
+      new Set(ALLOWED_ORIGINS),
+      new Set(["https://yevgeni.info", "http://localhost:5000", "http://127.0.0.1:5000", "http://localhost:8080"])
+    );
+  });
 });
 
 test("handleJournalInsightRequest returns 500 when the Gemini service throws", async () => {
