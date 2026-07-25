@@ -9,6 +9,12 @@
 const JOURNAL_DATA_URL = "assets/data/journal-entries.json";
 const GEMINI_REQUEST_TIMEOUT_MS = 8000;
 
+// Phase 2: multi-turn conversation state, capped to keep the grounded
+// context (and the request payload) bounded. Matches the backend's cap in
+// functions/src/http/journalInsightProxy.js.
+const MAX_HISTORY_MESSAGES = 10;
+let conversationHistory = [];
+
 // Retained as a resilience fallback if journal-entries.json can't be
 // fetched (offline, network hiccup, etc.) so the panel never goes blank.
 const FALLBACK_KNOWLEDGE_BASE = {
@@ -147,6 +153,10 @@ function loadSelectedTemplate(key) {
     // Clear any active typewriter loops to prevent async overlaps
     if (typingTimeout) clearTimeout(typingTimeout);
 
+    // Switching templates changes topic, so the prior Gemini conversation
+    // turns are no longer relevant grounding for follow-up questions.
+    conversationHistory = [];
+
     // Safe targeting of container areas
     const insightsList = document.querySelector(".insights-list");
     const studioTitle = document.querySelector(".recent-insights h4");
@@ -186,8 +196,10 @@ function loadSelectedTemplate(key) {
 
 /**
  * Handle custom user prompt queries. Tries a live Gemini-backed answer
- * first; falls back to the offline keyword-match simulation if the
+ * first, sending along the running conversation history for multi-turn
+ * context; falls back to the offline keyword-match simulation if the
  * backend is unreachable (no network, no functions emulator, CORS, etc.).
+ * Prior turns accumulate as chat bubbles rather than replacing each other.
  */
 async function handleUserPrompt(rawInput) {
     // 1. Strict Input Sanitization Protocol
@@ -197,30 +209,148 @@ async function handleUserPrompt(rawInput) {
     const insightsList = document.querySelector(".insights-list");
     if (!insightsList) return;
 
-    // 2. Clear old lines and render staging indicators
-    insightsList.innerHTML = "";
+    // 2. Render the user's turn, then a pending status bubble
+    appendChatBubble("user", sanitizedInput);
 
-    const statusFeedback = document.createElement("div");
-    statusFeedback.className = "text-muted";
-    statusFeedback.style.fontSize = "0.8rem";
-    statusFeedback.style.fontStyle = "italic";
-    statusFeedback.innerHTML = `Searching compiled index for: "<strong>${escapeHtml(sanitizedInput)}</strong>"...`;
-    insightsList.appendChild(statusFeedback);
+    const statusBubble = appendChatBubble(
+        "status",
+        `Searching compiled index for: "<strong>${escapeHtml(sanitizedInput)}</strong>"...`,
+        { mode: "html" }
+    );
 
     // 3. Try the live Gemini endpoint, otherwise fall back to the local match
     const liveAnswer = await requestGeminiInsight(sanitizedInput);
 
-    statusFeedback.remove();
+    if (statusBubble) statusBubble.remove();
 
-    const responseBlock = document.createElement("div");
-    responseBlock.style.whiteSpace = "pre-wrap";
-    responseBlock.style.fontSize = "0.85rem";
-    responseBlock.style.lineHeight = "1.5";
-    responseBlock.textContent = liveAnswer
-        ? `[Gemini Live]\n${liveAnswer}`
-        : matchLocalInsight(sanitizedInput);
+    if (liveAnswer) {
+        conversationHistory.push({ role: "user", parts: [{ text: sanitizedInput }] });
+        conversationHistory.push({ role: "model", parts: [{ text: liveAnswer }] });
+        conversationHistory = conversationHistory.slice(-MAX_HISTORY_MESSAGES);
 
-    insightsList.appendChild(responseBlock);
+        appendChatBubble("assistant", liveAnswer, { mode: "markdown", label: "Gemini Live" });
+    } else {
+        appendChatBubble("assistant", matchLocalInsight(sanitizedInput), { mode: "markdown", label: "Offline Match" });
+    }
+}
+
+/**
+ * Appends a single chat bubble (user turn, pending status, or assistant
+ * reply) to the insights panel and keeps it scrolled to the latest message.
+ * `mode` controls how `content` is placed into the DOM:
+ *   - "text" (default): safe plain text via textContent, no HTML parsing.
+ *   - "html": caller-provided HTML that has already been escaped/composed
+ *     safely (used only for the small pending-status line below).
+ *   - "markdown": rendered through renderMarkdownSafe(), which escapes all
+ *     source text before ever building HTML tags.
+ */
+function appendChatBubble(role, content, { mode = "text", label = null } = {}) {
+    const insightsList = document.querySelector(".insights-list");
+    if (!insightsList) return null;
+
+    const bubble = document.createElement("div");
+    bubble.className = `chat-bubble chat-bubble--${role}`;
+
+    if (label) {
+        const badge = document.createElement("span");
+        badge.className = "chat-bubble-badge";
+        badge.textContent = label;
+        bubble.appendChild(badge);
+    }
+
+    const body = document.createElement("div");
+    body.className = "chat-bubble-content";
+    if (mode === "markdown") {
+        body.innerHTML = renderMarkdownSafe(content);
+    } else if (mode === "html") {
+        body.innerHTML = content;
+    } else {
+        body.textContent = content;
+    }
+    bubble.appendChild(body);
+
+    insightsList.appendChild(bubble);
+    insightsList.scrollTop = insightsList.scrollHeight;
+    return bubble;
+}
+
+/**
+ * Renders a small, safe subset of Markdown (bold, italics, inline code,
+ * fenced code blocks, unordered lists) into sanitized HTML. Code spans/
+ * blocks are pulled out and escaped independently of the inline-formatting
+ * pass, and all remaining text is HTML-escaped before any tag is built —
+ * no raw text from a model response ever reaches innerHTML unescaped.
+ */
+function renderMarkdownSafe(rawText) {
+    const text = String(rawText == null ? "" : rawText);
+    const codeBlocks = [];
+    const inlineCodes = [];
+
+    let working = text.replace(/```([a-zA-Z0-9_-]*)\n?([\s\S]*?)```/g, (_match, lang, code) => {
+        const index = codeBlocks.length;
+        codeBlocks.push({ lang: lang.trim(), code });
+        return ` BLOCK${index} `;
+    });
+
+    working = working.replace(/`([^`\n]+)`/g, (_match, code) => {
+        const index = inlineCodes.length;
+        inlineCodes.push(code);
+        return ` INLINE${index} `;
+    });
+
+    const escaped = escapeHtml(working);
+    const lines = escaped.split("\n");
+    const htmlParts = [];
+    let listBuffer = [];
+
+    function flushList() {
+        if (listBuffer.length > 0) {
+            htmlParts.push(`<ul>${listBuffer.join("")}</ul>`);
+            listBuffer = [];
+        }
+    }
+
+    function restoreInlineCodeAndFormatting(line) {
+        const withCode = line.replace(/ INLINE(\d+) /g, (_match, i) => {
+            return `<code>${escapeHtml(inlineCodes[Number(i)])}</code>`;
+        });
+        return applyInlineFormatting(withCode);
+    }
+
+    for (const line of lines) {
+        const blockMatch = line.match(/^ BLOCK(\d+) $/);
+        if (blockMatch) {
+            flushList();
+            const block = codeBlocks[Number(blockMatch[1])];
+            const escapedCode = escapeHtml(block.code.replace(/\n$/, ""));
+            const langClass = block.lang ? ` class="language-${escapeHtml(block.lang)}"` : "";
+            htmlParts.push(`<pre class="chat-code-block"><code${langClass}>${escapedCode}</code></pre>`);
+            continue;
+        }
+
+        const listMatch = line.match(/^\s*[-*]\s+(.*)$/);
+        if (listMatch) {
+            listBuffer.push(`<li>${restoreInlineCodeAndFormatting(listMatch[1])}</li>`);
+            continue;
+        }
+
+        flushList();
+        if (line.trim() === "") {
+            htmlParts.push("<br>");
+        } else {
+            htmlParts.push(`<p>${restoreInlineCodeAndFormatting(line)}</p>`);
+        }
+    }
+    flushList();
+
+    return htmlParts.join("");
+}
+
+function applyInlineFormatting(escapedLine) {
+    return escapedLine
+        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+        .replace(/_([^_]+)_/g, "<em>$1</em>");
 }
 
 // ==========================================================================
