@@ -24,6 +24,10 @@ const SEMANTIC_SAFETY_SETTINGS = Object.freeze([
 const JOURNAL_INSIGHT_MODEL = "gemini-2.5-flash";
 const JOURNAL_PROMPT_MAX_LENGTH = 500;
 
+// Phase 2: multi-turn conversations are capped to this many prior turns
+// (both directions combined) so grounded context doesn't grow unbounded.
+const JOURNAL_HISTORY_MAX_MESSAGES = 10;
+
 // Allows benchmark/ops tooling to pin a specific model per-run (e.g.
 // GEMINI_MODEL=gemini-1.5-flash) without touching the production default.
 function resolveActiveModel() {
@@ -36,18 +40,23 @@ function resolveGeminiApiKey() {
     : geminiApiKey.value();
 }
 
-// Grounds the model in the curated journal context only, so it declines
-// rather than invents when a question falls outside the supplied entries.
-function buildJournalPrompt(prompt, context) {
+function buildJournalContextText(context) {
   const entries = Array.isArray(context) ? context : [];
-  const contextText = entries
+  return entries
     .map((entry) => {
       const title = entry && entry.title ? entry.title : "Untitled entry";
       const insights = Array.isArray(entry && entry.insights) ? entry.insights : [];
       return `### ${title}\n${insights.map((line) => `- ${line}`).join("\n")}`;
     })
     .join("\n\n");
+}
 
+// Grounds the model in the curated journal context only, so it declines
+// rather than invents when a question falls outside the supplied entries.
+// Shared between the legacy single-shot prompt below and the multi-turn
+// systemInstruction used by generateJournalInsight.
+function buildJournalSystemInstruction(context) {
+  const contextText = buildJournalContextText(context);
   return [
     "You are the ENG-PORTAL journal assistant. Answer strictly using the",
     "curated engineering journal context below. If the answer isn't",
@@ -55,13 +64,29 @@ function buildJournalPrompt(prompt, context) {
     "Keep the response concise (under 120 words) and professional.",
     "",
     "Journal context:",
-    contextText || "(no journal context supplied)",
+    contextText || "(no journal context supplied)"
+  ].join("\n");
+}
+
+function buildJournalPrompt(prompt, context) {
+  return [
+    buildJournalSystemInstruction(context),
     "",
     `Question: ${prompt}`
   ].join("\n");
 }
 
-async function generateJournalInsight({ prompt, context }) {
+// Trims to the last N turns (defense-in-depth; the HTTP proxy layer also
+// trims before this is ever called) and maps to the GoogleGenAI Content shape.
+function buildJournalContents(prompt, history) {
+  const trimmedHistory = Array.isArray(history)
+    ? history.slice(-JOURNAL_HISTORY_MAX_MESSAGES)
+    : [];
+
+  return [...trimmedHistory, { role: "user", parts: [{ text: prompt }] }];
+}
+
+async function generateJournalInsight({ prompt, context, history }) {
   const trimmedPrompt = typeof prompt === "string" ? prompt.trim().slice(0, JOURNAL_PROMPT_MAX_LENGTH) : "";
   if (!trimmedPrompt) {
     throw new Error("prompt must be a non-empty string");
@@ -70,18 +95,27 @@ async function generateJournalInsight({ prompt, context }) {
   const ai = new GoogleGenAI({ apiKey: resolveGeminiApiKey() });
   const response = await ai.models.generateContent({
     model: resolveActiveModel(),
-    contents: buildJournalPrompt(trimmedPrompt, context),
-    config: { safetySettings: SEMANTIC_SAFETY_SETTINGS }
+    contents: buildJournalContents(trimmedPrompt, history),
+    config: {
+      safetySettings: SEMANTIC_SAFETY_SETTINGS,
+      systemInstruction: buildJournalSystemInstruction(context)
+    }
   });
 
-  return response.text;
+  return {
+    text: response.text,
+    usageMetadata: response.usageMetadata || null
+  };
 }
 
 module.exports = {
   GoogleGenAI,
   SEMANTIC_SAFETY_SETTINGS,
   JOURNAL_INSIGHT_MODEL,
+  JOURNAL_HISTORY_MAX_MESSAGES,
   resolveActiveModel,
   buildJournalPrompt,
+  buildJournalSystemInstruction,
+  buildJournalContents,
   generateJournalInsight
 };
