@@ -7,6 +7,33 @@ const MAX_PROMPT_LENGTH = 500;
 const MAX_HISTORY_MESSAGES = 10;
 const VALID_HISTORY_ROLES = new Set(["user", "model"]);
 
+const ALLOWED_ORIGINS = [
+    "https://yevgeni.info",
+    "http://localhost:5000",
+    "http://127.0.0.1:5000",
+    "http://localhost:8080"
+];
+
+// No Origin header means the caller isn't a browser doing a cross-origin
+// fetch (server-to-server, curl, same-origin), so there's nothing to check
+// it against — treat it as allowed.
+function isOriginAllowed(origin) {
+    return !origin || ALLOWED_ORIGINS.includes(origin);
+}
+
+// Runs for every request, including ones later rejected with 403/405, so the
+// rejection response still carries CORS headers instead of showing up in the
+// browser as an opaque preflight failure.
+function applyCorsHeaders(req, res) {
+    const origin = req.headers.origin;
+    if (origin && ALLOWED_ORIGINS.includes(origin)) {
+        res.set("Access-Control-Allow-Origin", origin);
+        res.set("Vary", "Origin");
+    }
+    res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+}
+
 function isValidHistoryEntry(entry) {
     if (!entry || typeof entry !== "object") return false;
     if (!VALID_HISTORY_ROLES.has(entry.role)) return false;
@@ -55,11 +82,15 @@ async function handleJournalInsightRequest(req, res) {
         return res.status(code).json(body);
     }
 
-    try {
-        const origin = req.headers.origin || req.headers.referer || "null";
-        const isAllowed = origin.includes('yevgeni.info') || origin.includes('localhost') || origin.includes('127.0.0.1') || origin === "null";
+    applyCorsHeaders(req, res);
 
-        if (!isAllowed) {
+    if (req.method === "OPTIONS") {
+        statusCode = 204;
+        return res.status(204).send();
+    }
+
+    try {
+        if (!isOriginAllowed(req.headers.origin)) {
             errorCategory = "forbidden_origin";
             return respond(403, { error: 'Forbidden: Unauthorized Origin' });
         }
@@ -103,7 +134,6 @@ async function handleJournalInsightRequest(req, res) {
 
 exports.journalInsightProxy = onRequest({
     secrets: [geminiApiKey],
-    cors: true,
     memory: "256MiB",
     invoker: "public"
 }, handleJournalInsightRequest);
@@ -112,3 +142,5 @@ exports.handleJournalInsightRequest = handleJournalInsightRequest;
 exports.validateJournalPayload = validateJournalPayload;
 exports.trimHistory = trimHistory;
 exports.MAX_HISTORY_MESSAGES = MAX_HISTORY_MESSAGES;
+exports.ALLOWED_ORIGINS = ALLOWED_ORIGINS;
+exports.isOriginAllowed = isOriginAllowed;
