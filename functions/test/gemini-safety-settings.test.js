@@ -4,7 +4,7 @@ const path = require("node:path");
 const test = require("node:test");
 
 const source = fs.readFileSync(
-  path.join(__dirname, "..", "index.js"),
+  path.join(__dirname, "..", "src", "services", "gemini.js"),
   "utf8"
 );
 
