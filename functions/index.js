@@ -11,13 +11,24 @@ const DRIVE_FOLDER_ID = "1FfVbQsuEWd90rNDJFcccgSw7gjhX4tgv";
 const LOCAL_NEXUS_URL = ""; 
 
 // See docs/architecture/decisions/0001-gemini-safety-settings.md
-const SEMANTIC_SAFETY_SETTINGS = [
-    { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
-    { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
-    { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
-    { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
-    { category: "HARM_CATEGORY_CIVIC_INTEGRITY", threshold: "BLOCK_NONE" }
-];
+const SEMANTIC_SAFETY_SETTINGS = Object.freeze([
+  Object.freeze({
+    category: "HARM_CATEGORY_HARASSMENT",
+    threshold: "BLOCK_MEDIUM_AND_ABOVE"
+  }),
+  Object.freeze({
+    category: "HARM_CATEGORY_HATE_SPEECH",
+    threshold: "BLOCK_MEDIUM_AND_ABOVE"
+  }),
+  Object.freeze({
+    category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+    threshold: "BLOCK_MEDIUM_AND_ABOVE"
+  }),
+  Object.freeze({
+    category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+    threshold: "BLOCK_ONLY_HIGH"
+  })
+]);
 
 
 // ============================================================================
