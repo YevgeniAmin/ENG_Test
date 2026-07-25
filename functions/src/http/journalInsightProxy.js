@@ -1,3 +1,4 @@
+const crypto = require("node:crypto");
 const { onRequest } = require("firebase-functions/v2/https");
 const { geminiApiKey } = require("../config/secrets");
 const geminiService = require("../services/gemini");
@@ -70,16 +71,63 @@ function validateJournalPayload(body) {
     return errors;
 }
 
+// Classifies an error thrown by geminiService.generateJournalInsight without
+// ever touching the request payload — only the upstream SDK error itself.
+// @google/genai's ApiError carries a numeric `.status` and a JSON-encoded
+// `.message` like {"error":{"code":404,"message":"...","status":"NOT_FOUND"}};
+// that message is Google's own generic model/quota/auth description, never
+// user content, so it's safe to log and to fold into telemetry.
+function classifyUpstreamError(error) {
+    if (!error || error.name !== "ApiError" || typeof error.status !== "number") {
+        return { category: "gemini_upstream_error", httpStatus: null, code: null, status: null };
+    }
+
+    let code = null;
+    let status = null;
+    try {
+        const parsed = JSON.parse(error.message);
+        code = (parsed && parsed.error && parsed.error.code) || null;
+        status = (parsed && parsed.error && parsed.error.status) || null;
+    } catch (_parseError) {
+        // error.message wasn't the expected {"error":{...}} envelope; leave null.
+    }
+
+    const categoryByHttpStatus = {
+        401: "gemini_auth_error",
+        403: "gemini_auth_error",
+        404: "gemini_model_unavailable",
+        429: "gemini_quota_exceeded"
+    };
+
+    return {
+        category: categoryByHttpStatus[error.status] || "gemini_upstream_error",
+        httpStatus: error.status,
+        code,
+        status
+    };
+}
+
+// Cloud Run/Functions Gen2 set these automatically; none of them are secret.
+function resolveExecutionContext() {
+    return {
+        service: process.env.K_SERVICE || null,
+        revision: process.env.K_REVISION || null,
+        region: process.env.FUNCTION_REGION || process.env.GCLOUD_REGION || null
+    };
+}
+
 async function handleJournalInsightRequest(req, res) {
     const startedAtNs = process.hrtime.bigint();
+    const requestId = crypto.randomUUID();
     let statusCode = 500;
     let errorCategory = null;
+    let upstream = null;
     let usage = null;
     let historyTurns = 0;
 
     function respond(code, body) {
         statusCode = code;
-        return res.status(code).json(body);
+        return res.status(code).json({ ...body, requestId });
     }
 
     applyCorsHeaders(req, res);
@@ -115,17 +163,29 @@ async function handleJournalInsightRequest(req, res) {
 
         return respond(200, { response: result.text });
     } catch (error) {
-        console.error("🚨 Journal Insight Proxy Error:", error);
-        errorCategory = errorCategory || "gemini_upstream_error";
+        upstream = classifyUpstreamError(error);
+        errorCategory = errorCategory || upstream.category;
+        console.error(
+            "🚨 Journal Insight Proxy Error:",
+            requestId,
+            upstream.httpStatus,
+            upstream.code,
+            upstream.status,
+            error
+        );
         return respond(500, { error: "Internal Server Error generating journal insight" });
     } finally {
         const latencyMs = Number(process.hrtime.bigint() - startedAtNs) / 1e6;
         const proof = generateSamplingProof({
             route: "journalInsightProxy",
+            requestId,
+            model: geminiService.resolveActiveModel(),
+            execution: resolveExecutionContext(),
             statusCode,
             latencyMs: Math.round(latencyMs * 100) / 100,
             historyTurns,
             errorCategory,
+            upstream,
             usage
         });
         console.log(`JOURNAL_TELEMETRY::${JSON.stringify(proof)}`);

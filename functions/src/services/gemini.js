@@ -21,8 +21,31 @@ const SEMANTIC_SAFETY_SETTINGS = Object.freeze([
   })
 ]);
 
-const JOURNAL_INSIGHT_MODEL = "gemini-2.0-flash";
+// Production incident 2026-07-26: the deployed function was still serving
+// gemini-2.5-flash (pre-fix) and every real request 404'd — Google's API
+// returned "This model models/gemini-2.5-flash is no longer available to
+// new users" for this project's key (see production logs, PR
+// fix/journal-gemini-production-500). Investigating that also surfaced that
+// gemini-2.0-flash (the model this constant pointed to right after that PR)
+// had *already* been shut down on 2026-06-01, per
+// ai.google.dev/gemini-api/docs/deprecations. gemini-3.6-flash (GA
+// 2026-07-21, ai.google.dev/gemini-api/docs/changelog) is the current
+// stable, no-announced-shutdown replacement Google's docs point both of
+// those retired models to, and needs no request-shape changes for our
+// generateContent call (safetySettings + systemInstruction + contents).
+const JOURNAL_INSIGHT_MODEL = "gemini-3.6-flash";
 const JOURNAL_PROMPT_MAX_LENGTH = 500;
+
+// Model ids confirmed unavailable to this project during the 2026-07-26
+// incident investigation above — resolveActiveModel() won't let a
+// GEMINI_MODEL override silently select one of these.
+const KNOWN_UNAVAILABLE_MODEL_IDS = new Set([
+  "gemini-2.0-flash",
+  "gemini-2.0-flash-001",
+  "gemini-2.0-flash-lite",
+  "gemini-2.0-flash-lite-001",
+  "gemini-2.5-flash"
+]);
 
 // Phase 2: multi-turn conversations are capped to this many prior turns
 // (both directions combined) so grounded context doesn't grow unbounded.
@@ -30,8 +53,18 @@ const JOURNAL_HISTORY_MAX_MESSAGES = 10;
 
 // Allows benchmark/ops tooling to pin a specific model per-run (e.g.
 // GEMINI_MODEL=gemini-1.5-flash) without touching the production default.
+// Blank/whitespace-only overrides and known-unavailable ids fall back to
+// the default instead of silently taking effect.
 function resolveActiveModel() {
-  return process.env.GEMINI_MODEL || JOURNAL_INSIGHT_MODEL;
+  const override = process.env.GEMINI_MODEL ? process.env.GEMINI_MODEL.trim() : "";
+  if (!override) return JOURNAL_INSIGHT_MODEL;
+  if (KNOWN_UNAVAILABLE_MODEL_IDS.has(override)) {
+    console.warn(
+      `[gemini] Ignoring GEMINI_MODEL override "${override}": known unavailable model id. Falling back to ${JOURNAL_INSIGHT_MODEL}.`
+    );
+    return JOURNAL_INSIGHT_MODEL;
+  }
+  return override;
 }
 
 function resolveGeminiApiKey() {
@@ -112,6 +145,7 @@ module.exports = {
   GoogleGenAI,
   SEMANTIC_SAFETY_SETTINGS,
   JOURNAL_INSIGHT_MODEL,
+  KNOWN_UNAVAILABLE_MODEL_IDS,
   JOURNAL_HISTORY_MAX_MESSAGES,
   resolveActiveModel,
   buildJournalPrompt,
