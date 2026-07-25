@@ -11,6 +11,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Warn if Cloud Functions changed (this workflow deploys Hosting only)
+        run: |
+          BEFORE="${{ github.event.before }}"
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            CHANGED=$(git ls-tree -r --name-only "${{ github.sha }}" -- functions/ | head -1)
+          else
+            CHANGED=$(git diff --name-only "$BEFORE" "${{ github.sha }}" -- functions/ | head -1)
+          fi
+          if [ -n "$CHANGED" ]; then
+            echo "::warning::This push changed files under functions/, but this workflow only deploys Firebase Hosting. Cloud Functions require a manual 'firebase deploy --only functions:<name>' after Owner review — see docs/runbooks/functions-deployment.md."
+          fi
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}

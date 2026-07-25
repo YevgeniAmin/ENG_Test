@@ -72,6 +72,16 @@ function historyTurn(role, text) {
   return { role, parts: [{ text }] };
 }
 
+// Mirrors the shape @google/genai's ApiError actually throws in production:
+// a numeric `.status` plus a JSON-encoded `.message` (see the 2026-07-26
+// incident logs, where model 404s came back exactly like this).
+function makeApiError(status, code, apiStatus, message) {
+  const error = new Error(JSON.stringify({ error: { code, message, status: apiStatus } }));
+  error.name = "ApiError";
+  error.status = status;
+  return error;
+}
+
 test("validateJournalPayload rejects missing/invalid fields", () => {
   assert.deepEqual(validateJournalPayload({}), [
     "prompt must be a non-empty string"
@@ -293,6 +303,77 @@ test("handleJournalInsightRequest returns 500 when the Gemini service throws", a
       assert.equal(res.statusCode, 500);
     }
   );
+});
+
+test("handleJournalInsightRequest returns a requestId on a successful response", async () => {
+  await withMockedGenerateJournalInsight(
+    async () => ({ text: "answer", usageMetadata: null }),
+    async () => {
+      const req = createMockRequest({ body: { prompt: "hi" } });
+      const res = createMockResponse();
+
+      await handleJournalInsightRequest(req, res);
+
+      assert.equal(res.statusCode, 200);
+      assert.equal(typeof res.body.requestId, "string");
+      assert.ok(res.body.requestId.length > 0);
+    }
+  );
+});
+
+test("handleJournalInsightRequest returns a requestId and never leaks the raw upstream error to the client", async () => {
+  await withMockedGenerateJournalInsight(
+    async () => {
+      throw makeApiError(
+        404,
+        404,
+        "NOT_FOUND",
+        "This model models/gemini-2.5-flash is no longer available to new users."
+      );
+    },
+    async () => {
+      const req = createMockRequest({ body: { prompt: "hi" } });
+      const res = createMockResponse();
+
+      await handleJournalInsightRequest(req, res);
+
+      assert.equal(res.statusCode, 500);
+      assert.equal(res.body.error, "Internal Server Error generating journal insight");
+      assert.equal(typeof res.body.requestId, "string");
+      assert.ok(res.body.requestId.length > 0);
+      assert.equal(JSON.stringify(res.body).includes("gemini-2.5-flash"), false);
+    }
+  );
+});
+
+test("handleJournalInsightRequest telemetry differentiates upstream error classifications", async () => {
+  const modelNotFoundLines = await withCapturedConsoleLog(async () => {
+    await withMockedGenerateJournalInsight(
+      async () => {
+        throw makeApiError(404, 404, "NOT_FOUND", "This model is no longer available to new users.");
+      },
+      async () => {
+        const req = createMockRequest({ body: { prompt: "hi" } });
+        await handleJournalInsightRequest(req, createMockResponse());
+      }
+    );
+  });
+  const modelNotFoundFingerprint = parseTelemetryLine(modelNotFoundLines).payload.fingerprint;
+
+  const genericFailureLines = await withCapturedConsoleLog(async () => {
+    await withMockedGenerateJournalInsight(
+      async () => {
+        throw new Error("network timeout");
+      },
+      async () => {
+        const req = createMockRequest({ body: { prompt: "hi" } });
+        await handleJournalInsightRequest(req, createMockResponse());
+      }
+    );
+  });
+  const genericFailureFingerprint = parseTelemetryLine(genericFailureLines).payload.fingerprint;
+
+  assert.notEqual(modelNotFoundFingerprint, genericFailureFingerprint);
 });
 
 test("handleJournalInsightRequest emits an ADS-000 telemetry envelope for a successful request", async () => {

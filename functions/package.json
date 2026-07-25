@@ -8,6 +8,7 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "test": "node --test",
+    "test:gemini:live": "node scripts/gemini-live-smoke.js",
     "lint": "node --check index.js && node --check src/config/secrets.js && node --check src/services/gemini.js && node --check src/services/drive.js && node --check src/services/samplingLogger.js && node --check src/http/driveVersionsProxy.js && node --check src/http/simulationProxy.js && node --check src/http/journalInsightProxy.js"
   },
   "engines": {
