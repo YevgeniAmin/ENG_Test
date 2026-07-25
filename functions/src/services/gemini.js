@@ -24,6 +24,12 @@ const SEMANTIC_SAFETY_SETTINGS = Object.freeze([
 const JOURNAL_INSIGHT_MODEL = "gemini-2.5-flash";
 const JOURNAL_PROMPT_MAX_LENGTH = 500;
 
+// Allows benchmark/ops tooling to pin a specific model per-run (e.g.
+// GEMINI_MODEL=gemini-1.5-flash) without touching the production default.
+function resolveActiveModel() {
+  return process.env.GEMINI_MODEL || JOURNAL_INSIGHT_MODEL;
+}
+
 function resolveGeminiApiKey() {
   return process.env.FUNCTIONS_EMULATOR === "true"
     ? process.env.GEMINI_API_KEY
@@ -63,7 +69,7 @@ async function generateJournalInsight({ prompt, context }) {
 
   const ai = new GoogleGenAI({ apiKey: resolveGeminiApiKey() });
   const response = await ai.models.generateContent({
-    model: JOURNAL_INSIGHT_MODEL,
+    model: resolveActiveModel(),
     contents: buildJournalPrompt(trimmedPrompt, context),
     config: { safetySettings: SEMANTIC_SAFETY_SETTINGS }
   });
@@ -75,6 +81,7 @@ module.exports = {
   GoogleGenAI,
   SEMANTIC_SAFETY_SETTINGS,
   JOURNAL_INSIGHT_MODEL,
+  resolveActiveModel,
   buildJournalPrompt,
   generateJournalInsight
 };
