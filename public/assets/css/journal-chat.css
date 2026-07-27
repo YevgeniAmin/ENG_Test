@@ -1,0 +1,347 @@
+/* ==========================================================================
+   Journal Chat v2 - Unified Chat Canvas
+   ==========================================================================
+   Loaded unconditionally, but every rule here is scoped under .jc-canvas,
+   which journal-chat-ui.js only ever inserts into the DOM when
+   window.JOURNAL_CHAT_CONFIG.v2Enabled is true. With the flag off (the
+   default) none of this file has any visible effect.
+
+   Reuses tokens from index.css (--bg-surface, --border-color, --text-link,
+   --radius-studio, --transition-fast, --color-error, --motion-duration-glow)
+   rather than introducing new colors/spacing. Breakpoints (600px / 480px)
+   match the existing responsive rules in index.css for this same panel.
+   ========================================================================== */
+
+.jc-canvas {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.jc-frame {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-studio);
+    background-color: var(--bg-surface);
+    padding: 12px;
+    transition: var(--transition-fast);
+}
+
+/* ---- State-driven frame treatment (table in the approved UX spec) ---- */
+
+/* Focus / Composing: subtle static glow, no motion. */
+.jc-canvas[data-state="focus"] .jc-frame,
+.jc-canvas[data-state="composing"] .jc-frame {
+    border-color: var(--text-link);
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.12);
+}
+
+/* Thinking / Submitting: slowly moving gradient, never blinking. */
+.jc-canvas[data-state="submitting"] .jc-frame,
+.jc-canvas[data-state="thinking"] .jc-frame {
+    border-color: transparent;
+    background-image:
+        linear-gradient(var(--bg-surface), var(--bg-surface)),
+        linear-gradient(90deg, var(--text-link), #7ab8f5, var(--text-link));
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    background-size: 100% 100%, 220% 100%;
+    animation: jc-frame-glow var(--motion-duration-glow) linear infinite;
+}
+
+/* Answer / Follow-up: weak, stable glow (no motion). */
+.jc-canvas[data-state="answer"] .jc-frame,
+.jc-canvas[data-state="follow_up"] .jc-frame {
+    border-color: var(--border-color);
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.06);
+}
+
+/* Offline search: gray/blue-gray, deliberately calmer than the live states. */
+.jc-canvas[data-state="offline_search"] .jc-frame {
+    border-color: var(--text-secondary);
+}
+
+/* Timeout / Error / limits: never color-only - the chip below always carries
+   matching icon + text, per the accessibility requirement. */
+.jc-canvas[data-state="timeout"] .jc-frame,
+.jc-canvas[data-state="error"] .jc-frame,
+.jc-canvas[data-state="quota_limited"] .jc-frame,
+.jc-canvas[data-state="token_limited"] .jc-frame {
+    border-color: var(--color-error);
+}
+
+.jc-canvas[data-state="client_input_limit"] .jc-frame {
+    border-color: var(--color-dev);
+}
+
+@keyframes jc-frame-glow {
+    0% { background-position: 0 0, 0% 0; }
+    100% { background-position: 0 0, 220% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .jc-canvas[data-state="submitting"] .jc-frame,
+    .jc-canvas[data-state="thinking"] .jc-frame {
+        animation: none;
+        background-image: none;
+        border-color: var(--text-link);
+        box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.12);
+    }
+}
+
+/* ---- Header ---- */
+
+.jc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.jc-header-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.jc-status-chip {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-radius: 999px;
+    padding: 3px 10px;
+    background-color: var(--bg-sidebar);
+    white-space: normal;
+}
+
+.jc-status-chip[data-visible="true"] {
+    display: inline-flex;
+}
+
+.jc-status-chip[data-tone="error"] {
+    color: var(--color-error);
+    background-color: var(--bg-surface);
+    border: 1px solid var(--color-error);
+}
+
+.jc-status-chip[data-tone="warning"] {
+    color: var(--color-dev);
+    background-color: var(--bg-dev);
+}
+
+.jc-status-chip[data-tone="offline"] {
+    color: var(--text-secondary);
+    background-color: var(--bg-sidebar);
+}
+
+.jc-status-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+}
+
+.jc-canvas[data-state="thinking"] .jc-status-dot,
+.jc-canvas[data-state="submitting"] .jc-status-dot {
+    animation: jc-dot-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes jc-dot-pulse {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .jc-status-dot {
+        animation: none !important;
+        opacity: 1;
+    }
+}
+
+/* ---- Messages ---- */
+
+.jc-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 360px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    padding-right: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .jc-messages {
+        scroll-behavior: auto;
+    }
+}
+
+.jc-messages:empty {
+    display: none;
+}
+
+.jc-source-badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding-left: 2px;
+}
+
+.jc-source-badge[data-source="gemini"] { color: var(--text-link); }
+.jc-source-badge[data-source="journal"] { color: var(--text-secondary); }
+.jc-source-badge[data-source="hybrid"] { color: var(--color-visionary); }
+
+/* ---- Fallback actions (Timeout / Error) ---- */
+
+.jc-fallback-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.jc-fallback-actions[hidden] {
+    display: none;
+}
+
+.jc-action-btn {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.jc-action-btn:hover {
+    background-color: var(--bg-sidebar);
+}
+
+.jc-action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ---- Composer ---- */
+
+.jc-composer {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    background-color: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-studio);
+    padding: 8px 10px;
+}
+
+.jc-textarea {
+    flex-grow: 1;
+    resize: none;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--text-primary);
+    max-height: 140px;
+    overflow-y: auto;
+    transition: height 150ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .jc-textarea {
+        transition: none;
+    }
+}
+
+.jc-textarea::placeholder {
+    color: var(--text-secondary);
+}
+
+.jc-textarea:focus-visible {
+    outline: 2px solid var(--text-link);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.jc-send-btn {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--text-link);
+    font-size: 18px;
+    line-height: 1;
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.jc-send-btn:hover:not(:disabled) {
+    background-color: rgba(26, 115, 232, 0.1);
+}
+
+.jc-send-btn:disabled {
+    color: var(--text-secondary);
+    cursor: not-allowed;
+}
+
+.jc-send-btn:focus-visible,
+.jc-action-btn:focus-visible {
+    outline: 2px solid var(--text-link);
+    outline-offset: 2px;
+}
+
+/* ---- Hiding the legacy single-shot chat UI while v2 is active ----
+   The Notebook Template selector and .recent-insights/.insights-list are
+   deliberately left outside .ai-chat-interface and are never touched. */
+
+.ai-chat-interface--v2-active .ai-welcome-box,
+.ai-chat-interface--v2-active .chat-input-wrapper {
+    display: none;
+}
+
+/* ---- Mobile (matches index.css breakpoints for this panel) ---- */
+
+@media (max-width: 600px) {
+    .jc-messages {
+        max-height: 300px;
+    }
+
+    .jc-composer {
+        flex-wrap: wrap;
+    }
+
+    .jc-textarea {
+        width: 100%;
+        flex-basis: 100%;
+    }
+
+    .jc-send-btn {
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .jc-header-title {
+        font-size: 12px;
+    }
+
+    .jc-status-chip {
+        font-size: 11px;
+    }
+
+    .jc-textarea {
+        font-size: 13px;
+    }
+}
