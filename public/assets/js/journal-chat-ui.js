@@ -27,9 +27,12 @@
     // Mirrors functions/src/http/journalInsightProxy.js MAX_PROMPT_LENGTH.
     // This is a UX-only pre-check against an already-approved server cap -
     // it does not estimate tokens and is never presented as a Gemini token
-    // limit (that distinction is reserved for TOKEN_LIMITED, which only a
-    // structured server response may ever trigger - see journal-chat-ui.js
-    // handleRequestFailure()).
+    // limit. QUOTA_LIMITED and TOKEN_LIMITED are reserved UI states that
+    // this RC1 request adapter never enters: handleRequestFailure() maps
+    // every non-OK HTTP response to the generic ERROR path, since no
+    // structured quota/token error payload or status-code mapping is
+    // implemented here. Entering those states would require an explicitly
+    // approved server/error contract for quota/token signaling.
     var CLIENT_INPUT_MAX_LENGTH = 500;
 
     function init() {
