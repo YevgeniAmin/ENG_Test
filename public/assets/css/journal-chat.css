@@ -302,28 +302,6 @@
     outline-offset: 2px;
 }
 
-/* ---- Hint line (input-limit / quota / token-limit messaging) ---- */
-
-.jc-hint {
-    font-size: 11px;
-    color: var(--text-secondary);
-    min-height: 14px;
-}
-
-.jc-hint[data-tone="error"] {
-    color: var(--color-error);
-    font-weight: 600;
-}
-
-.jc-hint[data-tone="warning"] {
-    color: var(--color-dev);
-    font-weight: 600;
-}
-
-.jc-hint:empty {
-    display: none;
-}
-
 /* ---- Hiding the legacy single-shot chat UI while v2 is active ----
    The Notebook Template selector and .recent-insights/.insights-list are
    deliberately left outside .ai-chat-interface and are never touched. */

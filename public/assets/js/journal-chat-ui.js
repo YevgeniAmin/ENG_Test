@@ -103,7 +103,11 @@
             } else if (
                 controller.state === STATES.FOCUS ||
                 controller.state === STATES.COMPOSING ||
-                controller.state === STATES.FOLLOW_UP
+                controller.state === STATES.FOLLOW_UP ||
+                controller.state === STATES.TIMEOUT ||
+                controller.state === STATES.ERROR ||
+                controller.state === STATES.QUOTA_LIMITED ||
+                controller.state === STATES.TOKEN_LIMITED
             ) {
                 controller.transition(text.trim() ? STATES.COMPOSING : STATES.FOCUS);
             }
@@ -196,16 +200,26 @@
                         handleRequestFailure(requestGeneration, "http_error");
                         return;
                     }
-                    return response.json().then(function (data) {
-                        if (!controller.isCurrent(requestGeneration)) return;
-                        if (typeof data.response !== "string") {
+                    return response.json().then(
+                        function (data) {
+                            if (!controller.isCurrent(requestGeneration)) return;
+                            if (typeof data.response !== "string") {
+                                handleRequestFailure(requestGeneration, "malformed_response");
+                                return;
+                            }
+                            renderAssistantMessage(dom, data.response, "gemini");
+                            controller.endRequest(requestGeneration);
+                            controller.transition(STATES.ANSWER);
+                        },
+                        function () {
+                            // response.json() itself rejected (empty/invalid body) - this
+                            // handler only ever sees that rejection, never an error thrown
+                            // by the success callback above, so rendering failures can't be
+                            // misclassified as malformed JSON.
+                            if (!controller.isCurrent(requestGeneration)) return;
                             handleRequestFailure(requestGeneration, "malformed_response");
-                            return;
                         }
-                        renderAssistantMessage(dom, data.response, "gemini");
-                        controller.endRequest(requestGeneration);
-                        controller.transition(STATES.ANSWER);
-                    });
+                    );
                 })
                 .catch(function (error) {
                     if (!controller.isCurrent(requestGeneration)) return;
@@ -224,7 +238,6 @@
             } else {
                 controller.transition(STATES.ERROR);
             }
-            dom.lastFailureKind = kind;
             showFallbackActions(dom);
         }
     }
@@ -308,10 +321,6 @@
         sendBtn.textContent = "➔";
         composer.appendChild(sendBtn);
 
-        var hint = document.createElement("p");
-        hint.className = "jc-hint";
-        frame.appendChild(hint);
-
         return {
             root: root,
             frame: frame,
@@ -322,9 +331,7 @@
             retryBtn: retryBtn,
             searchJournalBtn: searchJournalBtn,
             textarea: textarea,
-            sendBtn: sendBtn,
-            hint: hint,
-            lastFailureKind: null
+            sendBtn: sendBtn
         };
     }
 
@@ -370,6 +377,8 @@
             state === STATES.TOKEN_LIMITED
         ) {
             showFallbackActions(dom);
+        } else {
+            hideFallbackActions(dom);
         }
     }
 
