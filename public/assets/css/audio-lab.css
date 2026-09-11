@@ -1,0 +1,284 @@
+/* ==========================================================================
+   Audio Lab — scoped page styles, built on global-tokens.css + portal-quality.css.
+   No inline styles, no second token system: only Portal --md-sys-color-*/--spacing-*
+   tokens plus a small set of module-local variables scoped to .audio-lab-page.
+   ========================================================================== */
+
+.audio-lab-page {
+    --al-canvas-bg: #0f172a;
+    --al-canvas-fg: #38bdf8;
+    --al-canvas-grid: #1e293b;
+    --al-canvas-threshold: #ef4444;
+    --al-canvas-peak: #f59e0b;
+}
+
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--md-sys-color-background);
+    font-family: var(--font-family-base);
+    color: var(--md-sys-color-text-main);
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: var(--spacing-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: var(--spacing-3);
+    border-bottom: var(--border-thin);
+    padding-bottom: var(--spacing-3);
+}
+
+.page-title { font-size: 1.75rem; font-weight: 700; }
+.page-subtitle { color: var(--md-sys-color-text-muted); font-size: 0.95rem; margin-top: 4px; }
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    flex-wrap: wrap;
+}
+
+/* Buttons (component-local, matching the Portal's established per-page button convention) */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2);
+    min-height: 44px;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.875rem;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: var(--transition-standard);
+}
+
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary { background-color: var(--md-sys-color-primary); color: #fff; }
+.btn-secondary { background-color: var(--md-sys-color-surface); color: var(--md-sys-color-primary); border: var(--border-thin); }
+.btn[aria-pressed="true"] { outline: 2px solid var(--md-sys-color-primary); outline-offset: 2px; }
+
+/* Section shell */
+.al-notice,
+.al-section {
+    background-color: var(--md-sys-color-surface);
+    border: var(--border-thin);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-4);
+    box-shadow: var(--elevation-1);
+}
+
+.al-notice p { color: var(--md-sys-color-text-muted-on-light); line-height: 1.5; }
+
+.al-section h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-3);
+}
+
+.al-privacy-notice {
+    background-color: var(--md-sys-color-primary-container);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-3);
+    margin-bottom: var(--spacing-3);
+    line-height: 1.5;
+}
+
+/* Fieldsets / grouped controls */
+.al-fieldset {
+    border: var(--border-thin);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-3);
+    margin-bottom: var(--spacing-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+}
+
+.al-fieldset legend {
+    font-weight: 600;
+    padding: 0 var(--spacing-1);
+    color: var(--md-sys-color-text-muted-on-light);
+}
+
+.al-radio-label,
+.al-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    min-height: 44px;
+}
+
+.al-controls-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-3);
+}
+
+@media (min-width: 640px) {
+    .al-controls-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.al-control {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.al-control label { font-weight: 600; font-size: 0.875rem; }
+
+.al-control input[type="number"],
+.al-control input[type="range"],
+.al-control select,
+.al-control input[type="file"] {
+    min-height: 44px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    border: var(--border-thin);
+    background-color: var(--md-sys-color-background);
+    color: var(--md-sys-color-text-main);
+    font: inherit;
+}
+
+.al-control output {
+    font-family: var(--font-family-mono);
+    color: var(--md-sys-color-primary);
+    font-weight: 700;
+}
+
+.al-actions {
+    display: flex;
+    gap: var(--spacing-2);
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.al-status-text {
+    color: var(--md-sys-color-text-muted-on-light);
+    font-family: var(--font-family-mono);
+    margin-top: var(--spacing-2);
+}
+
+.al-error {
+    color: var(--md-sys-color-error-on-light);
+    background-color: var(--md-sys-color-warning-container);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-2) var(--spacing-3);
+    margin-top: var(--spacing-2);
+}
+
+.al-source-panel {
+    margin-top: var(--spacing-3);
+    padding-top: var(--spacing-3);
+    border-top: var(--border-thin);
+}
+
+.al-mic-indicator {
+    margin-top: var(--spacing-2);
+    color: var(--color-active);
+    font-weight: 600;
+}
+
+/* Canvas figures */
+.al-canvas-figure {
+    margin: var(--spacing-3) 0;
+}
+
+.al-canvas-figure figcaption {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--md-sys-color-text-muted-on-light);
+    margin-bottom: 6px;
+}
+
+.al-canvas-figure canvas {
+    display: block;
+    width: 100%;
+    height: 180px;
+    background-color: var(--al-canvas-bg);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--al-canvas-grid);
+}
+
+#waterfall-canvas { height: 260px; }
+
+/* Alarm table */
+.al-table-wrapper {
+    overflow-x: auto;
+    margin-top: var(--spacing-3);
+}
+
+#alarm-log-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+#alarm-log-table caption {
+    text-align: left;
+    color: var(--md-sys-color-text-muted-on-light);
+    margin-bottom: var(--spacing-2);
+    font-size: 0.8rem;
+}
+
+#alarm-log-table th,
+#alarm-log-table td {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: var(--border-thin);
+}
+
+#alarm-log-table th {
+    background-color: var(--md-sys-color-surface-variant);
+    font-weight: 700;
+}
+
+.al-alarm-row-exceeded td:nth-child(3) { color: var(--md-sys-color-error-on-light); font-weight: 700; }
+
+/* Footer */
+.al-footer {
+    text-align: center;
+    padding: var(--spacing-3) 0;
+}
+
+.al-provenance {
+    color: var(--md-sys-color-text-muted);
+    font-size: 0.8rem;
+}
+
+/* Decorative pulse for an active alarm status badge only; portal-quality.css already
+   neutralizes animation-duration under prefers-reduced-motion, and the same information is
+   always additionally conveyed as plain status text. */
+.al-status-text.al-alarm-active {
+    color: var(--md-sys-color-error-on-light);
+    font-weight: 700;
+    animation: al-alarm-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes al-alarm-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
+}
+
+@media (max-width: 480px) {
+    .main-content { padding: var(--spacing-3); }
+    .al-controls-grid { grid-template-columns: 1fr; }
+    .top-header { flex-direction: column; }
+}

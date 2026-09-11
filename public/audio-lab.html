@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Lab | ENG-PORTAL</title>
+    <meta name="description" content="Portal-native real-time signal generator, spectrum analyzer, threshold monitor, and lossless WAV export running entirely in the browser.">
+    <link rel="canonical" href="https://yevgeni.info/audio-lab.html">
+    <meta property="og:title" content="Audio Lab | ENG-PORTAL">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="Real-time signal generation, spectrum analysis, and lossless export &mdash; entirely client-side, no audio ever leaves the browser.">
+    <meta property="og:url" content="https://yevgeni.info/audio-lab.html">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Audio Lab | ENG-PORTAL">
+    <meta name="twitter:description" content="Real-time signal generation, spectrum analysis, and lossless export &mdash; entirely client-side, no audio ever leaves the browser.">
+
+    <link rel="stylesheet" href="assets/css/global-tokens.css">
+    <link rel="stylesheet" href="assets/css/portal-quality.css">
+    <link rel="stylesheet" href="assets/css/audio-lab.css">
+
+    <!-- BEGIN Portal Favicons -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/favicon-64x64.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+    <!-- END Portal Favicons -->
+</head>
+<body class="audio-lab-page">
+
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <div class="app-layout">
+        <main class="main-content" id="main-content">
+
+            <header class="top-header">
+                <div class="header-titles">
+                    <h1 class="page-title">Audio Lab</h1>
+                    <p class="page-subtitle">Real-time signal generation, spectrum analysis, and lossless export</p>
+                </div>
+                <div class="header-actions">
+                    <span class="status-badge status-dev">DEVELOPMENT</span>
+                    <a href="index.html" class="btn btn-secondary">Return to ENG-Portal</a>
+                </div>
+            </header>
+
+            <section class="al-notice" aria-labelledby="safety-notice-heading">
+                <h2 id="safety-notice-heading" class="sr-only">Privacy and audio safety notice</h2>
+                <p>
+                    This lab runs entirely in your browser using the Web Audio API. No audio is uploaded, stored, or sent to
+                    Gemini or any other external service. Microphone input, when enabled, is analyzed locally only and is never
+                    routed to your speakers. Signal generator output can be loud: start at a low level and use hearing
+                    protection when testing at high levels.
+                </p>
+            </section>
+
+            <section class="al-section" aria-labelledby="engine-heading">
+                <h2 id="engine-heading">Audio Engine</h2>
+                <div class="al-actions">
+                    <button type="button" id="engine-activate-btn" class="btn btn-primary">Activate audio engine</button>
+                    <p id="engine-status-text" class="al-status-text" role="status" aria-live="polite">Engine: inactive</p>
+                </div>
+            </section>
+
+            <section class="al-section" aria-labelledby="source-heading">
+                <h2 id="source-heading">Audio Source</h2>
+                <fieldset class="al-fieldset">
+                    <legend>Select source</legend>
+                    <label class="al-radio-label"><input type="radio" name="audio-source" value="generator" id="source-generator" checked> Signal generator</label>
+                    <label class="al-radio-label"><input type="radio" name="audio-source" value="microphone" id="source-microphone"> Microphone</label>
+                    <label class="al-radio-label"><input type="radio" name="audio-source" value="file" id="source-file"> Local audio file</label>
+                </fieldset>
+
+                <div id="microphone-panel" class="al-source-panel" hidden>
+                    <p class="al-privacy-notice" id="microphone-privacy-notice">
+                        Purpose: local, real-time frequency analysis only. Data boundary: no upload, storage, Gemini, or
+                        external service ever receives microphone audio. Monitoring policy: the microphone is not routed to
+                        your speakers. You can deny or later revoke permission without affecting the signal generator.
+                    </p>
+                    <div class="al-actions">
+                        <button type="button" id="microphone-start-btn" class="btn btn-primary">Start microphone analysis</button>
+                        <button type="button" id="microphone-stop-btn" class="btn btn-secondary" hidden>Stop microphone analysis</button>
+                    </div>
+                    <p id="microphone-active-indicator" class="al-mic-indicator" role="status" aria-live="polite" hidden>Microphone analysis is active. Audio is not audible on your speakers.</p>
+                </div>
+
+                <div id="file-panel" class="al-source-panel" hidden>
+                    <div class="al-control">
+                        <label for="file-input">Choose an audio file</label>
+                        <input type="file" id="file-input" accept="audio/*">
+                    </div>
+                    <div class="al-actions">
+                        <button type="button" id="file-play-btn" class="btn btn-primary" disabled>Play file</button>
+                        <button type="button" id="file-stop-btn" class="btn btn-secondary" hidden>Stop file</button>
+                    </div>
+                </div>
+
+                <p id="source-error" class="al-error" role="alert" hidden></p>
+            </section>
+
+            <section class="al-section" aria-labelledby="generator-heading">
+                <h2 id="generator-heading">Signal Generator</h2>
+                <div class="al-controls-grid">
+                    <div class="al-control">
+                        <label for="waveform-select">Waveform</label>
+                        <select id="waveform-select">
+                            <option value="sine">Sine</option>
+                            <option value="square">Square</option>
+                            <option value="triangle">Triangle</option>
+                            <option value="sawtooth">Sawtooth</option>
+                            <option value="white-noise">White noise</option>
+                            <option value="pink-noise">Pink noise</option>
+                            <option value="brown-noise">Brown noise</option>
+                            <option value="sweep">Frequency sweep</option>
+                        </select>
+                    </div>
+
+                    <div class="al-control" id="frequency-control">
+                        <label for="frequency-input">Frequency (Hz)</label>
+                        <input type="number" id="frequency-input" min="20" max="20000" step="1" value="1000">
+                        <input type="range" id="frequency-range" min="20" max="20000" step="1" value="1000" aria-label="Frequency slider, hertz">
+                    </div>
+
+                    <div class="al-control">
+                        <label for="gain-range">Gain</label>
+                        <input type="range" id="gain-range" min="-80" max="0" step="1" value="-12" aria-describedby="gain-value">
+                        <output id="gain-value" for="gain-range">-12 dBFS</output>
+                    </div>
+
+                    <fieldset class="al-fieldset" id="channel-fieldset">
+                        <legend>Channel routing</legend>
+                        <label class="al-radio-label"><input type="radio" name="channel" value="both" checked> Both</label>
+                        <label class="al-radio-label"><input type="radio" name="channel" value="left"> Left</label>
+                        <label class="al-radio-label"><input type="radio" name="channel" value="right"> Right</label>
+                    </fieldset>
+
+                    <div class="al-control">
+                        <button type="button" id="phase-toggle-btn" class="btn btn-secondary" aria-pressed="false">Phase: 0&deg; normal</button>
+                    </div>
+
+                    <div class="al-control">
+                        <button type="button" id="mute-toggle-btn" class="btn btn-secondary" aria-pressed="false">Mute</button>
+                    </div>
+                </div>
+
+                <fieldset class="al-fieldset" id="sweep-fieldset" hidden>
+                    <legend>Sweep parameters</legend>
+                    <div class="al-control">
+                        <label for="sweep-type-select">Sweep type</label>
+                        <select id="sweep-type-select">
+                            <option value="logarithmic" selected>Logarithmic</option>
+                            <option value="linear">Linear</option>
+                        </select>
+                    </div>
+                    <div class="al-control">
+                        <label for="sweep-start-input">Start frequency (Hz)</label>
+                        <input type="number" id="sweep-start-input" min="20" max="20000" value="20">
+                    </div>
+                    <div class="al-control">
+                        <label for="sweep-end-input">End frequency (Hz)</label>
+                        <input type="number" id="sweep-end-input" min="20" max="20000" value="20000">
+                    </div>
+                    <div class="al-control">
+                        <label for="sweep-duration-input">Duration (seconds)</label>
+                        <input type="number" id="sweep-duration-input" min="1" max="60" value="10">
+                    </div>
+                </fieldset>
+
+                <div class="al-actions">
+                    <button type="button" id="signal-start-btn" class="btn btn-primary">Start signal</button>
+                    <button type="button" id="signal-stop-btn" class="btn btn-secondary" disabled>Stop signal</button>
+                </div>
+            </section>
+
+            <section class="al-section" aria-labelledby="export-heading">
+                <h2 id="export-heading">Lossless Export</h2>
+                <p>Exports the current generator signal as uncompressed 24-bit / 96&nbsp;kHz stereo PCM WAV.</p>
+                <div class="al-control">
+                    <label for="export-duration-select">Duration</label>
+                    <select id="export-duration-select">
+                        <option value="1">1 second</option>
+                        <option value="5" selected>5 seconds</option>
+                        <option value="10">10 seconds</option>
+                        <option value="30">30 seconds</option>
+                    </select>
+                </div>
+                <div class="al-actions">
+                    <button type="button" id="export-btn" class="btn btn-primary">Export 24-bit / 96 kHz WAV</button>
+                </div>
+                <p id="export-status" class="al-status-text" role="status" aria-live="polite"></p>
+                <p id="export-error" class="al-error" role="alert" hidden></p>
+            </section>
+
+            <section class="al-section" aria-labelledby="visualization-heading">
+                <h2 id="visualization-heading">Real-Time Analysis</h2>
+
+                <div class="al-control">
+                    <label for="palette-select">Waterfall color palette</label>
+                    <select id="palette-select">
+                        <option value="inferno">Inferno</option>
+                        <option value="thermal">Thermal</option>
+                        <option value="viridis">Viridis</option>
+                        <option value="cyber">Cyber</option>
+                        <option value="monochrome">Monochrome</option>
+                    </select>
+                </div>
+
+                <figure class="al-canvas-figure">
+                    <figcaption>Real-time analyzer (RTA) &mdash; logarithmic frequency spectrum, 20&nbsp;Hz&ndash;20&nbsp;kHz</figcaption>
+                    <canvas id="rta-canvas" aria-describedby="rta-desc"></canvas>
+                    <p id="rta-desc" class="sr-only">Logarithmic real-time frequency spectrum. Use the frequency inspection field below for an exact, keyboard-accessible reading; the live peak readout also updates continuously as plain text.</p>
+                </figure>
+
+                <div class="al-control">
+                    <label for="inspect-frequency-input">Inspect frequency (Hz)</label>
+                    <input type="number" id="inspect-frequency-input" min="20" max="20000" step="1" value="1000">
+                    <output id="inspect-frequency-readout" for="inspect-frequency-input">&ndash; dBFS</output>
+                </div>
+
+                <p id="live-peak-readout" class="al-status-text">Peak: &ndash; Hz @ &ndash; dBFS</p>
+
+                <figure class="al-canvas-figure">
+                    <figcaption>Waterfall spectrogram &mdash; scrolling time history</figcaption>
+                    <canvas id="waterfall-canvas" aria-describedby="waterfall-desc"></canvas>
+                    <p id="waterfall-desc" class="sr-only">Scrolling waterfall spectrogram; color indicates energy at each logarithmically-mapped frequency over time. Not required to operate the lab; RTA and text readouts convey the same information.</p>
+                </figure>
+            </section>
+
+            <section class="al-section" aria-labelledby="threshold-heading">
+                <h2 id="threshold-heading">Threshold Monitor</h2>
+                <fieldset class="al-fieldset">
+                    <legend>Threshold configuration</legend>
+                    <label class="al-checkbox-label"><input type="checkbox" id="threshold-enabled-checkbox" checked> Enable threshold monitor</label>
+
+                    <div class="al-control">
+                        <label for="threshold-min-freq-input">Band minimum (Hz)</label>
+                        <input type="number" id="threshold-min-freq-input" min="20" max="20000" value="20">
+                    </div>
+                    <div class="al-control">
+                        <label for="threshold-max-freq-input">Band maximum (Hz)</label>
+                        <input type="number" id="threshold-max-freq-input" min="20" max="20000" value="20000">
+                    </div>
+                    <div class="al-control">
+                        <label for="threshold-db-range">Threshold level</label>
+                        <input type="range" id="threshold-db-range" min="-100" max="0" step="1" value="-12" aria-describedby="threshold-db-value">
+                        <output id="threshold-db-value" for="threshold-db-range">-12 dBFS</output>
+                    </div>
+                    <label class="al-checkbox-label"><input type="checkbox" id="warning-audio-checkbox"> Play a short audible warning tone on alarm (opt-in)</label>
+                </fieldset>
+
+                <p id="threshold-status" class="al-status-text" role="status" aria-live="polite">Status: normal</p>
+                <p id="threshold-config-error" class="al-error" role="alert" hidden></p>
+            </section>
+
+            <section class="al-section" aria-labelledby="alarm-log-heading">
+                <h2 id="alarm-log-heading">Alarm Log</h2>
+                <div class="al-actions">
+                    <button type="button" id="clear-alarm-log-btn" class="btn btn-secondary">Clear log</button>
+                </div>
+                <div class="al-table-wrapper">
+                    <table id="alarm-log-table">
+                        <caption>Threshold alarm events, newest first, maximum 50 retained</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Time</th>
+                                <th scope="col">Peak frequency</th>
+                                <th scope="col">Peak level</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="alarm-log-tbody">
+                            <tr id="alarm-log-empty-row"><td colspan="4">No alarm events recorded.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <footer class="al-footer">
+                <p class="al-provenance">Upstream provenance: AI Studio Rev.01 (design reference only; not deployed as-is).</p>
+                <div class="version-sync">
+                    <span></span>
+                </div>
+            </footer>
+
+        </main>
+    </div>
+
+    <script type="module" src="assets/js/audio-lab.js"></script>
+</body>
+</html>
