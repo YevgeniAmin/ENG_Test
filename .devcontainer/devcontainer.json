@@ -1,0 +1,25 @@
+{
+  "name": "ENG Portal Dev",
+
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+
+  "forwardPorts": [
+    4000,
+    5000,
+    5001,
+    8080,
+    9099
+  ],
+
+  "postCreateCommand": "cd functions && npm ci",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  }
+}
